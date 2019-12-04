@@ -39,11 +39,11 @@ Suppose a circuit instantiate using this code
 circuit = Circuit(2, 2);
 ```
 
-| Gates  | Name         | Syntax                    |
-| ------ |:------------:| -------------------------:|
-| [x]    | Pauli-x Gate | circuit.x(`target qubit`) |
-| [y]    | Pauli-y Gate | circuit.y(`target qubit`) |
-| [z]    | Pauli-z Gate | circuit.z(`target qubit`) |
+| Gates          | Name         | Syntax                    |
+| -------------- |:------------:| -------------------------:|
+| ![alt text][x] | Pauli-x Gate | circuit.x(`target_qubit`) |
+| ![alt text][y] | Pauli-y Gate | circuit.y(`target_qubit`) |
+| ![alt text][z] | Pauli-z Gate | circuit.z(`target_qubit`) |
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
