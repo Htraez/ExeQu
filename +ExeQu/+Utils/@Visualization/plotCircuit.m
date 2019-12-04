@@ -1,4 +1,4 @@
-function plotCircuit(self, qreg)
+function plotCircuit(qreg)
     import ExeQu.Utils.*;
     clf;
     %notation_width=2;
