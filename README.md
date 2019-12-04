@@ -33,17 +33,21 @@ result.plotHistogram(); %Visualize result
 
 A quantum gate could be added to a circuit using methods defined in the `Circuit`. Right now there several of them available as shown below.
 
-Suppose a circuit instantiate using this code 
+Suppose a circuit instantiated using this code 
 
 ```matlab
-circuit = Circuit(2, 2);
+circuit = Circuit(`number_of_qubit`, `number_of_cbit`);
 ```
 
-| Gates          | Name         | Syntax                    |
-| -------------- |:------------:| -------------------------:|
-| ![alt text][x] | Pauli-x Gate | circuit.x(`target_qubit`) |
-| ![alt text][y] | Pauli-y Gate | circuit.y(`target_qubit`) |
-| ![alt text][z] | Pauli-z Gate | circuit.z(`target_qubit`) |
+| Gates           | Name          | Syntax                       |
+| --------------- |:-------------:| ----------------------------:|
+| ![alt text][x]  | Pauli-x Gate  | circuit.x(`target_qubit`)    |
+| ![alt text][y]  | Pauli-y Gate  | circuit.y(`target_qubit`)    |
+| ![alt text][z]  | Pauli-z Gate  | circuit.z(`target_qubit`)    |
+| ![alt text][i]  | Identity Gate | circuit.i(`target_qubit`)    |
+| ![alt text][h]  | Hadamard Gate | circuit.h(`target_qubit`)    |
+| ![alt text][cx] | CNOT Gate     | circuit.cnot(`control_qubit`,`target_qubit`) |
+| ![alt text][ccx] | Toffoli Gate     | circuit.ccnot(`control_qubit1`,`control_qubit2`,`target_qubit`) |
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
@@ -56,3 +60,7 @@ Please make sure to update tests as appropriate.
 [x]: https://s3.us-south.cloud-object-storage.appdomain.cloud/strapi/c51de67e35e3428b85cb383834263479x.png "Pauli X"
 [y]: https://s3.us-south.cloud-object-storage.appdomain.cloud/strapi/1fe22994647245299d2c257958d14562y.png "Pauli Y"
 [z]: https://s3.us-south.cloud-object-storage.appdomain.cloud/strapi/3c02d82e71984f0884ee1b5e798674edz.png "Pauli Z"
+[i]: https://s3.us-south.cloud-object-storage.appdomain.cloud/strapi/f3e724b5de7342a4b7b355d6a5973b83id.png "Identity"
+[cx]: https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/CNOT_gate.svg/150px-CNOT_gate.svg.png "Controlled-not"
+[ccx]: https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Toffoli_gate.svg/1200px-Toffoli_gate.svg.png "Toffoli"
+[h]: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Hadamard_gate.svg/150px-Hadamard_gate.svg.png "Hadamard"
