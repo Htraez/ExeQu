@@ -5,7 +5,7 @@ ExeQu is a `MATLAB` toolbox designed to provide quantum programming enthusiats a
 
 ## Installation
 
-ExeQu is currently on development. You can clone ExeQu using [remote url](https://github.com/Htraez/ExeQu.git)
+ExeQu is currently under development. You can clone ExeQu using [remote url](https://github.com/Htraez/ExeQu.git)
 
 ```bash
 git clone https://github.com/Htraez/ExeQu.git
