@@ -16,7 +16,6 @@ git clone https://github.com/Htraez/ExeQu.git
 ```matlab
 import ExeQu.CircuitComposer.*;
 import ExeQu.Gates.*;
-import ExeQu.Utils.*;
 
 %Create new quantum circuit with 2 qubits, 2 classical bits
 circuit = Circuit(2, 2); 
