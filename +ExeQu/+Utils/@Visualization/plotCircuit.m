@@ -1,4 +1,5 @@
-function plotCircuit(qreg)
+function plotCircuit(self, qreg)
+    import ExeQu.Utils.*;
     clf;
     %notation_width=2;
     numberOfQubit = length(qreg.qubits);
