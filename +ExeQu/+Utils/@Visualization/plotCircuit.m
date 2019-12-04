@@ -1,4 +1,4 @@
-function plotCircuit(self, qreg)
+function plotCircuit(qreg)
     import ExeQu.Utils.*;
     clf;
     %notation_width=2;
@@ -14,4 +14,5 @@ function plotCircuit(self, qreg)
         text(1,-2*i,quantumName);
         text(1,-2*numberOfQubit-2,'c');
     end
+    daspect([1 1 1]);
 end
