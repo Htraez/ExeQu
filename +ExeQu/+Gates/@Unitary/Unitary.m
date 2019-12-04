@@ -17,9 +17,9 @@ classdef Unitary
             persistent I
             I = [1 0; 0 1];
             
-            if row/2 < registerLength
+            if row < 2^registerLength
                 temp = cell(1);
-                for iter = 1:registerLength-(row/2)+1
+                for iter = 1:registerLength-log2(row)+1
                     if ~ismember(iter, actOn)
                         temp{iter} = I;
                     else
