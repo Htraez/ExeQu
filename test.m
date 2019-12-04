@@ -7,6 +7,5 @@ circuit = Circuit(2, 2);
 circuit.x(1)
 circuit.h(2)
 
-circuit
 circuit.quantumRegister
-circuit.operationQueue
+circuit.peekOperationQueue
