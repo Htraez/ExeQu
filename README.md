@@ -39,7 +39,7 @@ circuit = Circuit(`number_of_qubit`, `number_of_cbit`);
 ```
 
 | Gates           | Name          | Syntax                       |
-| --------------- |:-------------:| ----------------------------:|
+| :-------------: |:-------------:| :---------------------------:|
 | ![alt text][x]  | Pauli-x Gate  | circuit.x(`target_qubit`)    |
 | ![alt text][y]  | Pauli-y Gate  | circuit.y(`target_qubit`)    |
 | ![alt text][z]  | Pauli-z Gate  | circuit.z(`target_qubit`)    |
