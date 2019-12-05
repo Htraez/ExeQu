@@ -5,7 +5,7 @@ function mct(self, ctrls, target)
         warning("You're adding Multiple Controlled-Not gate with number of control lower than 3, please consider using CNOT or CCNOT instead");
     end
     
-    X = PauliX(self.quantumRegister.getSize(), target);
+    X = PauliX(1, 1);
     MCT = ControlledUnitary(X, self.quantumRegister.getSize(), [ctrls], target);
     
     operation.unitaryOperation = MCT;

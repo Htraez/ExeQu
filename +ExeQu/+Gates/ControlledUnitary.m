@@ -59,7 +59,7 @@ classdef ControlledUnitary < ExeQu.Gates.Unitary
                 if combsets(i, s_ctrl) == 1 % if all control is 1
                     t(s_target) = {U}; % set target to U
                 end
-                celldisp(t)
+%                 celldisp(t)
                 operator = operator + tensor(t);
             end
             
