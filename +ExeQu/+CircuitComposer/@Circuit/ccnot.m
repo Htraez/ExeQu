@@ -1,7 +1,7 @@
 function ccnot(self, ctrl1, ctrl2, target)
     import ExeQu.Gates.*;
     
-    X = PauliX(self.quantumRegister.getSize(), target);
+    X = PauliX(1, 1);
     CCNOT = ControlledUnitary(X, self.quantumRegister.getSize(), [ctrl1 ctrl2], target);
     
     operation.unitaryOperation = CCNOT;
