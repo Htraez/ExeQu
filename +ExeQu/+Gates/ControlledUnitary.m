@@ -16,13 +16,13 @@ classdef ControlledUnitary < ExeQu.Gates.Unitary
             ctrl = sort(ctrl);
             switch U.getLabel()
                 case 'X'
-                    U_label = 'NOT';
+                    U_label = "NOT";
                 case 'Y'
-                    U_label = 'Y';
+                    U_label = "Y";
                 case 'Z'
-                    U_label = 'Z';
+                    U_label = "Z";
                 otherwise
-                    U_label = 'U';
+                    U_label = "U";
             end
             U = U.toMatrice();
             
@@ -75,22 +75,22 @@ classdef ControlledUnitary < ExeQu.Gates.Unitary
             
             switch length(ctrl)
                 case 1
-                    if isequal(U_label, 'U')
-                        label = 'Controlled-'+U_label;
+                    if isequal(U_label, "U")
+                        label = "Controlled-"+U_label;
                     else
-                        label = 'C'+U_label;
+                        label = "C"+U_label;
                     end
                 case 2
-                    if isequal(U_label, 'NOT')
-                        label = 'Toffoli';
+                    if isequal(U_label, "NOT")
+                        label = "Toffoli";
                     else 
-                        label = 'Controlled-controlled-'+U_label;
+                        label = "Controlled-controlled-"+U_label;
                     end
                 otherwise
-                    if isequal(U_label, 'NOT')
-                        label = 'Multiple Control Toffoli';
+                    if isequal(U_label, "NOT")
+                        label = "Multiple Control Toffoli";
                     else 
-                        label = 'Multiple Controlled-'+U_label;
+                        label = "Multiple Controlled-"+U_label;
                     end
             end
             
