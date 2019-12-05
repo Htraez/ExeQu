@@ -8,6 +8,7 @@ circuit = Circuit(2, 2);
 circuit.x(1)
 circuit.cnot(2, 1)
 circuit.cz(1, 2)
+circuit.unitary([0 1; 1 0], 2)
 
 circuit.draw()
 

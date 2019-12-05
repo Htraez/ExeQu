@@ -8,12 +8,19 @@ classdef Unitary
         dimension
     end
     methods 
-        function obj = Unitary(U, registerLength, actOn, label)
-            import ExeQu.Utils.*;
+        function obj = Unitary(U, registerLength, actOn, varargin)
+            import ExeQu.Utils.Maths.*;
             [row, column] = size(U);
-            if(row ~= column) %Check if it's unitary 
-                throw(MException("Invalid Unitary Matrix"))
+            if ~isUnitary(U) %Check if it's unitary 
+                throw(MException("1st argument isnot a valid unitary matrix"))
             end
+            
+            if(nargin < 4)
+                label = 'U';
+            else
+                label = varargin{1};
+            end
+            
             persistent I
             I = [1 0; 0 1];
             
@@ -26,7 +33,7 @@ classdef Unitary
                         temp{iter} = U;
                     end
                 end
-                U = Maths.tensor(temp);
+                U = tensor(temp);
             end
             
             obj.unitaryMatrix = U;
