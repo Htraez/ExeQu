@@ -56,7 +56,7 @@ Please make sure to update tests as appropriate.
 ## Authors
 
 * **Pattharapong Chotechuang** - *Initial work* - [Htraez](https://github.com/Htraez)
-* **Chanin Chongtanapaitoon** - *Visualizationn* - [jojojj007](https://github.com/jojojj007)
+* **Chanin Chongtanapaitoon** - *Visualization* - [jojojj007](https://github.com/jojojj007)
 * **Nawakanok Muangkham** - *QASM Transpiler* - [guitarsk](https://github.com/guitarsk)
 
 See also the list of [contributors](https://github.com/Htraez/ExeQu/graphs/contributors) who participated in this project.
