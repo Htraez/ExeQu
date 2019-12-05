@@ -25,6 +25,8 @@ classdef Circuit < handle
         z(self, target);
         cnot(self, ctrl, target);
         ccnot(self, ctrl1, ctrl2, target);
+        cy(self, ctrl, target);
+        cz(self, ctrl, target);
         mct(self, ctrls, target);
         h(self, target);
         s(self, target);

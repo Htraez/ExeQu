@@ -14,6 +14,16 @@ classdef ControlledUnitary < ExeQu.Gates.Unitary
             end
             
             ctrl = sort(ctrl);
+            switch U.getLabel()
+                case 'X'
+                    U_label = 'NOT';
+                case 'Y'
+                    U_label = 'Y';
+                case 'Z'
+                    U_label = 'Z';
+                otherwise
+                    U_label = 'U';
+            end
             U = U.toMatrice();
             
             I = eye(2);
@@ -65,11 +75,23 @@ classdef ControlledUnitary < ExeQu.Gates.Unitary
             
             switch length(ctrl)
                 case 1
-                    label = 'CNOT';
+                    if isequal(U_label, 'U')
+                        label = 'Controlled-'+U_label;
+                    else
+                        label = 'C'+U_label;
+                    end
                 case 2
-                    label = 'CCNOT';
+                    if isequal(U_label, 'NOT')
+                        label = 'Toffoli';
+                    else 
+                        label = 'Controlled-controlled-'+U_label;
+                    end
                 otherwise
-                    label = 'MCT';
+                    if isequal(U_label, 'NOT')
+                        label = 'Multiple Control Toffoli';
+                    else 
+                        label = 'Multiple Controlled-'+U_label;
+                    end
             end
             
             obj = obj@ExeQu.Gates.Unitary(operator, registerLength, [ctrl target], label);
