@@ -59,8 +59,7 @@ classdef Circuit < handle
 %       Miscellaneous:
 %           Begin the calculation of circuit and return the result of
 %           measurement in form of 'Result' struct
-        peekOperationQueue(self);
+        peekOperations(self);
         
     end
-    
 end

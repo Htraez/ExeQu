@@ -1,7 +1,17 @@
 classdef ControlledUnitary < ExeQu.Gates.Unitary
+    properties (Constant, Access = private)
+        one = [0 0; 0 1];
+        zero = [1 0; 0 0];
+    end
+    properties (Access = private)
+        ctrl
+        target
+        uType
+    end
     methods 
         function obj = ControlledUnitary(U, registerLength, ctrl, target)
             import ExeQu.Utils.Maths.*;
+            import ExeQu.Gates.*;
             
             [U_row, U_col] = size(U);
             
@@ -33,11 +43,6 @@ classdef ControlledUnitary < ExeQu.Gates.Unitary
             U = U.toMatrice();
             
             I = eye(2);
-            one = [0 0; 0 1];
-            zero = [1 0; 0 0];
-            
-            one = [0 0; 0 1];
-            zero = [1 0; 0 0];
             
 %             Scope down
             scope = min([ctrl target]) - 1;
@@ -63,9 +68,9 @@ classdef ControlledUnitary < ExeQu.Gates.Unitary
                 
                 for c = s_ctrl
                     if combsets(i, c) == 1
-                        t(c) = {one};
+                        t(c) = {ControlledUnitary.one};
                     else
-                        t(c) = {zero};
+                        t(c) = {ControlledUnitary.zero};
                     end
                 end
                 if combsets(i, s_ctrl) == 1 % if all control is 1
@@ -96,8 +101,15 @@ classdef ControlledUnitary < ExeQu.Gates.Unitary
                     end
             end
             
-            obj = obj@ExeQu.Gates.Unitary(operator, registerLength, [ctrl target], label);
-%             obj.toMatrice()
+            obj = obj@ExeQu.Gates.Unitary(operator, registerLength, [ctrl target]);
+            obj.label = label;
+            obj.ctrl = ctrl;
+            obj.target = target;
+            obj.uType = U_label;
         end
+        
+        uType = getUType(self);
+        ctrl = getControl(self);
+        target = getTarget(self);
     end
 end
