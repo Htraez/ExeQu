@@ -4,6 +4,7 @@ function draw(self)
     %op= self.operationQueue;
     Visualization.plotCircuit(self.quantumRegister);
     for operation = self.operationQueue
-        Visualization.plotOperation(operation);
+        %operationQueue is cell array, operation is now {operation struct}
+        Visualization.plotOperation(operation{:}); %Use {:} to get the struct inside cell array
     end
 end
