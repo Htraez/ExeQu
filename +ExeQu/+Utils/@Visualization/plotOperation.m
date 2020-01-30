@@ -59,7 +59,7 @@ function plotOperation(op)
             check="u";
         end
         text(start_x(1)+0.3,start_y+0.5-(2*distance),upper(check));
-    %elseif check=="toffoli" || check=="multiple control toffoli"
+    elseif check=="toffoli" || check=="multiple control toffoli"
     %L=length(op.associatedQubit);
     %disp(op.associatedQubit)
     %n_element=[3 3 0 0 0];
