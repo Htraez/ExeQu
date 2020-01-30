@@ -11,6 +11,10 @@ ExeQu is currently under development. You can clone ExeQu using [remote url](htt
 git clone https://github.com/Htraez/ExeQu.git
 ```
 
+### Download MATLAB Toolbox Installer 
+
+You could install `ExeQu` into your MATLAB addons path using `.mltbx` file in the release section of this repository. Current release is `_`, download [here](https://github.com/Htraez/ExeQu/releases/tag/untagged-1ece0e76941a2866c102)
+
 ## Usage
 
 ```matlab
@@ -56,7 +60,7 @@ Please make sure to update tests as appropriate.
 ## Authors
 
 * **Pattharapong Chotechuang** - *Initial work* - [Htraez](https://github.com/Htraez)
-* **Chanin Chongtanapaitoon** - *Visualizationn* - [jojojj007](https://github.com/jojojj007)
+* **Chanin Chongtanapaitoon** - *Visualization* - [jojojj007](https://github.com/jojojj007)
 * **Nawakanok Muangkham** - *QASM Transpiler* - [guitarsk](https://github.com/guitarsk)
 
 See also the list of [contributors](https://github.com/Htraez/ExeQu/graphs/contributors) who participated in this project.
