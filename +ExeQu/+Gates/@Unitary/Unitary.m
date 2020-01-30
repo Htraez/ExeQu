@@ -12,7 +12,7 @@ classdef Unitary
             import ExeQu.Utils.Maths.*;
             [row, column] = size(U);
             if ~isUnitary(U) %Check if it's unitary 
-                throw(MException("1st argument isnot a valid unitary matrix"))
+                throw(MException('Unitary:ParameterError', "1st argument is not a valid unitary matrix"))
             end
             
             if(nargin < 4)

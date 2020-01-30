@@ -18,9 +18,11 @@ classdef ControlledUnitary < ExeQu.Gates.Unitary
             identifier = 'ControlledUnitary:ParameterError';
 %             Validate Parameter
             if target > registerLength
-                throw(MException(identifier,"Target is out of circuit range"))
+                throw(MException(identifier,"Target is out of circuit's qubit range"))
+            elseif sum(ismember(target, ctrl)) > 0
+                throw(MException(identifier,"One qubit can not be control and target at the same time"))
             elseif max(ctrl) > registerLength
-                throw(MException(identifier,"Control is out of circuit range"))
+                throw(MException(identifier,"Control is out of circuit's qubit range"))
             elseif length(ctrl) > registerLength-1
                 throw(MException(identifier,"Too many control bits"))
             elseif ~isUnitary(U.toMatrice())

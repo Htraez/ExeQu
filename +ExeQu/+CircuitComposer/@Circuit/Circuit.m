@@ -9,7 +9,7 @@ classdef Circuit < handle
         function obj = Circuit(qreg_length, creg_length)
             import ExeQu.CircuitComposer.*
             obj.quantumRegister = QuantumRegister(qreg_length);
-            obj.operationQueue = [];
+            obj.operationQueue = {};
             obj.classicalBits = qreg_length;
             if nargin > 1
                 obj.classicalBits = creg_length;
@@ -45,7 +45,7 @@ classdef Circuit < handle
 %           This will create proper measurement operator for the circuit
 %           given desired basis then wrap them in 'operation' struct
 %           before adding them to the circuit's 'operationQueue'
-        measure(self, Qtarget, Ctarget);
+        measure(self, Qtarget, Ctarget, basis);
         
 %       Circuit Visualization:
 %           Plot graphical summary of the circuit composition

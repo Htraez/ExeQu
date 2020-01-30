@@ -44,5 +44,6 @@ classdef Qubit
         ket = getKet(self)
         bra = getBra(self)
         dense = getDensity(self)
+        result = apply(self, operator)
     end
 end
