@@ -1,10 +1,12 @@
 function result = execute(self, n_shots)
     import ExeQu.CircuitComposer.plotHistogram;
     import ExeQu.CircuitComposer.getCount;
+    
     if nargin < 2
         n_shots = 1000;
     end
     if ~isempty(self.operationQueue)
+        
         result.classicalRegister = cell(1, self.classicalBits);
         for op = self.operationQueue
             op = op{:};

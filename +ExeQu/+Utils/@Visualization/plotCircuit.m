@@ -2,7 +2,7 @@ function plotCircuit(qreg)
     import ExeQu.Utils.*;
     clf;                                                                    % clear figure
     %notation_width=2;
-    numberOfQubit = length(qreg.qubits);
+    numberOfQubit = qreg.n_qubits;
     %n_element=zeros(1,numberOfQubit);
     xline=[2 10];
     for i= 1:numberOfQubit                                                  % loop figure

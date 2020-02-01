@@ -15,8 +15,7 @@ circuit.measure(2, 2)
 % circuit.ccnot(1, 2, 3)
 %circuit.unitary([0 1; 1 0], 2)
 
-
-%circuit.draw()
+circuit.draw();
 circuit.peekOperations()
 result = circuit.execute();
 result.getCount();
