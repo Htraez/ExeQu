@@ -57,10 +57,8 @@ classdef Circuit < handle
         result = execute(self, n_shots);
         
 %       Miscellaneous:
-%           Begin the calculation of circuit and return the result of
-%           measurement in form of 'Result' struct
+%           Other useful functions
         peekOperations(self);
-        
     end
     
 end
