@@ -13,7 +13,6 @@ function result = execute(self, n_shots)
             if isfield(op, 'unitaryOperation')
                 unitary_result = op.unitaryOperation * self.quantumRegister;
                 self.quantumRegister.setState(unitary_result);
-                self.quantumRegister.getState()
             elseif isfield(op, 'measurementOperation')
                 operation = op.measurementOperation;
                 destination = operation.getDestination();
