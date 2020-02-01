@@ -1,17 +1,18 @@
-classdef QuantumRegister
+classdef QuantumRegister < handle
     properties (Access = private)
         state
     end
     properties (Access = public)
-        qubits
+        n_qubits
         notation %initial state notation
     end
     methods (Access = public)
         function obj = QuantumRegister(qreg_n, initState)
             import ExeQu.CircuitComposer.*
-            persistent state
-           
-            obj.qubits = [];
+            
+            % Initialize state in each index of QuantumRegister using 
+            %   state initialize by qubit
+            qubits = [];
             obj.notation = "|";
             for index = 1:qreg_n
                 if nargin < 2
@@ -19,15 +20,32 @@ classdef QuantumRegister
                 else 
                     state = initState(index);
                 end
-                obj.qubits = [obj.qubits, Qubit(state, index)];
+                % Get state value initialize by qubit given state specified
+                % by user
+                qubits = [qubits, Qubit(state)]; 
                 obj.notation = obj.notation + state;
+            end
+            
+            % Update total number of qubit
+            obj.n_qubits = length(qubits);
+            
+            % Calculate whole register state through Kronnecker product of
+            % each qubit state
+            for iter = 1:obj.n_qubits
+                if isempty(obj.state)
+                    obj.state = 1;
+                end
+                % Store calculation result as reguster's state
+                obj.state = kron(obj.state, qubits(iter).getState());
             end
             
             obj.notation = obj.notation + ">";
         end
+        
+        % Other Functions 
         size = getSize(self);
-        state = getState(self, qubit_index);
+        state = getState(self);
+        setState(self, state);
         setLabel(self, label);
-        onUpdate(self);
     end
 end

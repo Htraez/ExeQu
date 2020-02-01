@@ -1,4 +1,4 @@
 function size = getSize(self)
     import ExeQu.CircuitComposer.*
-    size = length(self.qubits);
+    size = self.n_qubits;
 end

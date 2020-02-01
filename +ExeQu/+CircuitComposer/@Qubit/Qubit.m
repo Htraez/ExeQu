@@ -9,17 +9,15 @@ classdef Qubit
         notation %initial state notation
     end
     methods (Access = public)
-        function obj = Qubit(initState, index)
+        function obj = Qubit(initState)
             persistent ketzero
             persistent ketone
             
+            % Initial value of |0> and |1>
             ketzero = [1+0i;0+0i];
             ketone = [0+0i;1+0i];
-            if nargin < 2
-                obj.index = 1;
-            else
-                obj.index = index;
-            end
+            
+            % Initialize qubit state followed initState specified by user
             if isa(initState, 'char')
                 switch initState
                     case '0'
@@ -40,6 +38,7 @@ classdef Qubit
             end
         end
         
+        % Other Functions
         state = getState(self) 
         ket = getKet(self)
         bra = getBra(self)
