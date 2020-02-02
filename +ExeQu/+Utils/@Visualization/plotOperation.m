@@ -85,15 +85,44 @@ function plotOperation(op)
         % debug text
         
     elseif check=="toffoli" || check=="multiple control toffoli"
-        L=length(op.associatedQubit);
-        %disp(op.associatedQubit(2))
-        n_element=[3 3 3 0 0];
-        distance = op.associatedQubit(2)-op.associatedQubit(1);
+        %L=length(op.associatedQubit);
+        L = max(op.associatedQubit)-min(op.associatedQubit);
+        n_element=[3 3 3 3 3];
+        %distance = op.associatedQubit(2)-op.associatedQubit(1);
         pos_x = 3 + (margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit);
-        pos_y = -2*(op.associatedQubit(1));
+        pos_y = -2*min(op.associatedQubit);
+        % pos_x,pos_y is position ccnot-line
         
-        yline=[pos_y pos_y-(2*(L-1))];
+        yline=[pos_y pos_y-(2*L)];
         line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
-
+        
+        for a = 1:1:length(op.associatedQubit)
+            r = 0.15;
+            c = [pos_x(1) -(op.associatedQubit(a)*2)];
+            % radius and center of small circle 
+            % position of small circle.It means ctrl
+        
+            pos = [c-r 2*r 2*r];
+            rectangle('Position',pos,'Curvature',[1 1], 'FaceColor', [0.3010 0.7450 0.9330], 'Edgecolor','none')
+            % create small circle
+            
+            if a == length(op.associatedQubit)
+                r = 0.3;
+                c = [pos_x(1) -(2*op.associatedQubit(a))];
+                % radius and center of big circle 
+                % position of big circle.It means target
+        
+                pos = [c-r 2*r 2*r];
+                rectangle('Position',pos,'Curvature',[1 1], 'FaceColor', [0.3010 0.7450 0.9330], 'Edgecolor','none')
+                % create big circle
+                
+                yline=[-(2*op.associatedQubit(a))+0.2 -(2*op.associatedQubit(a))-0.2];
+                line([pos_x(1) pos_x(1)],yline);
+                xline=[pos_x(1)-0.2 pos_x(1)+0.2];
+                line(xline,[-(2*op.associatedQubit(a)) -(2*op.associatedQubit(a))]);
+                % debug line missing
+        
+            end
+        end
     end
 end
