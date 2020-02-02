@@ -7,6 +7,5 @@ function cz(self, ctrl, target)
     operation.unitaryOperation = CZ;
     operation.label = CZ.label;
     operation.associatedQubit = [ctrl target];
-    self.operationQueue = [self.operationQueue operation];
-    
+    self.add(operation);
 end

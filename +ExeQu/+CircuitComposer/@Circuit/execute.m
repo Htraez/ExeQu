@@ -23,12 +23,12 @@ function result = execute(self, n_shots)
                     measurement_result.probability = state'*operator.value*state;
 
                     result.classicalRegister{destination} = [result.classicalRegister{destination} measurement_result];
-                    result.shots = n_shots;
-                    result.getCount = @(varargin) getCount(result.classicalRegister, result.shots, varargin);
-                    result.plotHistogram = @() plotHistogram(result.getCount(true), result.shots);
                 end
             end
         end
+        result.shots = n_shots;
+        result.getCount = @(varargin) getCount(result.classicalRegister, result.shots, varargin);
+        result.plotHistogram = @() plotHistogram(result.getCount(true), result.shots);
     else
         disp("No operations to execute. Aborted");
     end

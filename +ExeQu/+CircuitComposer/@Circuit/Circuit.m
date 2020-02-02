@@ -22,9 +22,11 @@ classdef Circuit < handle
 %           These functions call Gates.<gate name> to get an operator
 %           and wrap them in 'operation' struct before adding
 %           them to the circuit's 'operationQueue'
+        add(self, operation)
         x(self, target);
         y(self, target);
         z(self, target);
+        controlledU(self, U, ctrls, target)
         cnot(self, ctrl, target);
         ccnot(self, ctrl1, ctrl2, target);
         cy(self, ctrl, target);
@@ -41,7 +43,7 @@ classdef Circuit < handle
 %       Custom Gate Function:
 %           This will create custom unitary gate operation 
 %           from user-defined operator 
-        unitary(self, operator, ctrls, target);
+        operation = unitary(self, operator, ctrls, target);
         
 %       Measure Function:
 %           This will create proper measurement operator for the circuit
