@@ -59,7 +59,7 @@ classdef Unitary
                 % Tensor product all information gathered above into one 
                 % unitary matrix (U)
                 temp = temp(~cellfun(@isempty, temp));
-                celldisp(temp)
+%                 celldisp(temp)
                 U = tensor(temp);
             end
             

@@ -1,6 +1,6 @@
 function controlledU(self, U, ctrls, target)
     import ExeQu.Gates.*;
-    class(U)
+
     if strfind(class(U), 'function_handle') == 1   
         try
             U = U(1, 1);
