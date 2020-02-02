@@ -1,7 +1,9 @@
 function draw(self)
     import ExeQu.Utils.*;
+    
     %qreg = self.quantumRegister;
     %op= self.operationQueue;
+    figure(setFigure());
     Visualization.plotCircuit(self.quantumRegister);
     for operation = self.operationQueue
         %operationQueue is cell array, operation is now {operation struct}

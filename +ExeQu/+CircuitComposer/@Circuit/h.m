@@ -5,5 +5,5 @@ function h(self, target)
     operation.unitaryOperation = H;
     operation.label = H.label;
     operation.associatedQubit = [target];
-    self.operationQueue = [self.operationQueue operation];
+    self.add(operation);
 end

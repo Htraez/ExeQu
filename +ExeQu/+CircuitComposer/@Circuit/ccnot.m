@@ -7,5 +7,5 @@ function ccnot(self, ctrl1, ctrl2, target)
     operation.unitaryOperation = CCNOT;
     operation.label = CCNOT.label;
     operation.associatedQubit = [ctrl1 ctrl2 target];
-    self.operationQueue = [self.operationQueue operation];
+    self.add(operation);
 end

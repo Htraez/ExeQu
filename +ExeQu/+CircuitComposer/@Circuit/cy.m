@@ -7,6 +7,5 @@ function cy(self, ctrl, target)
     operation.unitaryOperation = CY;
     operation.label = CY.label;
     operation.associatedQubit = [ctrl target];
-    self.operationQueue = [self.operationQueue operation];
-    
+    self.add(operation);
 end

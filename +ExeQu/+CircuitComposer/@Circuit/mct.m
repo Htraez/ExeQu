@@ -11,5 +11,5 @@ function mct(self, ctrls, target)
     operation.unitaryOperation = MCT;
     operation.label = MCT.label;
     operation.associatedQubit = [ctrls target];
-    self.operationQueue = [self.operationQueue operation];
+    self.add(operation);
 end

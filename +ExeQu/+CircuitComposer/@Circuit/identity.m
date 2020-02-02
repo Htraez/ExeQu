@@ -4,5 +4,5 @@ function identity(self, target)
     operation.unitaryOperation = I;
     operation.label = I.label;
     operation.associatedQubit = [target];
-    self.operationQueue = [self.operationQueue operation];
+    self.add(operation);
 end
