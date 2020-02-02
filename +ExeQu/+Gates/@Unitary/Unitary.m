@@ -36,15 +36,30 @@ classdef Unitary
                 % Iterate through each qubit in the circuit to determine 
                 % which qubit will be transform by U or will be ignored 
                 % using Identity (I)
-                for iter = 1:registerLength-log2(row)+1
+    % <OLD>           for iter = 1:registerLength-log2(row)+1
+    %                     if ~ismember(iter, actOn)
+    %                         temp{iter} = I;
+    %                         disp('I')
+    %                     else
+    %                         temp{iter} = U;
+    %                         disp('U')
+    %                     end
+    %                 end
+                iter = 1;
+                while iter <= registerLength
                     if ~ismember(iter, actOn)
                         temp{iter} = I;
+                        iter = iter + 1;
                     else
                         temp{iter} = U;
+                        iter = iter + log2(row);
                     end
                 end
+
                 % Tensor product all information gathered above into one 
                 % unitary matrix (U)
+                temp = temp(~cellfun(@isempty, temp));
+                celldisp(temp)
                 U = tensor(temp);
             end
             
