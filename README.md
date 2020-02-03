@@ -58,7 +58,7 @@ A measurement unit can be added to a `Circuit` at a certain point using command
 ```matlab
 circuit.measure(`target_qubit`, `destination_classical_bit`, `basis (optional)`)
 ```
-User need to specify which qubit to be measured and also a classical bit that will hole the measurement result.
+User need to specify which qubit to be measured and also a classical bit that will hold the measurement result.
 Also 3 different axis of measurement can be specified: `x`, `y`, `z`. If no basis specified the `z` axis will be use by default which mean the measurement operator would be |0><0| and |1><1|
 
 ## Contributing
