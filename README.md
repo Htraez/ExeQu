@@ -27,6 +27,8 @@ circuit = Circuit(2, 2);
 %Add some quantum gates
 circuit.h(1); %Add hadamard gate to the first qubit
 circuit.cnot(1, 2); %Add controlled-not gate to with 1st as control and 2nd as target
+circuit.measure(1, 1);
+circuit.measure(2, 2);
 
 circuit.draw(); %Draw circuit structure
 result = circuit.execute(1024); %Simulate circuit (1024 shots)
