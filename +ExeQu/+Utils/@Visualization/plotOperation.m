@@ -1,11 +1,16 @@
 function plotOperation(op)
     import ExeQu.Utils.*;
+    global n_element;
+    
     check = lower(op.label);
     margin_line_x=1;
     disp(check)
+    
+    % Counting number of element in each line
+    n_element(op.associatedQubit) = max(n_element(op.associatedQubit) + 1);
+    pos_x = 3 + max((margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit));
+    
     if check=="x"|| check=="y" || check=="z" || check=="h"
-        n_element=[0 0 0 0 0];
-        pos_x = 3 + (margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit);
         pos_y = -2*(op.associatedQubit(1));
         % pos_x,pos_y is a center of rectangle
         
@@ -19,9 +24,8 @@ function plotOperation(op)
         % create gate
         
     elseif check=="cnot"
-        n_element=[1 1 1 0 0];
+%         n_element=[1 1 1 0 0];
         distance = op.associatedQubit(2)-op.associatedQubit(1);
-        pos_x = 3 + (margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit);
         pos_y = -2*(op.associatedQubit(1));
         % distance is length of cnot-line 
         % pos_x,pos_y is position cnot-line
@@ -53,8 +57,7 @@ function plotOperation(op)
         % debug line missing
         
     elseif check=="cy" || check=="cz" || check=="controlled-u"
-        n_element=[2 2 0 0 0];
-        pos_x = 3 + (margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit);
+%         n_element=[2 2 0 0 0];
         pos_y = -2*(op.associatedQubit(1));
         % pos_x,pos_y is a center of rectangle
         
@@ -90,8 +93,7 @@ function plotOperation(op)
         
     elseif check=="controlled-controlled-y" || check=="controlled-controlled-u" || check=="multiple controlled-u" || check=="multiple controlled-y" || check=="multiple controlled-z"
         L = max(op.associatedQubit)-min(op.associatedQubit);
-        n_element=[4 4 4 4 4];
-        pos_x = 3 + (margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit);
+%         n_element=[4 4 4 4 4];
         pos_y = -2*min(op.associatedQubit);
         % pos_x,pos_y is position line
         
@@ -132,8 +134,7 @@ function plotOperation(op)
         
     elseif check=="toffoli" || check=="multiple control toffoli"
         L = max(op.associatedQubit)-min(op.associatedQubit);
-        n_element=[3 3 3 3 3];
-        pos_x = 3 + (margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit);
+%         n_element=[3 3 3 3 3];
         pos_y = -2*min(op.associatedQubit);
         % pos_x,pos_y is position ccnot-line
         

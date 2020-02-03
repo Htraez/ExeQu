@@ -3,6 +3,7 @@ function figureID = setFigure(varargin)
     if nargin > 0
         flag = varargin{1};
         if strfind(flag, "clear") >= 0
+            clf;
             n_figure = 0;
             return;
         end

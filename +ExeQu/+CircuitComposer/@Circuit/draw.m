@@ -1,6 +1,7 @@
 function draw(self)
     import ExeQu.Utils.*;
-    
+    global n_element
+    n_element = zeros(1, self.quantumRegister.n_qubits);
     %qreg = self.quantumRegister;
     %op= self.operationQueue;
     figure(setFigure());
