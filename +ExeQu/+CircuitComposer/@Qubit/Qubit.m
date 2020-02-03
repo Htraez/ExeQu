@@ -19,7 +19,7 @@ classdef Qubit
             
             % Initialize qubit state followed initState specified by user
             if isa(initState, 'char')
-                switch initState
+                switch lower(initState)
                     case '0'
                         obj.state = ketzero;
                         obj.notation = '|0>';
@@ -32,6 +32,12 @@ classdef Qubit
                     case '-'
                         obj.state = (1/sqrt(2))*(ketzero-ketone);
                         obj.notation = '|->';
+                    case 'r'
+                        obj.state = (1/sqrt(2))*(ketzero+ketone*(1i));
+                        obj.notation = '|R>';
+                    case 'l'
+                        obj.state = (1/sqrt(2))*(ketzero-ketone*(1i));
+                        obj.notation = '|L>';
                     otherwise
                         error('Unknow state supply for qubit initialization')
                 end

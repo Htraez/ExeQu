@@ -16,7 +16,7 @@ classdef Measurement
             if nargin >= 2
                 obj.basis = varargin{1};
             else
-                obj.basis = '01';
+                obj.basis = 'z';
             end
             
             if nargin == 4
@@ -25,7 +25,7 @@ classdef Measurement
             end
             
             switch obj.basis
-                case '01'
+                case 'z'
                     obj.measurementOperators = [];
                     operator.name = '0';
                     operator.value = Qubit('0').getDensity();
@@ -33,13 +33,21 @@ classdef Measurement
                     operator.name = '1';
                     operator.value = Qubit('1').getDensity();
                     obj.measurementOperators = [obj.measurementOperators operator];
-                case '+-'
+                case 'x'
                     obj.measurementOperators = [];
-                    operator.name = '+';
+                    operator.name = '0'; % In X-axis state 0 is |+>
                     operator.value = Qubit('+').getDensity();
                     obj.measurementOperators = [obj.measurementOperators operator];
-                    operator.name = '-';
+                    operator.name = '1';
                     operator.value = Qubit('-').getDensity();
+                    obj.measurementOperators = [obj.measurementOperators operator];
+                case 'y'
+                    obj.measurementOperators = [];
+                    operator.name = '0'; % In Y-axis state 0 is |R>
+                    operator.value = Qubit('R').getDensity();
+                    obj.measurementOperators = [obj.measurementOperators operator];
+                    operator.name = '1'; 
+                    operator.value = Qubit('L').getDensity();
                     obj.measurementOperators = [obj.measurementOperators operator];
                 otherwise
                     throw(MException('Measurement:ParameterError', "Invalid basis"))

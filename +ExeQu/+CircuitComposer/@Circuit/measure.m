@@ -2,7 +2,7 @@ function measure(self, Qtarget, Ctarget, basis)
     import ExeQu.CircuitComposer.*;
     
     if nargin <= 3
-        basis = '01';
+        basis = 'z';
     end
     
     M = Measurement(self.quantumRegister.getSize(), basis, Qtarget, Ctarget);
