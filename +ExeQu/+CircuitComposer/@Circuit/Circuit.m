@@ -8,8 +8,8 @@ classdef Circuit < handle
 %       Circuit Constructor
         function obj = Circuit(qreg_length, creg_length)
             import ExeQu.CircuitComposer.*
-            import ExeQu.Utils.setFigure;
-            setFigure('clear');
+            import ExeQu.Utils.clearFigure;
+            clearFigure();
             obj.quantumRegister = QuantumRegister(qreg_length);
             obj.operationQueue = {};
             obj.classicalBits = qreg_length;
