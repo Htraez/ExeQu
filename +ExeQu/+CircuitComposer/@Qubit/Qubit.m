@@ -9,19 +9,17 @@ classdef Qubit
         notation %initial state notation
     end
     methods (Access = public)
-        function obj = Qubit(initState, index)
+        function obj = Qubit(initState)
             persistent ketzero
             persistent ketone
             
+            % Initial value of |0> and |1>
             ketzero = [1+0i;0+0i];
             ketone = [0+0i;1+0i];
-            if nargin < 2
-                obj.index = 1;
-            else
-                obj.index = index;
-            end
+            
+            % Initialize qubit state followed initState specified by user
             if isa(initState, 'char')
-                switch initState
+                switch lower(initState)
                     case '0'
                         obj.state = ketzero;
                         obj.notation = '|0>';
@@ -34,12 +32,19 @@ classdef Qubit
                     case '-'
                         obj.state = (1/sqrt(2))*(ketzero-ketone);
                         obj.notation = '|->';
+                    case 'r'
+                        obj.state = (1/sqrt(2))*(ketzero+ketone*(1i));
+                        obj.notation = '|R>';
+                    case 'l'
+                        obj.state = (1/sqrt(2))*(ketzero-ketone*(1i));
+                        obj.notation = '|L>';
                     otherwise
                         error('Unknow state supply for qubit initialization')
                 end
             end
         end
         
+        % Other Functions
         state = getState(self) 
         ket = getKet(self)
         bra = getBra(self)
