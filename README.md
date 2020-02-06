@@ -4,14 +4,14 @@
 ExeQu is a `MATLAB` toolbox designed to provide quantum programming enthusiats a tool for creating quantum circuit as well as simulating it result.
 
 ## Installation
-#### 1. Clone Source Code
+#### [OPTION 1.] Clone Source Code
 ExeQu is currently under development. You can clone ExeQu using [remote url](https://github.com/Htraez/ExeQu.git)
 
 ```bash
 git clone https://github.com/Htraez/ExeQu.git
 ```
 
-#### 2. Download MATLAB Toolbox Installer 
+#### [OPTION 2.] Download MATLAB Toolbox Installer 
 
 Alternatively, you could install `ExeQu` into your MATLAB addons path using `.mltbx` file in the release section of this repository. Once installed, you could start import `ExeQu` to your workspace and use it right away. Current release is `0.1.0-alpha`, download [here](https://github.com/Htraez/ExeQu/releases)
 
