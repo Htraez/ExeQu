@@ -13,7 +13,7 @@ git clone https://github.com/Htraez/ExeQu.git
 
 ### Download MATLAB Toolbox Installer 
 
-You could install `ExeQu` into your MATLAB addons path using `.mltbx` file in the release section of this repository. Current release is `_`, download [here](https://github.com/Htraez/ExeQu/releases/tag/untagged-1ece0e76941a2866c102)
+You could install `ExeQu` into your MATLAB addons path using `.mltbx` file in the release section of this repository. Current release is `0.1.0-alpha`, download [here](https://github.com/Htraez/ExeQu/releases)
 
 ## Usage
 
