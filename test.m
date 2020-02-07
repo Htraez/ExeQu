@@ -3,7 +3,7 @@ import ExeQu.CircuitComposer.*
 import ExeQu.Gates.*
 import ExeQu.Utils.*
 
-circuit = Circuit(5, 3);
+circuit = Circuit(3, 3);
 
 circuit.h(1)
 circuit.x(2)
@@ -22,9 +22,10 @@ circuit.measure(1, 1)
 %circuit.ccnot(2, 5, 3)
 U2 = circuit.unitary([0 1; 1 0], 2);
 circuit.add(U2);
+
 circuit.draw();
-%circuit.peekOperations()
-%result = circuit.execute(2000);
-%result;
-%result.getCount();
-%result.plotHistogram();
+% circuit.peekOperations()
+result = circuit.execute(2000);
+result;
+result.getCount();
+result.plotHistogram();
