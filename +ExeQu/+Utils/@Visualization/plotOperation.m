@@ -5,15 +5,9 @@ function plotOperation(op)
     
     check = lower(op.label);
     margin_line_x=1;
-    disp(check)
+    %disp(check)
     
     % Counting number of element in each line
-    pos_x = 3 + ((margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit));
-    pos_y = -2*min(op.associatedQubit);
-       
-    L = max(op.associatedQubit)-min(op.associatedQubit);       
-    yline=[pos_y pos_y-(2*L)];
-    line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
 
     before=(n_element)
     temp = max(n_element(min(op.associatedQubit):max(op.associatedQubit))+1)

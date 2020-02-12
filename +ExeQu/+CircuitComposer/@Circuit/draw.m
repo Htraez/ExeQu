@@ -5,6 +5,9 @@ function draw(self)
     %qreg = self.quantumRegister;
     %op= self.operationQueue;
     setFigure();
+    
+    clf;
+    
     hpanel=uipanel('position',[0 .05 2 .95]);
     hscrollbar=uicontrol('style','slider','units','normalized','position',[0 0 1 .05],'callback',@hscroll_Callback);
     axes('parent',hpanel)
