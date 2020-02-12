@@ -5,37 +5,28 @@ function plotOperation(op)
     
     check = lower(op.label);
     margin_line_x=1;
-%   disp(check)
+    disp(check)
     
     % Counting number of element in each line
-    n_element(op.associatedQubit) = max(n_element(op.associatedQubit) + 1);
-    
     pos_x = 3 + ((margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit));
     pos_y = -2*min(op.associatedQubit);
-
-%    max_value = -999999;
-%    position = 0;
        
     L = max(op.associatedQubit)-min(op.associatedQubit);       
     yline=[pos_y pos_y-(2*L)];
     line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
-    
-%    before=(n_element)
-%    for a = min(op.associatedQubit):1:max(op.associatedQubit)
-%        n_element(a) = max(n_element(a) + 1);
-%        if n_element(a)>max_value
-%            max_value=n_element(a);
-%            position = a;
-%        end
-%    end
-%    
-%    for a = min(op.associatedQubit):1:max(op.associatedQubit)
-%        if n_element(a)<max_value
-%            n_element(a) = n_element(position);
-%        end
-%    end
-%    after=(n_element)
 
+    before=(n_element)
+    temp = max(n_element(min(op.associatedQubit):max(op.associatedQubit))+1)
+    n_element(min(op.associatedQubit):max(op.associatedQubit))=temp
+
+    after=(n_element)
+    
+    pos_x = 3 + ((margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit));
+    pos_y = -2*min(op.associatedQubit);
+    L = max(op.associatedQubit)-min(op.associatedQubit);       
+    yline=[pos_y pos_y-(2*L)];
+    line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
+    
     if check=="x"|| check=="y" || check=="z" || check=="h"
         start_x = pos_x-0.5;
         start_y = pos_y-0.5;
@@ -108,17 +99,26 @@ function plotOperation(op)
         
             end
         end
+    elseif check=="unitary"
+        
+    
     elseif check=="measurement"
     	hold on
         start_x = pos_x-0.5;
         start_y = pos_y-0.5;
         rectangle('Position',[start_x start_y 1 1],'FaceColor',[1 1 1]); 
-        %rectangle('Position',[4.5 2.5 1 1],'FaceColor',[1 1 1]); % box
         xM = [pos_x-0.35 pos_x pos_x+0.35];
         yM = [pos_y pos_y+0.35 pos_y];
         xi = pos_x-0.35 : 0.01 : pos_x+0.35;
         yi = interp1(xM,yM,xi,'spline');
         plot(xi,yi)
+        
+        th = linspace( pi/2, -pi/2, 100);
+        R = 1;
+        x = R*cos(th) +5;
+        y = R*sin(th) +4;
+        plot(x,y);
+        %axis equal;
         
 %        xA = [0.52,0.55];
 %        yA = [0.32,0.36];
