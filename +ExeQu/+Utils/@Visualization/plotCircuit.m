@@ -1,6 +1,5 @@
 function plotCircuit(qreg)
-    import ExeQu.Utils.*;
-    clf;                                                                    % clear figure
+    import ExeQu.Utils.*;                                                                   % clear figure
     %notation_width=2;
     numberOfQubit = qreg.n_qubits;
     %n_element=zeros(1,numberOfQubit);
