@@ -5,9 +5,20 @@ function draw(self)
     %qreg = self.quantumRegister;
     %op= self.operationQueue;
     setFigure();
+    hpanel=uipanel('position',[0 .05 2 .95]);
+    hscrollbar=uicontrol('style','slider','units','normalized','position',[0 0 1 .05],'callback',@hscroll_Callback);
+    axes('parent',hpanel)
+    %axes('parent',hpanel,'outerposition',[.25 0 .5 1])
+    %plot(rand(5))
+    
     Visualization.plotCircuit(self.quantumRegister);
     for operation = self.operationQueue
         %operationQueue is cell array, operation is now {operation struct}
         Visualization.plotOperation(operation{:}); %Use {:} to get the struct inside cell array
+    end
+    
+    %plot_circuit(5)
+    function hscroll_Callback(src,evt)
+        set(hpanel,'position',[-get(src,'value') 0.05 2 .95])
     end
 end
