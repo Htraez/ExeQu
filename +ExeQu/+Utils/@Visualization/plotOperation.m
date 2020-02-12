@@ -12,6 +12,10 @@ function plotOperation(op)
     pos_x = 3 + max((margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit));
     pos_y = -2*min(op.associatedQubit);
     
+    if isfield(op, 'measurementOperation')
+        basisToShow = op.measurementOperation.getBasis();
+    end
+    
     if check=="x"|| check=="y" || check=="z" || check=="h"
         
         start_x = pos_x-0.5;
