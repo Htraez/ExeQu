@@ -1,23 +1,42 @@
 function plotOperation(op)
+    import ExeQu.CircuitComposer.*;
     import ExeQu.Utils.*;
     global n_element;
     
     check = lower(op.label);
     margin_line_x=1;
-    disp(check)
+%   disp(check)
     
     % Counting number of element in each line
-    
     n_element(op.associatedQubit) = max(n_element(op.associatedQubit) + 1);
-    pos_x = 3 + max((margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit));
+    
+    pos_x = 3 + ((margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit));
     pos_y = -2*min(op.associatedQubit);
+
+%    max_value = -999999;
+%    position = 0;
+       
+    L = max(op.associatedQubit)-min(op.associatedQubit);       
+    yline=[pos_y pos_y-(2*L)];
+    line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
     
-    if isfield(op, 'measurementOperation')
-        basisToShow = op.measurementOperation.getBasis();
-    end
-    
+%    before=(n_element)
+%    for a = min(op.associatedQubit):1:max(op.associatedQubit)
+%        n_element(a) = max(n_element(a) + 1);
+%        if n_element(a)>max_value
+%            max_value=n_element(a);
+%            position = a;
+%        end
+%    end
+%    
+%    for a = min(op.associatedQubit):1:max(op.associatedQubit)
+%        if n_element(a)<max_value
+%            n_element(a) = n_element(position);
+%        end
+%    end
+%    after=(n_element)
+
     if check=="x"|| check=="y" || check=="z" || check=="h"
-        
         start_x = pos_x-0.5;
         start_y = pos_y-0.5;
         % start_x,start_y is left-bottom angle of rectangle
@@ -28,12 +47,6 @@ function plotOperation(op)
         % create gate
         
     elseif check=="cy" || check=="cz" || check=="controlled-u" || check=="controlled-controlled-y" || check=="controlled-controlled-u" || check=="multiple controlled-u" || check=="multiple controlled-y" || check=="multiple controlled-z"
-        L = max(op.associatedQubit)-min(op.associatedQubit);
-%         n_element=[4 4 4 4 4];
-        
-        yline=[pos_y pos_y-(2*L)];
-        line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
-        
         start_x = pos_x-0.5;
         % start_x is left-bottom angle of rectangle
         
@@ -67,12 +80,6 @@ function plotOperation(op)
         % debug text
         
     elseif check=="cnot" || check=="toffoli" || check=="multiple control toffoli"
-        L = max(op.associatedQubit)-min(op.associatedQubit);
-%         n_element=[3 3 3 3 3];
-        
-        yline=[pos_y pos_y-(2*L)];
-        line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
-        
         for a = 1:1:length(op.associatedQubit)
             r = 0.15;
             c = [pos_x(1) -(op.associatedQubit(a)*2)];
@@ -101,5 +108,31 @@ function plotOperation(op)
         
             end
         end
+    elseif check=="measurement"
+    	hold on
+        start_x = pos_x-0.5;
+        start_y = pos_y-0.5;
+        rectangle('Position',[start_x start_y 1 1],'FaceColor',[1 1 1]); 
+        %rectangle('Position',[4.5 2.5 1 1],'FaceColor',[1 1 1]); % box
+        xM = [pos_x-0.35 pos_x pos_x+0.35];
+        yM = [pos_y pos_y+0.35 pos_y];
+        xi = pos_x-0.35 : 0.01 : pos_x+0.35;
+        yi = interp1(xM,yM,xi,'spline');
+        plot(xi,yi)
+        
+%        xA = [0.52,0.55];
+%        yA = [0.32,0.36];
+%        annotation('textarrow',xA,yA);
+            
+%        xA = [0.52,0.52];                 
+%        yA = [0.295,0.185];                 %0.15=1 axis
+%        annotation('textarrow',xA,yA);
+    
+        if isfield(op, "measurementOperation")
+            basisToShow = op.measurementOperation.getBasis();
+        end
+        check = basisToShow;
+        text(start_x(1)+0.4,-(2*op.associatedQubit)-0.25,upper(check));
+        hold off
     end
 end
