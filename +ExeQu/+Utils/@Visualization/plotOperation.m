@@ -5,15 +5,13 @@ function plotOperation(op)
     
     check = lower(op.label);
     margin_line_x=1;
-    %disp(check)
-    
+    disp(check)
+
+%    before=(n_element)
+    temp = max(n_element(min(op.associatedQubit):max(op.associatedQubit))+1);
+    n_element(min(op.associatedQubit):max(op.associatedQubit))=temp;
+%    after=(n_element)
     % Counting number of element in each line
-
-    before=(n_element)
-    temp = max(n_element(min(op.associatedQubit):max(op.associatedQubit))+1)
-    n_element(min(op.associatedQubit):max(op.associatedQubit))=temp
-
-    after=(n_element)
     
     pos_x = 3 + ((margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit));
     pos_y = -2*min(op.associatedQubit);
@@ -93,7 +91,7 @@ function plotOperation(op)
         
             end
         end
-    elseif check=="unitary"
+    elseif check=="u"
         
     
     elseif check=="measurement"
@@ -101,16 +99,17 @@ function plotOperation(op)
         start_x = pos_x-0.5;
         start_y = pos_y-0.5;
         rectangle('Position',[start_x start_y 1 1],'FaceColor',[1 1 1]); 
-        xM = [pos_x-0.35 pos_x pos_x+0.35];
-        yM = [pos_y pos_y+0.35 pos_y];
-        xi = pos_x-0.35 : 0.01 : pos_x+0.35;
-        yi = interp1(xM,yM,xi,'spline');
-        plot(xi,yi)
+        
+        %xM = [pos_x-0.35 pos_x pos_x+0.35];
+        %yM = [pos_y pos_y+0.35 pos_y];
+        %xi = pos_x-0.35 : 0.01 : pos_x+0.35;
+        %yi = interp1(xM,yM,xi,'spline');
+        %plot(xi,yi)
         
         th = linspace( pi/2, -pi/2, 100);
-        R = 1;
-        x = R*cos(th) +5;
-        y = R*sin(th) +4;
+        R = 0.35;
+        x = R*sin(th)+pos_x;
+        y = R*cos(th)+pos_y;
         plot(x,y);
         %axis equal;
         
