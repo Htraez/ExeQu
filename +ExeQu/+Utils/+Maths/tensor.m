@@ -1,5 +1,6 @@
 function result = tensor(varargin)
     import ExeQu.Utils.Maths.*
+    varargin;
     if(nargin > 1)
         result = tensor(varargin);
     else

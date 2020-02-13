@@ -10,9 +10,23 @@ classdef RX < ExeQu.Gates.Unitary
         end
     end
     methods 
-        function obj = RX(registerLength, target, theta)
+        function obj = RX(varargin)
+            % obj = RX(theta)
+            % obj = RX(registerLength, target, theta)
             import ExeQu.Utils.Maths.*;
             import ExeQu.Gates.*;
+            
+            % Verify parameter
+            if nargin == 3
+                registerLength = varargin{1};
+                target = varargin{2};
+                theta = varargin{3};
+            elseif nargin == 1
+                registerLength = 1;
+                target = [];
+                theta = varargin{1};
+            end
+            
             operator = RX.getOperator(theta);
             obj = obj@ExeQu.Gates.Unitary(operator, registerLength, target);
             obj.label = 'Rx';
