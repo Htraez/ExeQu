@@ -20,7 +20,7 @@ circuit.x(2)
 circuit.cz(5, 3)
 circuit.cnot(4, 2)
 circuit.cnot(4, 5)
-U = Unitary([0 1, 1 0]);
+U = Unitary([0 1; 1 0]);
 circuit.controlledU(U,[3,4], 5);
 
 circuit.cy(4, 1)

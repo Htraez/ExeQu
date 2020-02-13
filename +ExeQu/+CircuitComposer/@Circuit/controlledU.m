@@ -24,6 +24,11 @@ function controlledU(self, U, ctrls, target)
         if row > 2 || column > 2
             throw(MException('controlledU:ParameterError', "Invalid unitary at 1st argument. Only support 1-qubit gate"))
         end
+    elseif strfind(class(U), 'ExeQu.Gates.Unitary') == 1
+        [row, column] = size(U);
+        if row > 2 || column > 2
+            throw(MException('controlledU:ParameterError', "Invalid unitary at 1st argument. Only support 1-qubit gate"))
+        end
     else
         throw(MException('controlledU:ParameterError', "Invalid unitary at 1st argument."))
     end
