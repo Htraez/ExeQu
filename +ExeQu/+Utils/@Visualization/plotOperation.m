@@ -7,32 +7,35 @@ function plotOperation(op)
     margin_line_x=1;
     disp(check)
 
-%    before=(n_element)
-    temp = max(n_element(min(op.associatedQubit):max(op.associatedQubit))+1);
-    n_element(min(op.associatedQubit):max(op.associatedQubit))=temp;
-%    after=(n_element)
-    % Counting number of element in each line
+    if check=="measurement"
+        temp = max(n_element(min(op.associatedQubit):length(n_element))+1);
+        n_element(min(op.associatedQubit):length(n_element))=temp;
+    else
+        temp = max(n_element(min(op.associatedQubit):max(op.associatedQubit))+1);
+        n_element(min(op.associatedQubit):max(op.associatedQubit))=temp;
+    end
     
+%    temp = max(n_element(min(op.associatedQubit):max(op.associatedQubit))+1);
+%    n_element(min(op.associatedQubit):max(op.associatedQubit))=temp;
+%    Counting number of element in each line
+
     pos_x = 3 + ((margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit));
     pos_y = -2*min(op.associatedQubit);
     L = max(op.associatedQubit)-min(op.associatedQubit);       
-    yline=[pos_y pos_y-(2*L)];
-    line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
+    start_x = pos_x-0.5;
+    start_y = pos_y-0.5;
+    % start_x,start_y is left-bottom angle of rectangle
     
     if check=="x"|| check=="y" || check=="z" || check=="h"
-        start_x = pos_x-0.5;
-        start_y = pos_y-0.5;
-        % start_x,start_y is left-bottom angle of rectangle
-        
+
         rectangle('Position',[start_x start_y 1 1],'FaceColor',[1 1 1]); 
         axis([0 inf -inf 0]);
         text(start_x+0.4,start_y+0.5,upper(check));
         % create gate
         
     elseif check=="cy" || check=="cz" || check=="controlled-u" || check=="controlled-controlled-y" || check=="controlled-controlled-u" || check=="multiple controlled-u" || check=="multiple controlled-y" || check=="multiple controlled-z"
-        start_x = pos_x-0.5;
-        % start_x is left-bottom angle of rectangle
-        
+        yline=[pos_y pos_y-(2*L)];
+        line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
         for a = 1:1:length(op.associatedQubit)
             r = 0.15;
             c = [pos_x(1) -(op.associatedQubit(a)*2)];
@@ -63,6 +66,8 @@ function plotOperation(op)
         % debug text
         
     elseif check=="cnot" || check=="toffoli" || check=="multiple control toffoli"
+        yline=[pos_y pos_y-(2*L)];
+        line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
         for a = 1:1:length(op.associatedQubit)
             r = 0.15;
             c = [pos_x(1) -(op.associatedQubit(a)*2)];
@@ -88,23 +93,34 @@ function plotOperation(op)
                 xline=[pos_x(1)-0.2 pos_x(1)+0.2];
                 line(xline,[-(2*op.associatedQubit(a)) -(2*op.associatedQubit(a))]);
                 % debug line missing
-        
             end
         end
     elseif check=="u"
+        op.associatedQubit
+        if L==0
+            rectangle('Position',[start_x(1) -(2*max(op.associatedQubit))-0.5 1 1],'FaceColor',[1 1 1]);
+        else
+            position_1 = op.associatedQubit(1);
+            position_2 = op.associatedQubit(length(op.associatedQubit));
+            if position_1 < position_2
+                value_1="1";
+                value_2="0";
+            else
+                value_1="0";
+                value_2="1";
+            end
+            rectangle('Position',[start_x(1) -(2*max(op.associatedQubit))-0.5 2 2*(L)+1],'FaceColor',[1 1 1]);
+            text(start_x(1)+0.4,-(2*min(op.associatedQubit)),value_1);
+            text(start_x(1)+0.4,-(2*max(op.associatedQubit)),value_2);
+            text(start_x(1)+1,-(min(op.associatedQubit)+max(op.associatedQubit)),"U");
+        end
+        axis([0 inf -inf 0]);
         
-    
     elseif check=="measurement"
+        yline=[pos_y pos_y-(2*(length(n_element)-op.associatedQubit+1))];
+        line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
     	hold on
-        start_x = pos_x-0.5;
-        start_y = pos_y-0.5;
         rectangle('Position',[start_x start_y 1 1],'FaceColor',[1 1 1]); 
-        
-        %xM = [pos_x-0.35 pos_x pos_x+0.35];
-        %yM = [pos_y pos_y+0.35 pos_y];
-        %xi = pos_x-0.35 : 0.01 : pos_x+0.35;
-        %yi = interp1(xM,yM,xi,'spline');
-        %plot(xi,yi)
         
         th = linspace( pi/2, -pi/2, 100);
         R = 0.35;
