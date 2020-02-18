@@ -6,7 +6,7 @@ function plotOperation(op)
     check = lower(op.label);
     margin_line_x=1;
     disp(check)
-
+    
     if check=="measurement"
         temp = max(n_element(min(op.associatedQubit):length(n_element))+1);
         n_element(min(op.associatedQubit):length(n_element))=temp;
@@ -25,12 +25,13 @@ function plotOperation(op)
     start_x = pos_x-0.5;
     start_y = pos_y-0.5;
     % start_x,start_y is left-bottom angle of rectangle
+    textBox=check;
     
     if check=="x"|| check=="y" || check=="z" || check=="h"
 
         rectangle('Position',[start_x start_y 1 1],'FaceColor',[1 1 1]); 
         axis([0 inf -inf 0]);
-        text(start_x+0.4,start_y+0.5,upper(check));
+        text(start_x+0.4,start_y+0.5,upper(textBox));
         % create gate
         
     elseif check=="cy" || check=="cz" || check=="controlled-u" || check=="controlled-controlled-y" || check=="controlled-controlled-u" || check=="multiple controlled-u" || check=="multiple controlled-y" || check=="multiple controlled-z"
@@ -50,19 +51,19 @@ function plotOperation(op)
                 axis([0 inf -inf 0]);
                 % crate gate
                 if check=="controlled-u" || check=="controlled-controlled-u" || check=="multiple controlled-u"
-                    check="u";
+                    textBox="u";
                 elseif check=="controlled-controlled-y" || check=="multiple controlled-y"
-                    check="y";
+                    textBox="y";
                 elseif check=="multiple controlled-z"
-                    check="z";
+                    textBox="z";
                 elseif check=="cy"
-                    check="y";
+                    textBox="y";
                 elseif check=="cz"
-                    check="z";
+                    textBox="z";
                 end
             end
         end
-        text(start_x(1)+0.4,-(2*op.associatedQubit(a)),upper(check));
+        text(start_x(1)+0.4,-(2*op.associatedQubit(a)),upper(textBox));
         % debug text
         
     elseif check=="cnot" || check=="toffoli" || check=="multiple control toffoli"
@@ -96,9 +97,9 @@ function plotOperation(op)
             end
         end
     elseif check=="u"
-        op.associatedQubit
         if L==0
             rectangle('Position',[start_x(1) -(2*max(op.associatedQubit))-0.5 1 1],'FaceColor',[1 1 1]);
+        % if box size1*1
         else
             position_1 = op.associatedQubit(1);
             position_2 = op.associatedQubit(length(op.associatedQubit));
@@ -143,5 +144,9 @@ function plotOperation(op)
         check = basisToShow;
         text(start_x(1)+0.4,-(2*op.associatedQubit)-0.25,upper(check));
         hold off
+    end
+    if check=="u"
+        temp = max(n_element(min(op.associatedQubit):max(op.associatedQubit))+0.5);
+        n_element(min(op.associatedQubit):max(op.associatedQubit))=temp;
     end
 end
