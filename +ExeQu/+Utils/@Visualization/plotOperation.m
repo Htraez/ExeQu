@@ -5,7 +5,7 @@ function plotOperation(op)
     
     check = lower(op.label);
     margin_line_x=1;
-    disp(check)
+    %disp(check)
     
     if check=="measurement"
         temp = max(n_element(min(op.associatedQubit):length(n_element))+1);
@@ -99,7 +99,8 @@ function plotOperation(op)
     elseif check=="u"
         if L==0
             rectangle('Position',[start_x(1) -(2*max(op.associatedQubit))-0.5 1 1],'FaceColor',[1 1 1]);
-        % if box size1*1
+            text(start_x(1)+0.4,-(min(op.associatedQubit)+max(op.associatedQubit)),"U");
+            % if box size1*1
         else
             position_1 = op.associatedQubit(1);
             position_2 = op.associatedQubit(length(op.associatedQubit));
@@ -129,6 +130,12 @@ function plotOperation(op)
         y = R*cos(th)+pos_y;
         plot(x,y);
         %axis equal;
+        
+        x = [pos_x pos_x+0.35];
+        y = [pos_y pos_y+0.35];
+        line(x,y);
+        
+        % arrow line
         
 %        xA = [0.52,0.55];
 %        yA = [0.32,0.36];
