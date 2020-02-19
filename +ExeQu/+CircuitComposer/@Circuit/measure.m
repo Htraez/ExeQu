@@ -9,5 +9,5 @@ function measure(self, Qtarget, Ctarget, basis)
     operation.measurementOperation = M;
     operation.label = 'Measurement';
     operation.associatedQubit = [Qtarget];
-    self.operationQueue = [self.operationQueue operation];
+    self.add(operation);
 end
