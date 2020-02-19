@@ -29,12 +29,15 @@ classdef Circuit < handle
         controlledU(self, U, ctrls, target)
         cnot(self, ctrl, target);
         ccnot(self, ctrl1, ctrl2, target);
+        cr(self, ctrl, target, theta)
         cy(self, ctrl, target);
         cz(self, ctrl, target);
         mct(self, ctrls, target);
         h(self, target);
         s(self, target);
         t(self, target);
+        sdag(self, target);
+        tdag(self, target);
         rx(self, target, theta);
         ry(self, target, theta);
         rz(self, target, theta);
