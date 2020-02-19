@@ -38,12 +38,16 @@ classdef Transpiler
                         disp('creg'); 
                     elseif strcmp(cmd{1},'OPENQASM') && strcmp(cmd{1},'2.0')
                         disp('OPENQASM');
-                    elseif strcmp(cmd{1},'h')
-                        disp('hadamard');
+                    elseif strcmp(cmd{1},'measure')
+                        disp('measure');
                     elseif strcmp(cmd{1},'cx')
                         disp('cx');
                     elseif strcmp(cmd{1},'include')
                         disp('include');
+                    elseif strcmp(cmd{1},'reset')
+                        disp('reset');
+                    elseif startsWith(cmd{1},'//')
+                        disp('comment');
                     end
                 end
                 correctCmd{k} = allCmd{k};
