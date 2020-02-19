@@ -7,22 +7,36 @@ classdef Measurement
     end
     
     methods
-        function obj = Measurement(registerLength, varargin)
+        function obj = Measurement(varargin)
             %Measurement Construct an instance of this class
             %   Detailed explanation goes here
+            % obj = Measurement(registerLength, basis, actOn, storeOn)
+            % obj = Measurement(basis)
             import ExeQu.CircuitComposer.*;
             import ExeQu.Utils.Maths.*;
-            
-            if nargin >= 2
-                obj.basis = varargin{1};
-            else
-                obj.basis = 'z';
+
+            switch nargin
+                case 1
+                    obj.basis = varargin{1};
+                    registerLength = 1;
+                    obj.actOn = 1;
+                    obj.storeOn = 1;
+                case 4
+                    registerLength = varargin{1};
+                    obj.basis = varargin{2};
+                    obj.actOn = varargin{3};
+                    obj.storeOn = varargin{4};
             end
-            
-            if nargin == 4
-                obj.actOn = varargin{2};
-                obj.storeOn = varargin{3};
-            end
+%             if nargin >= 2
+%                 obj.basis = varargin{1};
+%             else
+%                 obj.basis = 'z';
+%             end
+%             
+%             if nargin == 4
+%                 obj.actOn = varargin{2};
+%                 obj.storeOn = varargin{3};
+%             end
             
             switch obj.basis
                 case 'z'

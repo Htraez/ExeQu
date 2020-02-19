@@ -8,9 +8,11 @@ classdef Unitary
         dimension
     end
     methods 
-        function obj = Unitary(U, registerLength, actOn, varargin)
+        function obj = Unitary(U, varargin)
+            % Unitary(U)
+            % Unitary(U, registerLength, actOn, label)
             import ExeQu.Utils.Maths.*;
-            
+
             % Get number of row and column of the given Unitary Matrix (U)
             [row, column] = size(U);
             
@@ -19,11 +21,22 @@ classdef Unitary
                 throw(MException('Unitary:ParameterError', "1st argument is not a valid unitary matrix"))
             end
             
-            % Specify label
-            if(nargin < 4)
-                label = 'U';
-            else
-                label = varargin{1};
+            % Verify parameters
+            switch nargin
+                case 1
+                    label = 'U';
+                    registerLength = 1;
+                    actOn = [];
+                case 3
+                    label = 'U'; % If not specified label is 'U' by default
+                    registerLength = varargin{1};
+                    actOn = varargin{2};
+                case 4
+                    registerLength = varargin{1};
+                    actOn = varargin{2};
+                    label = varargin{3};
+                otherwise
+                    throw(MException('Unitary:ParameterError', "Invalid number of parameter"))
             end
             
             % Initialize identity matrix
@@ -36,15 +49,7 @@ classdef Unitary
                 % Iterate through each qubit in the circuit to determine 
                 % which qubit will be transform by U or will be ignored 
                 % using Identity (I)
-    % <OLD>           for iter = 1:registerLength-log2(row)+1
-    %                     if ~ismember(iter, actOn)
-    %                         temp{iter} = I;
-    %                         disp('I')
-    %                     else
-    %                         temp{iter} = U;
-    %                         disp('U')
-    %                     end
-    %                 end
+
                 iter = 1;
                 while iter <= registerLength
                     if ~ismember(iter, actOn)
@@ -59,7 +64,6 @@ classdef Unitary
                 % Tensor product all information gathered above into one 
                 % unitary matrix (U)
                 temp = temp(~cellfun(@isempty, temp));
-%                 celldisp(temp)
                 U = tensor(temp);
             end
             

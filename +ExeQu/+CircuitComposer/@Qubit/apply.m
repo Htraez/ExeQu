@@ -1,7 +1,12 @@
 function result = apply(self, operator)
-    if strfind(class(operator), "Measurement") >= 0
-        result = self.getBra() * operator.toMatrice() * self.getKet();
-    elseif strfind(class(operator), "Gates") >= 0
+    if strfind(class(operator), "ExeQu.CircuitComposer.Measurement") == 1
+        result = [];
+        for op = operator.getOperators()
+            temp.state = op.name;
+            temp.probability = self.getBra() * op.value * self.getKet();
+            result = [result temp];
+        end
+    elseif strfind(class(operator), 'ExeQu.Gates') == 1
         result = operator.toMatrice() * self.getKet();
     end
 end

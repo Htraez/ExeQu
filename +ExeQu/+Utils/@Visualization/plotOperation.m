@@ -5,50 +5,38 @@ function plotOperation(op)
     
     check = lower(op.label);
     margin_line_x=1;
-%   disp(check)
+    disp(check)
     
-    % Counting number of element in each line
-    n_element(op.associatedQubit) = max(n_element(op.associatedQubit) + 1);
+    if check=="measurement"
+        temp = max(n_element(min(op.associatedQubit):length(n_element))+1);
+        n_element(min(op.associatedQubit):length(n_element))=temp;
+    else
+        temp = max(n_element(min(op.associatedQubit):max(op.associatedQubit))+1);
+        n_element(min(op.associatedQubit):max(op.associatedQubit))=temp;
+    end
     
+%    temp = max(n_element(min(op.associatedQubit):max(op.associatedQubit))+1);
+%    n_element(min(op.associatedQubit):max(op.associatedQubit))=temp;
+%    Counting number of element in each line
+
     pos_x = 3 + ((margin_line_x*n_element(op.associatedQubit)) + n_element(op.associatedQubit));
     pos_y = -2*min(op.associatedQubit);
-    
-%    max_value = -999999;
-%    position = 0;
-       
     L = max(op.associatedQubit)-min(op.associatedQubit);       
-    yline=[pos_y pos_y-(2*L)];
-    line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
+    start_x = pos_x-0.5;
+    start_y = pos_y-0.5;
+    % start_x,start_y is left-bottom angle of rectangle
+    textBox=check;
     
-%    before=(n_element)
-%    for a = min(op.associatedQubit):1:max(op.associatedQubit)
-%        n_element(a) = max(n_element(a) + 1);
-%        if n_element(a)>max_value
-%            max_value=n_element(a);
-%            position = a;
-%        end
-%    end
-%    
-%    for a = min(op.associatedQubit):1:max(op.associatedQubit)
-%        if n_element(a)<max_value
-%            n_element(a) = n_element(position);
-%        end
-%    end
-%    after=(n_element)
     if check=="x"|| check=="y" || check=="z" || check=="h"
-        start_x = pos_x-0.5;
-        start_y = pos_y-0.5;
-        % start_x,start_y is left-bottom angle of rectangle
-        
+
         rectangle('Position',[start_x start_y 1 1],'FaceColor',[1 1 1]); 
         axis([0 inf -inf 0]);
-        text(start_x+0.4,start_y+0.5,upper(check));
+        text(start_x+0.4,start_y+0.5,upper(textBox));
         % create gate
         
     elseif check=="cy" || check=="cz" || check=="controlled-u" || check=="controlled-controlled-y" || check=="controlled-controlled-u" || check=="multiple controlled-u" || check=="multiple controlled-y" || check=="multiple controlled-z"
-        start_x = pos_x-0.5;
-        % start_x is left-bottom angle of rectangle
-        
+        yline=[pos_y pos_y-(2*L)];
+        line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
         for a = 1:1:length(op.associatedQubit)
             r = 0.15;
             c = [pos_x(1) -(op.associatedQubit(a)*2)];
@@ -63,22 +51,24 @@ function plotOperation(op)
                 axis([0 inf -inf 0]);
                 % crate gate
                 if check=="controlled-u" || check=="controlled-controlled-u" || check=="multiple controlled-u"
-                    check="u";
+                    textBox="u";
                 elseif check=="controlled-controlled-y" || check=="multiple controlled-y"
-                    check="y";
+                    textBox="y";
                 elseif check=="multiple controlled-z"
-                    check="z";
+                    textBox="z";
                 elseif check=="cy"
-                    check="y";
+                    textBox="y";
                 elseif check=="cz"
-                    check="z";
+                    textBox="z";
                 end
             end
         end
-        text(start_x(1)+0.4,-(2*op.associatedQubit(a)),upper(check));
+        text(start_x(1)+0.4,-(2*op.associatedQubit(a)),upper(textBox));
         % debug text
         
     elseif check=="cnot" || check=="toffoli" || check=="multiple control toffoli"
+        yline=[pos_y pos_y-(2*L)];
+        line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
         for a = 1:1:length(op.associatedQubit)
             r = 0.15;
             c = [pos_x(1) -(op.associatedQubit(a)*2)];
@@ -104,20 +94,41 @@ function plotOperation(op)
                 xline=[pos_x(1)-0.2 pos_x(1)+0.2];
                 line(xline,[-(2*op.associatedQubit(a)) -(2*op.associatedQubit(a))]);
                 % debug line missing
-        
             end
         end
+    elseif check=="u"
+        if L==0
+            rectangle('Position',[start_x(1) -(2*max(op.associatedQubit))-0.5 1 1],'FaceColor',[1 1 1]);
+        % if box size1*1
+        else
+            position_1 = op.associatedQubit(1);
+            position_2 = op.associatedQubit(length(op.associatedQubit));
+            if position_1 < position_2
+                value_1="1";
+                value_2="0";
+            else
+                value_1="0";
+                value_2="1";
+            end
+            rectangle('Position',[start_x(1) -(2*max(op.associatedQubit))-0.5 2 2*(L)+1],'FaceColor',[1 1 1]);
+            text(start_x(1)+0.4,-(2*min(op.associatedQubit)),value_1);
+            text(start_x(1)+0.4,-(2*max(op.associatedQubit)),value_2);
+            text(start_x(1)+1,-(min(op.associatedQubit)+max(op.associatedQubit)),"U");
+        end
+        axis([0 inf -inf 0]);
+        
     elseif check=="measurement"
+        yline=[pos_y pos_y-(2*(length(n_element)-op.associatedQubit+1))];
+        line([pos_x(1) pos_x(1)],yline);                        %//edit pos_x(1-2)
     	hold on
-        start_x = pos_x-0.5;
-        start_y = pos_y-0.5;
         rectangle('Position',[start_x start_y 1 1],'FaceColor',[1 1 1]); 
-        %rectangle('Position',[4.5 2.5 1 1],'FaceColor',[1 1 1]); % box
-        xM = [pos_x-0.35 pos_x pos_x+0.35];
-        yM = [pos_y pos_y+0.35 pos_y];
-        xi = pos_x-0.35 : 0.01 : pos_x+0.35;
-        yi = interp1(xM,yM,xi,'spline');
-        plot(xi,yi)
+        
+        th = linspace( pi/2, -pi/2, 100);
+        R = 0.35;
+        x = R*sin(th)+pos_x;
+        y = R*cos(th)+pos_y;
+        plot(x,y);
+        %axis equal;
         
 %        xA = [0.52,0.55];
 %        yA = [0.32,0.36];
@@ -133,5 +144,9 @@ function plotOperation(op)
         check = basisToShow;
         text(start_x(1)+0.4,-(2*op.associatedQubit)-0.25,upper(check));
         hold off
+    end
+    if check=="u"
+        temp = max(n_element(min(op.associatedQubit):max(op.associatedQubit))+0.5);
+        n_element(min(op.associatedQubit):max(op.associatedQubit))=temp;
     end
 end
