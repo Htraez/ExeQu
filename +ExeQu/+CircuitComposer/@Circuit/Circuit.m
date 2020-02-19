@@ -2,7 +2,11 @@ classdef Circuit < handle
     properties (Access = public)
         quantumRegister
         operationQueue
-        classicalBits
+        classicalBits    
+    end
+    properties (Access = private)
+        n_element
+        maxLength
     end
     methods
 %       Circuit Constructor
@@ -13,6 +17,7 @@ classdef Circuit < handle
             obj.quantumRegister = QuantumRegister(qreg_length);
             obj.operationQueue = {};
             obj.classicalBits = qreg_length;
+            obj.n_element = zeros(1, obj.quantumRegister.getSize());
             if nargin > 1
                 obj.classicalBits = creg_length;
             end
@@ -66,5 +71,6 @@ classdef Circuit < handle
 %       Miscellaneous:
 %           Other useful functions
         peekOperations(self);
+        getMaxLength(self);
     end
 end

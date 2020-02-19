@@ -23,7 +23,8 @@ circuit.measure(3, 3)
 %circuit.ccnot(2, 5, 3)
 circuit.unitary([0 1; 1 0], 2);
 circuit.draw();
-circuit.peekOperations()
+circuit.getMaxLength()
+%circuit.peekOperations()
 %result = circuit.execute(2000);
 %result;
 %result.getCount();
