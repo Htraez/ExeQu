@@ -4,7 +4,7 @@ classdef Visualization < handle
     
     methods (Static)
 %       Plot Functions:
-        plotCircuit(qreg);
+        plotCircuit(qreg,maxLength);
         plotOperation(op);
     end
 end

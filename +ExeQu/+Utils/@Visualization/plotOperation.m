@@ -5,7 +5,7 @@ function plotOperation(op)
     
     check = lower(op.label);
     margin_line_x=1;
-    disp(check)
+    %disp(check)
     
     if check=="measurement"
         temp = max(n_element(min(op.associatedQubit):length(n_element))+1);
@@ -26,11 +26,11 @@ function plotOperation(op)
     start_y = pos_y-0.5;
     % start_x,start_y is left-bottom angle of rectangle
     textBox=check;
+    %axis([0 inf -inf 0]);
     
-    if check=="x"|| check=="y" || check=="z" || check=="h"
-
+    if check=="x"|| check=="y" || check=="z" || check=="h" || check=="s" || check=="t" || check=="rx" || check=="ry" || check=="rz" || check=="s^†" || check=="d^†"
+        
         rectangle('Position',[start_x start_y 1 1],'FaceColor',[1 1 1]); 
-        axis([0 inf -inf 0]);
         text(start_x+0.4,start_y+0.5,upper(textBox));
         % create gate
         
@@ -99,7 +99,8 @@ function plotOperation(op)
     elseif check=="u"
         if L==0
             rectangle('Position',[start_x(1) -(2*max(op.associatedQubit))-0.5 1 1],'FaceColor',[1 1 1]);
-        % if box size1*1
+            text(start_x(1)+0.4,-(min(op.associatedQubit)+max(op.associatedQubit)),"U");
+            % if box size1*1
         else
             position_1 = op.associatedQubit(1);
             position_2 = op.associatedQubit(length(op.associatedQubit));
@@ -115,7 +116,6 @@ function plotOperation(op)
             text(start_x(1)+0.4,-(2*max(op.associatedQubit)),value_2);
             text(start_x(1)+1,-(min(op.associatedQubit)+max(op.associatedQubit)),"U");
         end
-        axis([0 inf -inf 0]);
         
     elseif check=="measurement"
         yline=[pos_y pos_y-(2*(length(n_element)-op.associatedQubit+1))];
@@ -129,6 +129,12 @@ function plotOperation(op)
         y = R*cos(th)+pos_y;
         plot(x,y);
         %axis equal;
+        
+        x = [pos_x pos_x+0.35];
+        y = [pos_y pos_y+0.35];
+        line(x,y);
+        
+        % arrow line
         
 %        xA = [0.52,0.55];
 %        yA = [0.32,0.36];

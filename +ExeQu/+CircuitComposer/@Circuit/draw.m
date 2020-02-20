@@ -38,8 +38,8 @@ function draw(self)
 %    hpanel=uipanel('position',[0 0 1 1]);
 %    hscrollbar=uicontrol('style','slider','units','normalized','position',[0 0 1 .05],'callback',@hscroll_Callback);
 %    axes('parent',hpanel)
-
-    Visualization.plotCircuit(self.quantumRegister);
+    
+    Visualization.plotCircuit(self.quantumRegister,self.maxLength);
     for operation = self.operationQueue
         %operationQueue is cell array, operation is now {operation struct}
         Visualization.plotOperation(operation{:}); %Use {:} to get the struct inside cell array
