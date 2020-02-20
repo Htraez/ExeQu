@@ -4,6 +4,10 @@ classdef Circuit < handle
         operationQueue
         classicalBits
     end
+    properties (Access = private)
+        n_element
+        maxLength
+    end
     methods
 %       Circuit Constructor
         function obj = Circuit(qreg_length, creg_length)
@@ -13,6 +17,7 @@ classdef Circuit < handle
             obj.quantumRegister = QuantumRegister(qreg_length);
             obj.operationQueue = {};
             obj.classicalBits = qreg_length;
+            obj.n_element = zeros(1, obj.quantumRegister.getSize());
             if nargin > 1
                 obj.classicalBits = creg_length;
             end
@@ -29,12 +34,15 @@ classdef Circuit < handle
         controlledU(self, U, ctrls, target)
         cnot(self, ctrl, target);
         ccnot(self, ctrl1, ctrl2, target);
+        cr(self, ctrl, target, theta)
         cy(self, ctrl, target);
         cz(self, ctrl, target);
         mct(self, ctrls, target);
         h(self, target);
         s(self, target);
         t(self, target);
+        sdag(self, target);
+        tdag(self, target);
         rx(self, target, theta);
         ry(self, target, theta);
         rz(self, target, theta);
@@ -63,5 +71,6 @@ classdef Circuit < handle
 %       Miscellaneous:
 %           Other useful functions
         peekOperations(self);
+        getMaxLength(self);
     end
 end

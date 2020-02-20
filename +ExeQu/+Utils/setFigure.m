@@ -1,4 +1,4 @@
-function setFigure() 
+function n = setFigure() 
     global n_figure
     
     if isempty(n_figure)
@@ -7,4 +7,5 @@ function setFigure()
         n_figure = n_figure + 1;
     end     
     figure(n_figure);
+    n = n_figure;
 end

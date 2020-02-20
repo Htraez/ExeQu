@@ -1,4 +1,6 @@
 % Test Gates Class
+current_prj_path = fullfile(pwd, '..');
+addpath(current_prj_path)
 import ExeQu.*;
 
 % preconditions
