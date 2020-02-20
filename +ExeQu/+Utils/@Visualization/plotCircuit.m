@@ -13,5 +13,6 @@ function plotCircuit(qreg)
         text(1,-2*i,quantumName);
         text(1,-2*numberOfQubit-2,'c');
     end
+    
     daspect([1 1 1]);
 end
