@@ -26,11 +26,11 @@ function plotOperation(op)
     start_y = pos_y-0.5;
     % start_x,start_y is left-bottom angle of rectangle
     textBox=check;
+    %axis([0 inf -inf 0]);
     
-    if check=="x"|| check=="y" || check=="z" || check=="h"
-
+    if check=="x"|| check=="y" || check=="z" || check=="h" || check=="s" || check=="t" || check=="rx" || check=="ry" || check=="rz" || check=="s^†" || check=="d^†"
+        
         rectangle('Position',[start_x start_y 1 1],'FaceColor',[1 1 1]); 
-        axis([0 inf -inf 0]);
         text(start_x+0.4,start_y+0.5,upper(textBox));
         % create gate
         
@@ -116,7 +116,6 @@ function plotOperation(op)
             text(start_x(1)+0.4,-(2*max(op.associatedQubit)),value_2);
             text(start_x(1)+1,-(min(op.associatedQubit)+max(op.associatedQubit)),"U");
         end
-        axis([0 inf -inf 0]);
         
     elseif check=="measurement"
         yline=[pos_y pos_y-(2*(length(n_element)-op.associatedQubit+1))];

@@ -2,7 +2,7 @@ classdef Circuit < handle
     properties (Access = public)
         quantumRegister
         operationQueue
-        classicalBits    
+        classicalBits
     end
     properties (Access = private)
         n_element

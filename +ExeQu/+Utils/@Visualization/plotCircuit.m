@@ -1,13 +1,11 @@
-function plotCircuit(qreg)
+function plotCircuit(qreg,maxLength)
+    import ExeQu.CircuitComposer.*;
     import ExeQu.Utils.*;
-    %notation_width=2;
     numberOfQubit = qreg.n_qubits;
     %n_element=zeros(1,numberOfQubit);
-    xline=[2 20];
-%    xline=[2 2*];
-    numStateToShow = qreg.getState()
-    %qreg.getSize()
-    %length(qreg.Operation)
+    
+    xline=[2 2.25*maxLength];
+    % set(gca,'visible','off')              %hide axis
     for i= 1:numberOfQubit                                                  % loop figure
         line(xline,[-2*i -2*i]);
         line(xline,[-(2+2*numberOfQubit) -(2+2*numberOfQubit)]);

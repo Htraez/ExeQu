@@ -3,7 +3,7 @@ import ExeQu.CircuitComposer.*;
 
 circuit = Circuit(5, 3);
 
-for i = 1:100
+for i = 1:1
     circuit.h(1)
 end
 circuit.x(2)
