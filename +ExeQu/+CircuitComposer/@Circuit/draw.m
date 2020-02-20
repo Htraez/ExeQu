@@ -8,17 +8,19 @@ function draw(self)
     
     clf;
     
+    scaleInterval = 50;
     panelA=uipanel('Parent', n);
     set(panelA,'Position',[0 0 0.95 1]);
-
+   
     set(gca,'Parent',panelA);
+    
     %set(gca,'ActivePositionProperty','position');
     
     % (start width, start height, zoom width, zoom height)
     
     vScroll = uicontrol('Style','Slider','Parent',1,...
       'Units','normalized','Position',[0.95 0 0.05 1],...
-      'Value',0.5,'Callback',{@slider_callback1,gca});
+      'Value',0,'Callback',{@slider_callback1,gca});
 
     hScroll = uicontrol('Style','Slider','Parent',1,...
       'Units','normalized','Position',[0 0.95 1 0.05],...
@@ -44,8 +46,8 @@ function draw(self)
     end
     
     
-    gcaSize = get(gca, 'Position')
-    set(gca, 'Position', [0 0 gcaSize(3) gcaSize(4)])
+    xl = get(gca, 'Xlim');
+    set(gca, 'Xlim', [xl(1) xl(1)+scaleInterval])
     %InSet = get(gca, 'TightInset');
     %set(gca, 'Position', [InSet(1:2), 1-InSet(1)-InSet(3), 1-InSet(2)-InSet(4)]);
     %plot_circuit(5)
@@ -56,37 +58,46 @@ function draw(self)
         set(arg1,'Position',pos)
     end
     function slider_callback2(src, eventdata, arg1)
-        val = get(src,'Value');
+        old_xlim = get(gca,'Xlim')
+        old_ylim = get(gca,'Ylim')
+        val = get(src,'Value')
         pos = get(arg1,'Position');
         pos(1) = -val;
-        set(arg1,'Position',pos)
+        set(arg1,'Xlim',old_xlim-val)
     end
 
     function zoomIn_callback(src, event, target, vscroll, hscroll)
-        get(axes)
-        magnitude = 2;
-        vVal = get(vscroll, 'Value')
-        hVal = get(hscroll, 'Value')
-        pos = get(target, 'Position')
-        
-        pos = [pos(1) pos(2) pos(3)*magnitude pos(4)*magnitude];
-        set(target, 'Position', pos);
-        get(gca, 'OuterPosition')
+        old_xlim = get(gca,'Xlim')
+        old_ylim = get(gca,'Ylim')
+        [old_xlim(1) old_xlim(2)/2]
+        set(gca, 'Xlim', [old_xlim(1) old_xlim(2)/2])
+%         get(axes)
+%         magnitude = 2;
+%         vVal = get(vscroll, 'Value')
+%         hVal = get(hscroll, 'Value')
+%         pos = get(target, 'Position')
+%         
+%         pos = [pos(1) 0 pos(3)*magnitude pos(4)*magnitude];
+%         set(target, 'Position', pos);
+%         get(gca, 'OuterPosition')
     end
     
     function zoomOut_callback(src, event, target, vscroll, hscroll)
-        magnitude = 2;
-        vVal = get(vscroll, 'Value');
-        hVal = get(hscroll, 'Value');
-        pos = get(target, 'Position')
-        pos = [pos(1) pos(2) pos(3)/magnitude pos(4)/magnitude];
-        if pos(3) <= 0
-            pos(3) = 0;
-        end
-        if pos(4) <= 0
-            pos(4) = 0;
-        end
-        set(target, 'Position', pos);
-        get(gca, 'OuterPosition')
+        old_xlim = get(gca,'Xlim');
+        old_ylim = get(gca,'Ylim');
+        set(gca, 'Xlim', [old_xlim(1) old_xlim(2)*2])
+%         magnitude = 2;
+%         vVal = get(vscroll, 'Value');
+%         hVal = get(hscroll, 'Value');
+%         pos = get(target, 'Position')
+%         pos = [pos(1) 0 pos(3)/magnitude pos(4)/magnitude];
+%         if pos(3) <= 0
+%             pos(3) = 0;
+%         end
+%         if pos(4) <= 0
+%             pos(4) = 0;
+%         end
+%         set(target, 'Position', pos);
+%         get(gca, 'OuterPosition')
     end
 end
