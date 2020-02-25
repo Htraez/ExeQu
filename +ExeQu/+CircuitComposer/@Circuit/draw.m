@@ -16,14 +16,14 @@ function draw(self)
     %set(gca,'ActivePositionProperty','position');
     
     % (start width, start height, zoom width, zoom height)
-    
+
     vScroll = uicontrol('Style','Slider','Parent',1,...
       'Units','normalized','Position',[0.95 0 0.05 1],...
-      'Value',0,'Callback',{@slider_callback1,gca, self.quantumRegister, Y_scaleInterval});
+      'Value',0,'Callback',{@slider_callback1,gca, -2*self.quantumRegister.n_qubits-2.5, Y_scaleInterval});
 
     hScroll = uicontrol('Style','Slider','Parent',1,...
       'Units','normalized','Position',[0 0.95 1 0.05],...
-      'Value',0,'Callback',{@slider_callback2,gca,2.25*self.maxLength,X_scaleInterval});
+      'Value',0,'Callback',{@slider_callback2,gca, 2.25*self.maxLength, X_scaleInterval});
     zoomInBtn = uicontrol('Style','pushbutton','Parent',1,...
       'Units','normalized','Position',[0 0 0.1 0.05], ...
       'String','Zoom In','Callback',{@zoomIn_callback,gca,vScroll,hScroll});
@@ -56,12 +56,13 @@ function draw(self)
         %pos = get(arg1,'Position')
         %pos(2) = -val;
         %set(arg1,'Position',pos)
+    
         start=maxHeigth-(round(val*maxHeigth));
-        %if round(val*maxLength)>=maxLength-X_scaleInterval
-        %    set(arg1,'Ylim',[maxHeigth-X_scaleInterval maxLength])
-        %else
+        if maxHeigth+20 >= 0
+        	set(arg1,'Ylim',[maxHeigth 0])
+        else
             set(arg1,'Ylim',[start start+Y_scaleInterval])
-        %end
+        end
     end
     function slider_callback2(src, eventdata, arg1, maxLength, X_scaleInterval)
         
