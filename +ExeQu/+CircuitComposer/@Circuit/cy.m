@@ -1,7 +1,7 @@
 function cy(self, ctrl, target)
     import ExeQu.Gates.*;
     
-    Y = PauliY(1, 1);
+    Y = PauliY();
     CY = ControlledUnitary(Y, self.quantumRegister.getSize(), [ctrl], target);
     
     operation.unitaryOperation = CY;

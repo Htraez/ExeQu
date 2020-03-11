@@ -1,7 +1,7 @@
 function cz(self, ctrl, target)
     import ExeQu.Gates.*;
     
-    Z = PauliZ(1, 1);
+    Z = PauliZ();
     CZ = ControlledUnitary(Z, self.quantumRegister.getSize(), [ctrl], target);
     
     operation.unitaryOperation = CZ;

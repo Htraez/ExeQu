@@ -98,6 +98,50 @@ act = Gates.RY(2, 2, theta3).toMatrice();
 exp = tensor(I, exp_ry(theta3));
 assert(isequal(act, exp))
 
+%% Gate: Independent RZ
+act = Gates.RZ(theta1).toMatrice();
+exp = exp_rz(theta1);
+assert(isequal(act, exp))
+act = Gates.RZ(theta2).toMatrice();
+exp = exp_rz(theta2);
+assert(isequal(act, exp))
+act = Gates.RZ(theta3).toMatrice();
+exp = exp_rz(theta3);
+assert(isequal(act, exp))
+
+%% Gate: RZ in 1bit Circuit
+act = Gates.RZ(1, 1, theta1).toMatrice();
+exp = exp_rz(theta1);
+assert(isequal(act, exp))
+act = Gates.RZ(1, 1, theta2).toMatrice();
+exp = exp_rz(theta2);
+assert(isequal(act, exp))
+act = Gates.RZ(1, 1, theta3).toMatrice();
+exp = exp_rz(theta3);
+assert(isequal(act, exp))
+
+%% Gate: RY in 2bit Circuit
+act = Gates.RZ(2, 1, theta1).toMatrice();
+exp = tensor(exp_rz(theta1), I);
+assert(isequal(act, exp))
+act = Gates.RZ(2, 1, theta2).toMatrice();
+exp = tensor(exp_rz(theta2), I);
+assert(isequal(act, exp))
+act = Gates.RZ(2, 1, theta3).toMatrice();
+exp = tensor(exp_rz(theta3), I);
+assert(isequal(act, exp))
+
+%% Gate: RY in 2bit Circuit (Omit 1st bit)
+act = Gates.RZ(2, 2, theta1).toMatrice();
+exp = tensor(I, exp_rz(theta1));
+assert(isequal(act, exp))
+act = Gates.RZ(2, 2, theta2).toMatrice();
+exp = tensor(I, exp_rz(theta2));
+assert(isequal(act, exp))
+act = Gates.RZ(2, 2, theta3).toMatrice();
+exp = tensor(I, exp_rz(theta3));
+assert(isequal(act, exp))
+
 % Function definitions
 function test_rx = exp_rx(theta)
     test_rx = [cos(theta/2) -1i*sin(theta/2); -1i*sin(theta/2) cos(theta/2)];
