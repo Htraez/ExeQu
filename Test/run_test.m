@@ -1,2 +1,2 @@
-result = runtests('test1.m');
+result = runtests('unitary_test.m');
 rt = table(result)
