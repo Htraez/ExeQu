@@ -14,8 +14,8 @@ classdef Qubit
             persistent ketone
             
             % Initial value of |0> and |1>
-            ketzero = [1+0i;0+0i];
-            ketone = [0+0i;1+0i];
+            ketzero = sparse([1+0i;0+0i]);
+            ketone = sparse([0+0i;1+0i]);
             
             % Initialize qubit state followed initState specified by user
             if isa(initState, 'char')

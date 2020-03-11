@@ -41,7 +41,8 @@ classdef Unitary
             
             % Initialize identity matrix
             persistent I
-            I = eye(2);
+            I = sparse(eye(2));
+            U = sparse(U);
             
             % Contruct unitary matrix for the whole system
             if row < 2^registerLength
@@ -64,7 +65,9 @@ classdef Unitary
                 % Tensor product all information gathered above into one 
                 % unitary matrix (U)
                 temp = temp(~cellfun(@isempty, temp));
+%                 tic
                 U = tensor(temp);
+%                 U_tensor_time = toc
             end
             
             % Set object attributes
