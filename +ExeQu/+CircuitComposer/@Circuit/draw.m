@@ -20,7 +20,7 @@ function draw(self)
     
     vScroll = uicontrol('Style','Slider','Parent',1,...
       'Units','normalized','Position',[0.95 0 0.05 1],...
-      'Value',0,'Callback',{@slider_callback1,gca});
+      'Value',1,'Callback',{@slider_callback1,gca});
 
     hScroll = uicontrol('Style','Slider','Parent',1,...
       'Units','normalized','Position',[0 0.95 1 0.05],...
@@ -47,6 +47,7 @@ function draw(self)
     
     
     xl = get(gca, 'Xlim');
+    set(gca, 'Position', [0 0 1 1])
     set(gca, 'Xlim', [xl(1) xl(1)+scaleInterval])
     %InSet = get(gca, 'TightInset');
     %set(gca, 'Position', [InSet(1:2), 1-InSet(1)-InSet(3), 1-InSet(2)-InSet(4)]);

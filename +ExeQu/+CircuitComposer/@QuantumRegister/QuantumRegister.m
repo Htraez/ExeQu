@@ -31,14 +31,17 @@ classdef QuantumRegister < handle
             
             % Calculate whole register state through Kronnecker product of
             % each qubit state
+            tic
             for iter = 1:obj.n_qubits
                 if isempty(obj.state)
                     obj.state = 1;
                 end
                 % Store calculation result as reguster's state
                 obj.state = kron(obj.state, qubits(iter).getState());
+                
+                % After this loop obj.state should be sparse
             end
-            
+            qreg_build_time = toc
             obj.notation = obj.notation + ">";
         end
         
