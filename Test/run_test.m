@@ -1,3 +1,4 @@
+% Run all test cases
 result = runtests('unitary_test.m');
 rt = table(result)
 result = runtests('hadamard_test.m');
