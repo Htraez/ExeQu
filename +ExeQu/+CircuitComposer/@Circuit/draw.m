@@ -7,24 +7,23 @@ function draw(self)
     n = setFigure();
     
     clf;
-    
-    scaleInterval = 50;
+    X_scaleInterval = 25;
+    Y_scaleInterval = 20;
     panelA=uipanel('Parent', n);
     set(panelA,'Position',[0 0 0.95 1]);
-   
+
     set(gca,'Parent',panelA);
-    
     %set(gca,'ActivePositionProperty','position');
     
     % (start width, start height, zoom width, zoom height)
     
     vScroll = uicontrol('Style','Slider','Parent',1,...
       'Units','normalized','Position',[0.95 0 0.05 1],...
-      'Value',1,'Callback',{@slider_callback1,gca});
+      'Value',0,'Callback',{@slider_callback1,gca, self.quantumRegister, Y_scaleInterval});
 
     hScroll = uicontrol('Style','Slider','Parent',1,...
       'Units','normalized','Position',[0 0.95 1 0.05],...
-      'Value',0,'Callback',{@slider_callback2,gca});
+      'Value',0,'Callback',{@slider_callback2,gca,2.25*self.maxLength,X_scaleInterval});
     zoomInBtn = uicontrol('Style','pushbutton','Parent',1,...
       'Units','normalized','Position',[0 0 0.1 0.05], ...
       'String','Zoom In','Callback',{@zoomIn_callback,gca,vScroll,hScroll});
@@ -45,33 +44,47 @@ function draw(self)
         Visualization.plotOperation(operation{:}); %Use {:} to get the struct inside cell array
     end
     
-    
     xl = get(gca, 'Xlim');
-    set(gca, 'Position', [0 0 1 1])
-    set(gca, 'Xlim', [xl(1) xl(1)+scaleInterval])
+    set(gca, 'Xlim', [xl(1) xl(1)+X_scaleInterval])
+    yl = get(gca, 'Ylim');
+    set(gca, 'Ylim', [yl(2)-Y_scaleInterval yl(2)])
     %InSet = get(gca, 'TightInset');
     %set(gca, 'Position', [InSet(1:2), 1-InSet(1)-InSet(3), 1-InSet(2)-InSet(4)]);
     %plot_circuit(5)
-    function slider_callback1(src, eventdata, arg1)
+    function slider_callback1(src, eventdata, arg1, maxHeigth, Y_scaleInterval)
         val = get(src,'Value');
-        pos = get(arg1,'Position');
-        pos(2) = -val;
-        set(arg1,'Position',pos)
+        %pos = get(arg1,'Position')
+        %pos(2) = -val;
+        %set(arg1,'Position',pos)
+        start=maxHeigth-(round(val*maxHeigth));
+        %if round(val*maxLength)>=maxLength-X_scaleInterval
+        %    set(arg1,'Ylim',[maxHeigth-X_scaleInterval maxLength])
+        %else
+            set(arg1,'Ylim',[start start+Y_scaleInterval])
+        %end
     end
-    function slider_callback2(src, eventdata, arg1)
-        old_xlim = get(gca,'Xlim')
-        old_ylim = get(gca,'Ylim')
-        val = get(src,'Value')
-        pos = get(arg1,'Position');
-        pos(1) = -val;
-        set(arg1,'Xlim',old_xlim-val)
+    function slider_callback2(src, eventdata, arg1, maxLength, X_scaleInterval)
+        
+        %old_xlim = get(gca,'Xlim')
+        %old_ylim = get(gca,'Ylim')
+        val = get(src,'Value');
+        %pos = get(arg1,'Position')
+        %pos(1) = -val
+        %set(arg1,'Xlim',old_xlim-val)
+        start=round(val*maxLength);
+        if round(val*maxLength)>=maxLength-X_scaleInterval
+            set(arg1,'Xlim',[maxLength-X_scaleInterval maxLength])
+        else
+            set(arg1,'Xlim',[start start+X_scaleInterval])
+        end
     end
-
     function zoomIn_callback(src, event, target, vscroll, hscroll)
         old_xlim = get(gca,'Xlim')
         old_ylim = get(gca,'Ylim')
         [old_xlim(1) old_xlim(2)/2]
-        set(gca, 'Xlim', [old_xlim(1) old_xlim(2)/2])
+        [old_ylim(1)/2 old_ylim(2)]
+        set(gca, 'Xlim', [old_xlim(1) old_xlim(2)/2]);
+        set(gca, 'Ylim', [old_ylim(1)/2 old_ylim(2)]);      
 %         get(axes)
 %         magnitude = 2;
 %         vVal = get(vscroll, 'Value')
@@ -86,7 +99,9 @@ function draw(self)
     function zoomOut_callback(src, event, target, vscroll, hscroll)
         old_xlim = get(gca,'Xlim');
         old_ylim = get(gca,'Ylim');
-        set(gca, 'Xlim', [old_xlim(1) old_xlim(2)*2])
+        set(gca, 'Xlim', [old_xlim(1) old_xlim(2)*2]);
+        set(gca, 'Ylim', [old_ylim(1)*2 old_ylim(2)]);
+        %set(gca, 'Ylim', [old_ylim])
 %         magnitude = 2;
 %         vVal = get(vscroll, 'Value');
 %         hVal = get(hscroll, 'Value');
