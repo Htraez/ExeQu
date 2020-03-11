@@ -5,7 +5,7 @@ function result = tensor(varargin)
         result = tensor(varargin);
     else
         matrices = varargin{1};
-        result = matrices{1}
+        result = matrices{1};
         for iter = 2:length(matrices)
             matrix = matrices{iter};
             [row_len, col_len] = size(result);

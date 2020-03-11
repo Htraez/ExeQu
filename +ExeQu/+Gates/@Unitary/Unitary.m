@@ -65,9 +65,9 @@ classdef Unitary
                 % Tensor product all information gathered above into one 
                 % unitary matrix (U)
                 temp = temp(~cellfun(@isempty, temp));
-                tic
+%                 tic
                 U = tensor(temp);
-                U_tensor_time = toc
+%                 U_tensor_time = toc
             end
             
             % Set object attributes
