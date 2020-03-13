@@ -38,5 +38,5 @@ execute_time = toc
 circuit.draw();
 circuit.getMaxLength()
 %result;
-result.getCount();
+%result.getCount();
 %result.plotHistogram();

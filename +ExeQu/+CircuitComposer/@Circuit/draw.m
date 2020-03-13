@@ -65,9 +65,11 @@ function draw(self)
         %arg1
         start=maxHeigth-(round(val*maxHeigth));
         if maxHeigth+20 >= 0
-            if maxHeigth <= -Y_scaleInterval
+            if maxHeigth >= -Y_scaleInterval
+                disp("1");
                 set(arg1,'Ylim',[-Y_scaleInterval 0])
             else
+                disp("2");
                 val2 = get(src,'Value');
                 start=maxHeigth-(round(val2*maxHeigth));
                 set(arg1,'Ylim',[start start+Y_scaleInterval])
@@ -75,6 +77,7 @@ function draw(self)
             
             %set(arg1,'Ylim',[maxHeigth 0])
         else
+            disp("3");
             set(arg1,'Ylim',[start start+Y_scaleInterval])
         end
     end
