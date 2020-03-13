@@ -37,5 +37,5 @@ execute_time = toc
 
 circuit.draw();
 %result;
-result.getCount();
+%result.getCount();
 %result.plotHistogram();
