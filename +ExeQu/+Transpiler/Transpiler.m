@@ -230,20 +230,49 @@ classdef Transpiler
         function writeFile(~,textToWirte, outFileName)
             fileID = fopen(outFileName,'w');
             for k=1:length(textToWirte)
+                if ~strcmp(textToWirte{k},"")
                    fprintf(fileID,'%s\n',textToWirte{k});
+                end
             end
         end
         
         function self = translate(self,codes)
+            for a = 1:length(codes)
+                if startsWith(codes{a},'qreg') || startsWith(codes{a},'creg') 
+                    self = self.checkQASMSyntax(codes{a});
+                end
+            end
             for k=1:length(codes)
-                self = self.checkQASMSyntax(codes{k});
+                if ~startsWith(codes{k},'qreg') && ~startsWith(codes{k},'creg') 
+                    self = self.checkQASMSyntax(codes{k});
+                else
+                    self.correctCmd = [];
+                    self.correctCmd{1} = "qreg";
+                end
                  if ~isempty(self.correctCmd)
                      tmp = self.correctCmd;
                       if strcmp(tmp{1},'OPENQASM')
                           self.result{k} = "import ExeQu.CircuitComposer.*;"+newline+"import ExeQu.Gates.*;";
+                          
+                          if ~isempty(self.qregName)
+                              qreg=0;
+                              for no = 1: length(self.qregName) 
+                                  qreg = qreg + str2double(self.noOfQreg{no});
+                              end
+                              if isempty(self.cregName)
+                                  self.result{k} = self.result{k}+newline+"circuit = Circuit("+qreg+","+qreg+");";
+                              else
+                                  creg=0;
+                                  for no = 1: length(self.cregName) 
+                                      creg = creg + str2double(self.noOfCreg{no});
+                                  end
+                                  self.result{k} = self.result{k}+newline+"circuit = Circuit("+qreg+","+creg+");";
+                              end
+                          end
+                          
                       elseif strcmp(tmp{1},'include')
-                          self.result{k} = strcat('%',tmp{1},' ',tmp{2});
-                      elseif startsWith(tmp{1},'//')
+                          self.result{k} = strcat('%',tmp{1}," ",tmp{2});
+                      elseif startsWith(tmp{1},'//') 
                           self.result{k} = strrep(tmp{1},'//','%');
                       elseif strcmp(tmp{1},'cx')
                           if(length(tmp)==3)
@@ -284,7 +313,6 @@ classdef Transpiler
                           if(length(tmp)==3)
                               start_qreg = 0;
                               for no = 1: length(self.qregName)
-                                 
                                   if strcmp(tmp{2},self.qregName{no})
                                       stop = str2double(self.noOfQreg{no});
                                       break;
@@ -316,9 +344,7 @@ classdef Transpiler
                               self.result{k} = strcat('circuit.measure(',tmp{3},',',tmp{5},');');
                           end
                       elseif strcmp(tmp{1},'qreg')
-                          self.result{k} = '%qreg';
-                      elseif strcmp(tmp{1},'creg')
-                          self.result{k} = '%creg';
+                          self.result{k} = "";
                       end
                  end
             end
