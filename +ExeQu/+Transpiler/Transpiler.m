@@ -10,7 +10,7 @@ classdef Transpiler
         noOfQreg = [];
         noOfCreg = [];
 
-        result = []
+        result = [];
         
     end
     
@@ -247,13 +247,71 @@ classdef Transpiler
                           self.result{k} = strrep(tmp{1},'//','%');
                       elseif strcmp(tmp{1},'cx')
                           if(length(tmp)==3)
-                              self.result{k} = '%cnot';
+                              start_qreg = 0;
+                              for no = 1: length(self.qregName)
+                                 
+                                  if strcmp(tmp{2},self.qregName{no})
+                                      stop = str2double(self.noOfQreg{no});
+                                      break;
+                                  end
+                                  start_qreg = start_qreg + str2double(self.noOfQreg{no});
+                              end
+                              
+                              start_qreg2 = 0;
+                              for no = 1: length(self.qregName)
+                                  
+                                  if strcmp(tmp{3},self.qregName{no})
+                                      
+                                      break;
+                                  end
+                                  start_qreg2 = start_qreg2 + str2double(self.noOfQreg{no});
+                              end
+                              self.result{k} = "";
+                              for j = 0: stop-1
+                                  q = start_qreg+j;
+                                  q2 = start_qreg2+j;
+                                  if j~=stop-1
+                                      self.result{k} = self.result{k}+"circuit.cnot("+q+","+q2+");"+newline;
+                                  else
+                                      self.result{k} = self.result{k}+"circuit.cnot("+q+","+q2+");";
+                                  end
+                              end
+                              
                           else
                               self.result{k} = strcat('circuit.cnot(',tmp{3},',',tmp{5},');');
                           end
                       elseif strcmp(tmp{1},'measure')   
                           if(length(tmp)==3)
-                              self.result{k} = '%measure';
+                              start_qreg = 0;
+                              for no = 1: length(self.qregName)
+                                 
+                                  if strcmp(tmp{2},self.qregName{no})
+                                      stop = str2double(self.noOfQreg{no});
+                                      break;
+                                  end
+                                  start_qreg = start_qreg + str2double(self.noOfQreg{no});
+                              end
+                              
+                              start_creg = 0;
+                              for no = 1: length(self.cregName)
+                                  
+                                  if strcmp(tmp{3},self.cregName{no})
+                                      
+                                      break;
+                                  end
+                                  start_creg = start_creg + str2double(self.noOfCreg{no});
+                              end
+                              self.result{k} = "";
+                              for j = 0: stop-1
+                                  q = start_qreg+j;
+                                  c = start_creg+j;
+                                  if j~=stop-1
+                                      self.result{k} = self.result{k}+"circuit.measure("+q+","+c+");"+newline;
+                                  else
+                                      self.result{k} = self.result{k}+"circuit.measure("+q+","+c+");";
+                                  end
+                              end
+                              
                           else
                               self.result{k} = strcat('circuit.measure(',tmp{3},',',tmp{5},');');
                           end

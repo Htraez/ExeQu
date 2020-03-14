@@ -8,4 +8,4 @@ cx q[0],q[1];
 cx q,q1;
 measure q[0]->c[0];
 measure q->c;
-//comment
+//comment line
