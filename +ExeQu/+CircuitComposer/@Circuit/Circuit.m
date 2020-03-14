@@ -72,5 +72,8 @@ classdef Circuit < handle
 %           Other useful functions
         peekOperations(self);
         getMaxLength(self);
+        
+%       Operator Overloading
+        plus(self, b);
     end
 end

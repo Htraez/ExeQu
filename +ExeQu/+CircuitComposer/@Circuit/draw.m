@@ -1,12 +1,17 @@
 function draw(self)
     import ExeQu.Utils.*;
     global n_element
+	global maxHeigth
+	global Y_scaleInterval
+	global maxLength
+	global X_scaleInterval
     n_element = zeros(1, self.quantumRegister.n_qubits);
     %qreg = self.quantumRegister;
     %op= self.operationQueue;
     n = setFigure();
     
     clf;
+    
     X_scaleInterval = 25;
     Y_scaleInterval = 20;
     panelA=uipanel('Parent', n);
@@ -16,14 +21,15 @@ function draw(self)
     %set(gca,'ActivePositionProperty','position');
     
     % (start width, start height, zoom width, zoom height)
+    maxLength=2.25*self.maxLength;
+    maxHeigth=-2*self.quantumRegister.n_qubits-2.5;
     
     vScroll = uicontrol('Style','Slider','Parent',1,...
       'Units','normalized','Position',[0.95 0 0.05 1],...
-      'Value',0,'Callback',{@slider_callback1,gca, self.quantumRegister, Y_scaleInterval});
-
+      'Value',0,'Callback',{@slider_callback1,gca, maxHeigth});
     hScroll = uicontrol('Style','Slider','Parent',1,...
       'Units','normalized','Position',[0 0.95 1 0.05],...
-      'Value',0,'Callback',{@slider_callback2,gca,2.25*self.maxLength,X_scaleInterval});
+      'Value',0,'Callback',{@slider_callback2,gca, maxLength});
     zoomInBtn = uicontrol('Style','pushbutton','Parent',1,...
       'Units','normalized','Position',[0 0 0.1 0.05], ...
       'String','Zoom In','Callback',{@zoomIn_callback,gca,vScroll,hScroll});
@@ -43,7 +49,7 @@ function draw(self)
         %operationQueue is cell array, operation is now {operation struct}
         Visualization.plotOperation(operation{:}); %Use {:} to get the struct inside cell array
     end
-    
+
     xl = get(gca, 'Xlim');
     set(gca, 'Xlim', [xl(1) xl(1)+X_scaleInterval])
     yl = get(gca, 'Ylim');
@@ -51,20 +57,31 @@ function draw(self)
     %InSet = get(gca, 'TightInset');
     %set(gca, 'Position', [InSet(1:2), 1-InSet(1)-InSet(3), 1-InSet(2)-InSet(4)]);
     %plot_circuit(5)
-    function slider_callback1(src, eventdata, arg1, maxHeigth, Y_scaleInterval)
+    function slider_callback1(src, eventdata, arg1, maxHeigth)
         val = get(src,'Value');
         %pos = get(arg1,'Position')
         %pos(2) = -val;
         %set(arg1,'Position',pos)
+        %arg1
         start=maxHeigth-(round(val*maxHeigth));
-        %if round(val*maxLength)>=maxLength-X_scaleInterval
-        %    set(arg1,'Ylim',[maxHeigth-X_scaleInterval maxLength])
-        %else
+        if maxHeigth+20 >= 0
+            if maxHeigth >= -Y_scaleInterval
+                disp("1");
+                set(arg1,'Ylim',[-Y_scaleInterval 0])
+            else
+                disp("2");
+                val2 = get(src,'Value');
+                start=maxHeigth-(round(val2*maxHeigth));
+                set(arg1,'Ylim',[start start+Y_scaleInterval])
+            end
+            
+            %set(arg1,'Ylim',[maxHeigth 0])
+        else
+            disp("3");
             set(arg1,'Ylim',[start start+Y_scaleInterval])
-        %end
+        end
     end
-    function slider_callback2(src, eventdata, arg1, maxLength, X_scaleInterval)
-        
+    function slider_callback2(src, eventdata, arg1, maxLength)
         %old_xlim = get(gca,'Xlim')
         %old_ylim = get(gca,'Ylim')
         val = get(src,'Value');
@@ -78,13 +95,15 @@ function draw(self)
             set(arg1,'Xlim',[start start+X_scaleInterval])
         end
     end
-    function zoomIn_callback(src, event, target, vscroll, hscroll)
-        old_xlim = get(gca,'Xlim')
-        old_ylim = get(gca,'Ylim')
-        [old_xlim(1) old_xlim(2)/2]
-        [old_ylim(1)/2 old_ylim(2)]
-        set(gca, 'Xlim', [old_xlim(1) old_xlim(2)/2]);
-        set(gca, 'Ylim', [old_ylim(1)/2 old_ylim(2)]);      
+    function zoomIn_callback(src, event, target, ~, hscroll);
+        old_xlim = get(gca,'Xlim');
+        old_ylim = get(gca,'Ylim');
+%       [old_xlim(1)/2 old_xlim(2)/2]
+%       [old_ylim(1)/2 old_ylim(2)/2]
+        set(gca, 'Xlim', [old_xlim(1)/2 old_xlim(2)/2]);
+        set(gca, 'Ylim', [old_ylim(1)/2 old_ylim(2)/2]);   
+        Y_scaleInterval=Y_scaleInterval/2;
+        X_scaleInterval=X_scaleInterval/2;
 %         get(axes)
 %         magnitude = 2;
 %         vVal = get(vscroll, 'Value')
@@ -99,8 +118,10 @@ function draw(self)
     function zoomOut_callback(src, event, target, vscroll, hscroll)
         old_xlim = get(gca,'Xlim');
         old_ylim = get(gca,'Ylim');
-        set(gca, 'Xlim', [old_xlim(1) old_xlim(2)*2]);
-        set(gca, 'Ylim', [old_ylim(1)*2 old_ylim(2)]);
+        set(gca, 'Xlim', [old_xlim(1)*2 old_xlim(2)*2]);
+        set(gca, 'Ylim', [old_ylim(1)*2 old_ylim(2)*2]);
+        Y_scaleInterval=Y_scaleInterval*2;
+        X_scaleInterval=X_scaleInterval*2;
         %set(gca, 'Ylim', [old_ylim])
 %         magnitude = 2;
 %         vVal = get(vscroll, 'Value');

@@ -7,7 +7,10 @@ function out = getCount(c_reg, shots, varargin)
         omit_summary = false;
     end
     
-    out = containers.Map(string(dec2bin(0:2^n_bits-1))',zeros(1, 2^n_bits));
+    strKeys = string(dec2bin(0:2^n_bits-1))';
+    charKeys = cellstr(strKeys(:))';
+    defaultValues = zeros(1, 2^n_bits);
+    out = containers.Map(charKeys, defaultValues);
     %for samplingSize here
     for round = 1:shots
         sample = '';
@@ -35,7 +38,7 @@ function out = getCount(c_reg, shots, varargin)
         disp(table(cell2mat(out.keys'), ...
             cell2mat(out.values'), ...
             cell2mat(out.values')/shots*100, ...
-            'VariableNames',{'State','Count','%'}));
+            'VariableNames',{'State','Count','Percent'}));
     end
     
 end
