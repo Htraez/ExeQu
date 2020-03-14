@@ -21,7 +21,7 @@ function draw(self)
     %set(gca,'ActivePositionProperty','position');
     
     % (start width, start height, zoom width, zoom height)
-    maxLength=2.25*self.maxLength;
+    maxLength=2.75*self.maxLength;
     maxHeigth=-2*self.quantumRegister.n_qubits-2.5;
     
     vScroll = uicontrol('Style','Slider','Parent',1,...
@@ -66,10 +66,8 @@ function draw(self)
         start=maxHeigth-(round(val*maxHeigth));
         if maxHeigth+20 >= 0
             if maxHeigth >= -Y_scaleInterval
-                disp("1");
                 set(arg1,'Ylim',[-Y_scaleInterval 0])
             else
-                disp("2");
                 val2 = get(src,'Value');
                 start=maxHeigth-(round(val2*maxHeigth));
                 set(arg1,'Ylim',[start start+Y_scaleInterval])
@@ -77,7 +75,6 @@ function draw(self)
             
             %set(arg1,'Ylim',[maxHeigth 0])
         else
-            disp("3");
             set(arg1,'Ylim',[start start+Y_scaleInterval])
         end
     end
@@ -89,8 +86,15 @@ function draw(self)
         %pos(1) = -val
         %set(arg1,'Xlim',old_xlim-val)
         start=round(val*maxLength);
-        if round(val*maxLength)>=maxLength-X_scaleInterval
-            set(arg1,'Xlim',[maxLength-X_scaleInterval maxLength])
+        if round(val*maxLength)>=maxLength-X_scaleInterval                  %if start+x_scale>=maxLength
+            %set(arg1,'Xlim',[maxLength-X_scaleInterval maxLength])
+            if maxLength <= X_scaleInterval
+                set(arg1,'Xlim',[0 X_scaleInterval])
+            else            
+                val2 = get(src,'Value');
+                start=round(val2*maxLength);
+                set(arg1,'Xlim',[start start+X_scaleInterval])
+            end
         else
             set(arg1,'Xlim',[start start+X_scaleInterval])
         end
