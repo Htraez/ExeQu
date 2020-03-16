@@ -5,6 +5,8 @@ function draw(self)
 	global Y_scaleInterval
 	global maxLength
 	global X_scaleInterval
+    global start_xBottom
+    global start_yBottom
     n_element = zeros(1, self.quantumRegister.n_qubits);
     %qreg = self.quantumRegister;
     %op= self.operationQueue;
@@ -30,9 +32,18 @@ function draw(self)
     hScroll = uicontrol('Style','Slider','Parent',1,...
       'Units','normalized','Position',[0 0.95 1 0.05],...
       'Value',0,'Callback',{@slider_callback2,gca, maxLength});
-    vRightInBtn = uicontrol('Style','pushbutton','Parent',1,...
+    upInBtn = uicontrol('Style','pushbutton','Parent',1,...
       'Units','normalized','Position',[0.2 0 0.1 0.05], ...
-      'String','Right','Callback',{@vRight_callback,gca});
+      'String','Up','Callback',{@up_callback});
+    downInBtn = uicontrol('Style','pushbutton','Parent',1,...
+      'Units','normalized','Position',[0.5 0 0.1 0.05], ...
+      'String','Down','Callback',{@down_callback});
+    leftInBtn = uicontrol('Style','pushbutton','Parent',1,...
+      'Units','normalized','Position',[0.3 0 0.1 0.05], ...
+      'String','Left','Callback',{@left_callback});
+    rightInBtn = uicontrol('Style','pushbutton','Parent',1,...
+      'Units','normalized','Position',[0.4 0 0.1 0.05], ...
+      'String','Right','Callback',{@right_callback});
     zoomInBtn = uicontrol('Style','pushbutton','Parent',1,...
       'Units','normalized','Position',[0 0 0.1 0.05], ...
       'String','Zoom In','Callback',{@zoomIn_callback,gca,vScroll,hScroll});
@@ -82,7 +93,6 @@ function draw(self)
         end
     end
     function slider_callback2(src, eventdata, arg1, maxLength)
-        arg1
         %old_xlim = get(gca,'Xlim')
         %old_ylim = get(gca,'Ylim')
         val = get(src,'Value');
@@ -103,21 +113,29 @@ function draw(self)
             set(arg1,'Xlim',[start start+X_scaleInterval])
         end
     end
-    function vRight_callback(src, event, target, arg1)
-        val = get(src,'Value');
-        start=round(val*maxLength)
-        if round(val*maxLength)>=maxLength-X_scaleInterval                  %if start+x_scale>=maxLength
-            %set(arg1,'Xlim',[maxLength-X_scaleInterval maxLength])
-            if maxLength <= X_scaleInterval
-                set(gca,'Xlim',[0 X_scaleInterval])
-            else
-                val2 = get(src,'Value');
-                start=round(val2*maxLength);
-                set(gca,'Xlim',[start start+X_scaleInterval])
-            end
-        else
-            set(gca,'Xlim',[start start+X_scaleInterval])
-        end
+    function up_callback(src, event, target)
+        start_yBottom = get(gca,'Ylim');
+        start = start_yBottom(2);
+        start = start+(Y_scaleInterval/2)
+        set(gca,'Ylim',[start-Y_scaleInterval start])
+    end
+    function down_callback(src, event, target)
+        start_yBottom = get(gca,'Ylim');
+        start = start_yBottom(2);
+        start = start-(Y_scaleInterval/2)
+        set(gca,'Ylim',[start-Y_scaleInterval start])
+    end
+    function left_callback(src, event, target)
+        start_xBottom = get(gca,'Xlim');
+        start = start_xBottom(1);
+        start = start-(X_scaleInterval/2)
+        set(gca,'Xlim',[start start+X_scaleInterval])
+    end
+    function right_callback(src, event, target)
+        start_xBottom = get(gca,'Xlim');
+        start = start_xBottom(1);
+        start = start+(X_scaleInterval/2)
+        set(gca,'Xlim',[start start+X_scaleInterval])
     end
     function zoomIn_callback(src, event, target, ~, hscroll)
         old_xlim = get(gca,'Xlim');
