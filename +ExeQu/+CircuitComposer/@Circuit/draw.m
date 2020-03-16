@@ -30,6 +30,9 @@ function draw(self)
     hScroll = uicontrol('Style','Slider','Parent',1,...
       'Units','normalized','Position',[0 0.95 1 0.05],...
       'Value',0,'Callback',{@slider_callback2,gca, maxLength});
+    vRightInBtn = uicontrol('Style','pushbutton','Parent',1,...
+      'Units','normalized','Position',[0.2 0 0.1 0.05], ...
+      'String','Right','Callback',{@vRight_callback,gca});
     zoomInBtn = uicontrol('Style','pushbutton','Parent',1,...
       'Units','normalized','Position',[0 0 0.1 0.05], ...
       'String','Zoom In','Callback',{@zoomIn_callback,gca,vScroll,hScroll});
@@ -79,6 +82,7 @@ function draw(self)
         end
     end
     function slider_callback2(src, eventdata, arg1, maxLength)
+        arg1
         %old_xlim = get(gca,'Xlim')
         %old_ylim = get(gca,'Ylim')
         val = get(src,'Value');
@@ -99,7 +103,23 @@ function draw(self)
             set(arg1,'Xlim',[start start+X_scaleInterval])
         end
     end
-    function zoomIn_callback(src, event, target, ~, hscroll);
+    function vRight_callback(src, event, target, arg1)
+        val = get(src,'Value');
+        start=round(val*maxLength)
+        if round(val*maxLength)>=maxLength-X_scaleInterval                  %if start+x_scale>=maxLength
+            %set(arg1,'Xlim',[maxLength-X_scaleInterval maxLength])
+            if maxLength <= X_scaleInterval
+                set(gca,'Xlim',[0 X_scaleInterval])
+            else
+                val2 = get(src,'Value');
+                start=round(val2*maxLength);
+                set(gca,'Xlim',[start start+X_scaleInterval])
+            end
+        else
+            set(gca,'Xlim',[start start+X_scaleInterval])
+        end
+    end
+    function zoomIn_callback(src, event, target, ~, hscroll)
         old_xlim = get(gca,'Xlim');
         old_ylim = get(gca,'Ylim');
 %       [old_xlim(1)/2 old_xlim(2)/2]

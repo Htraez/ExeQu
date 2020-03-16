@@ -3,7 +3,7 @@ import ExeQu.CircuitComposer.*;
 
 circuit = Circuit(5, 3);
 tic
-for i = 1:1
+for i = 1:100
     circuit.h(1)
 end
 h_time = toc

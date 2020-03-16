@@ -14,7 +14,6 @@ function plotOperation(op)
         temp = max(n_element(min(op.associatedQubit):max(op.associatedQubit))+1);
         n_element(min(op.associatedQubit):max(op.associatedQubit))=temp;
     end
-    
 %    temp = max(n_element(min(op.associatedQubit):max(op.associatedQubit))+1);
 %    n_element(min(op.associatedQubit):max(op.associatedQubit))=temp;
 %    Counting number of element in each line
@@ -102,18 +101,26 @@ function plotOperation(op)
             text(start_x(1)+0.4,-(min(op.associatedQubit)+max(op.associatedQubit)),"U");
             % if box size1*1
         else
-            position_1 = op.associatedQubit(1);
-            position_2 = op.associatedQubit(length(op.associatedQubit));
-            if position_1 < position_2
-                value_1="1";
-                value_2="0";
-            else
-                value_1="0";
-                value_2="1";
+            for i=1:1:length(op.associatedQubit)
             end
+            %position_1 = op.associatedQubit(1);
+            %position_2 = op.associatedQubit(length(op.associatedQubit));
+            %if position_1 < position_2
+            %    value_1="1";
+            %    value_2="0";
+            %else
+            %    value_1="0";
+            %    value_2="1";
+            %end
+            value = "0";
             rectangle('Position',[start_x(1) -(2*max(op.associatedQubit))-0.5 2 2*(L)+1],'FaceColor',[1 1 1]);
-            text(start_x(1)+0.4,-(2*min(op.associatedQubit)),value_1);
-            text(start_x(1)+0.4,-(2*max(op.associatedQubit)),value_2);
+            for i=1:1:length(op.associatedQubit)
+                text(start_x(1)+0.4,-(2*(op.associatedQubit(i))),value);
+                value = str2num(value)+1;
+                value = num2str(value);
+            end
+            %text(start_x(1)+0.4,-(2*min(op.associatedQubit)),value_1);
+            %text(start_x(1)+0.4,-(2*max(op.associatedQubit)),value_2);
             text(start_x(1)+1,-(min(op.associatedQubit)+max(op.associatedQubit)),"U");
         end
         
