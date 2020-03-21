@@ -1,7 +1,12 @@
 import ExeQu.Gates.*;
 import ExeQu.CircuitComposer.*;
 
-circuit = Circuit(10, 3);
+circuit = Circuit(5, 3);
+tic
+for i = 1:100
+    circuit.h(1)
+end
+h_time = toc
 
 circuit.x(2)    
 circuit.cz(5, 3)
