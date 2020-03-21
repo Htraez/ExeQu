@@ -1,5 +1,17 @@
-function peekOperations(self)
+function out = peekOperations(self, varargin)
+    verbose = false;
+    if nargin > 1
+        if(isequal(class(varargin{1}),'logical'))
+            verbose = varargin{1};
+        end
+    end
+    
     op_struct = self.operationQueue;
+    out = op_struct;
+    
+    if ~verbose
+        return
+    end
     
     iter = 1;
     for i = op_struct
