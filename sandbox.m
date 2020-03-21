@@ -3,11 +3,13 @@ import ExeQu.CircuitComposer.*;
 
 circuit = Circuit(5, 3);
 tic
-for i = 1:100
+for i = 1:1
     circuit.h(1)
 end
 h_time = toc
-
+circuit.u1(1,pi/2)
+circuit.u2(2,pi/2,pi/2)
+circuit.u3(3,pi/2,pi/2,pi/2)
 circuit.x(2)    
 circuit.cz(5, 3)
 circuit.unitary([0 1; 1 0], [2,4]);
@@ -33,7 +35,6 @@ circuit.unitary([0 1; 1 0], 2);
 
 tic
 ops = circuit.peekOperations()
-ops{7}.measurementOperation
 celldisp(ops)
 result = circuit.execute(2000);
 execute_time = toc
