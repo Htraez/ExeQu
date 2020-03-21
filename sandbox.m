@@ -2,11 +2,7 @@ import ExeQu.Gates.*;
 import ExeQu.CircuitComposer.*;
 
 circuit = Circuit(10, 3);
-tic
-for i = 1:100
-    circuit.h(1)
-end
-h_time = toc
+
 circuit.x(2)    
 circuit.cz(5, 3)
 circuit.unitary([0 1; 1 0], [2,4]);
@@ -31,11 +27,14 @@ circuit.measure(3, 3)
 circuit.unitary([0 1; 1 0], 2);
 
 tic
-%circuit.peekOperations()
+ops = circuit.peekOperations()
+ops{7}.measurementOperation
+celldisp(ops)
 result = circuit.execute(2000);
 execute_time = toc
 
 circuit.draw();
+circuit.getMaxLength()
 %result;
-%result.getCount();
+result.getCount();
 %result.plotHistogram();
