@@ -72,7 +72,7 @@ function deutsch()
     qc.h(2);
     
     % Measure Result
-    %   Expect qubit 1 and 2 to be |11> as this is a balanced function
+    %   Expect qubit 1 and 2 to be |00> as this is a constant function
     qc.measure(1, 1);
     qc.measure(2, 2);
     
