@@ -18,8 +18,8 @@ function quantum_walk()
     
     %% Initialize Coin Flip
     %   We have 1 qubit (6th) to be flipping coin
-    qc.x(6) % Start with |1>
-%     qc.identity(6); % Start with |0>
+%     qc.x(6) % Start with |1>
+    qc.identity(6); % Start with |0>
     
     %% Start Coin Filpping
     coin = Circuit(qubits, cbits);
