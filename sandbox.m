@@ -14,14 +14,11 @@ circuit.x(2)
 circuit.cz(5, 3)
 circuit.unitary([0 1; 1 0], [2,4]);
 circuit.unitary([0 1; 1 0], [4,1]);
-%circuit.cnot(4, 2)
-%circuit.cnot(4, 5)
+
 U = Unitary([0 1; 1 0]);
 circuit.controlledU(U,[3,4], 5);
 circuit.controlledU(U,[3,4], 2);
-%circuit.cy(4, 1)
-%circuit.controlledU(@PauliX,[1,2,3], 5);
-%circuit.controlledU('x',[1, 4], 2);
+
 tic
 circuit.measure(1, 1)
 add_measure_time1 = toc
