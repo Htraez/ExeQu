@@ -5,6 +5,7 @@ function operation = unitary(self, operator, target)
     U = Unitary(operator, registerSize, target);
     operation.unitaryOperation = U;
     operation.label = U.label;
+    operation.U = operator;
     operation.associatedQubit = [target];
     self.add(operation);
 end

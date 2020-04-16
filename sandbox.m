@@ -1,24 +1,24 @@
 import ExeQu.Gates.*;
 import ExeQu.CircuitComposer.*;
 
-circuit = Circuit(10, 3);
+circuit = Circuit(5, 3);
 tic
-for i = 1:100
+for i = 1:1
     circuit.h(1)
 end
 h_time = toc
+circuit.u1(1,pi/2)
+circuit.u2(2,pi/2,pi/2)
+circuit.u3(3,pi/2,pi/2,pi/2)
 circuit.x(2)    
 circuit.cz(5, 3)
 circuit.unitary([0 1; 1 0], [2,4]);
 circuit.unitary([0 1; 1 0], [4,1]);
-%circuit.cnot(4, 2)
-%circuit.cnot(4, 5)
+
 U = Unitary([0 1; 1 0]);
 circuit.controlledU(U,[3,4], 5);
 circuit.controlledU(U,[3,4], 2);
-%circuit.cy(4, 1)
-%circuit.controlledU(@PauliX,[1,2,3], 5);
-%circuit.controlledU('x',[1, 4], 2);
+
 tic
 circuit.measure(1, 1)
 add_measure_time1 = toc
@@ -31,11 +31,13 @@ circuit.measure(3, 3)
 circuit.unitary([0 1; 1 0], 2);
 
 tic
-%circuit.peekOperations()
+ops = circuit.peekOperations()
+celldisp(ops)
 result = circuit.execute(2000);
 execute_time = toc
 
 circuit.draw();
+circuit.getMaxLength()
 %result;
-%result.getCount();
+result.getCount();
 %result.plotHistogram();

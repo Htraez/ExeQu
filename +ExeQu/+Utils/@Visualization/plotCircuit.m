@@ -3,9 +3,8 @@ function plotCircuit(qreg,maxLength)
     import ExeQu.Utils.*;
     numberOfQubit = qreg.n_qubits;
     %n_element=zeros(1,numberOfQubit);
-    
-    xline=[2 2.25*maxLength];
-    % set(gca,'visible','off')              %hide axis
+    xline=[2 2.75*maxLength];
+    %set(gca,'visible','off')              %hide axis
     for i= 1:numberOfQubit                                                  % loop figure
         line(xline,[-2*i -2*i]);
         line(xline,[-(2+2*numberOfQubit) -(2+2*numberOfQubit)]);

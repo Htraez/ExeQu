@@ -47,6 +47,9 @@ classdef Circuit < handle
         ry(self, target, theta);
         rz(self, target, theta);
         identity(self, target);
+        u1(self, target, lambda);
+        u2(self, target, phi, lambda);
+        u3(self, target, theta, phi, lambda);
         
 %       Custom Gate Function:
 %           This will create custom unitary gate operation 
@@ -70,7 +73,7 @@ classdef Circuit < handle
         
 %       Miscellaneous:
 %           Other useful functions
-        peekOperations(self);
+        out = peekOperations(self);
         getMaxLength(self);
         
 %       Operator Overloading

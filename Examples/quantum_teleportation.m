@@ -1,6 +1,6 @@
 function quantum_teleportation()
     import ExeQu.CircuitComposer.*;
-    qc = Circuit(3, 3)
+    qc = Circuit(3, 3);
     
     % Prepare sample data to be sent
     qc.x(1);
@@ -32,7 +32,11 @@ function quantum_teleportation()
     qc.measure(3, 3);
     
     qc.draw();
+    tic
     result = qc.execute(1024);
+    execution_time = toc
+    tic
     result.getCount();
+    sampling_time = toc
     result.plotHistogram();
 end

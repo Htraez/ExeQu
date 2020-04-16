@@ -10,11 +10,11 @@ function controlledU(self, U, ctrls, target)
     elseif class(U) == "char" || class(U) == "string"
         switch U
             case "x"
-                U = PauliX(1, 1);
+                U = PauliX();
             case "y"
-                U = PauliY(1, 1);
+                U = PauliY();
             case "z"
-                U = PauliZ(1, 1);
+                U = PauliZ();
             otherwise
                 throw(MException('controlledU:ParameterError', "Invalid unitary at 1st argument. Unknown gate specified"))
         end
@@ -24,7 +24,7 @@ function controlledU(self, U, ctrls, target)
         if row > 2 || column > 2
             throw(MException('controlledU:ParameterError', "Invalid unitary at 1st argument. Only support 1-qubit gate"))
         end
-    elseif strfind(class(U), 'ExeQu.Gates.Unitary') == 1
+    elseif isa(U, 'ExeQu.Gates.Unitary')
         [row, column] = size(U);
         if row > 2 || column > 2
             throw(MException('controlledU:ParameterError', "Invalid unitary at 1st argument. Only support 1-qubit gate"))
@@ -36,6 +36,7 @@ function controlledU(self, U, ctrls, target)
     CU = ControlledUnitary(U, self.quantumRegister.getSize(), ctrls, target);
     
     operation.unitaryOperation = CU;
+    operation.U = U;
     operation.label = CU.label;
     operation.associatedQubit = [ctrls target];
     self.add(operation);

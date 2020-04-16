@@ -1,7 +1,7 @@
 function cnot(self, ctrl, target)
     import ExeQu.Gates.*;
     
-    X = PauliX(1, 1);
+    X = PauliX();
     CNOT = ControlledUnitary(X, self.quantumRegister.getSize(), [ctrl], target);
     
     operation.unitaryOperation = CNOT;
