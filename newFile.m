@@ -8,10 +8,11 @@ circuit.cnot(2,7);
 circuit.cnot(3,8);
 circuit.cnot(4,9);
 circuit.cnot(5,10);
+circuit.u3(5,pi/2,pi/2,pi/2);
 circuit.measure(1,1);
-circuit.measure(1,1);
-circuit.measure(2,2);
-circuit.measure(3,3);
-circuit.measure(4,4);
-circuit.measure(5,5);
+circuit.measure(1,6);
+circuit.measure(2,7);
+circuit.measure(3,8);
+circuit.measure(4,9);
+circuit.measure(5,10);
 %comment line

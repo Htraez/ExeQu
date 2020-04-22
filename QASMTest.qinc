@@ -6,6 +6,7 @@ creg c[5];
 creg c1[5];
 cx q[0],q[1];
 cx q,q1;
+U(pi/2,pi/2,pi/2) q[4];
 measure q[0]->c[0];
-measure q->c;
+measure q->c1;
 //comment line

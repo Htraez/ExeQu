@@ -38,8 +38,9 @@ classdef Transpiler
         end
         
         function self = checkQASMSyntax(self,cmd)
-            
             self.correctCmd = {};
+            cmd = strrep(cmd,'(',' ( ');
+            cmd = strrep(cmd,')',' ) ');
             if startsWith(cmd,'OPENQASM ')
                 tmp = strsplit(cmd,' ');
                 tmp = strtrim(tmp);
@@ -216,6 +217,31 @@ classdef Transpiler
                         end
                     end
                 end
+            elseif startsWith(cmd,'U ')
+                tmp =  strsplit(cmd,{'(',')',' ', '[' ,']', ','});
+                if length(tmp)==5
+                    if(~isempty(str2num(tmp{2}))) && (~isempty(str2num(tmp{3}))) && (~isempty(str2num(tmp{4}))) 
+                        for i = 1:length(self.qregName)
+                            if (strcmp(tmp{5},self.qregName{i}))
+                                self.correctCmd = tmp;
+                            end
+                        end
+                    end
+                else
+                    if(~isempty(str2num(tmp{2}))) && (~isempty(str2num(tmp{3}))) && (~isempty(str2num(tmp{4}))) && (~isempty(str2num(tmp{6})))
+                    
+                        for i = 1:length(self.qregName)
+                            if (strcmp(tmp{5},self.qregName{i}))
+                                if ( str2double(self.noOfQreg{i}) >= str2double(tmp{6}))
+                                    self.correctCmd = tmp;
+                                end
+                            end
+                        end
+                
+                    end
+                end
+                disp(tmp)
+                
             elseif startsWith(cmd,'//')
                 self.correctCmd{1} = cmd;
                 return;
@@ -247,7 +273,7 @@ classdef Transpiler
                     self = self.checkQASMSyntax(codes{k});
                 else
                     self.correctCmd = [];
-                    self.correctCmd{1} = "qreg";
+                    self.correctCmd{1} = "reg";
                 end
                  if ~isempty(self.correctCmd)
                      tmp = self.correctCmd;
@@ -343,8 +369,41 @@ classdef Transpiler
                           else
                               self.result{k} = strcat('circuit.measure(',tmp{3}+1,',',tmp{5}+1,');');
                           end
-                      elseif strcmp(tmp{1},'qreg')
+                      elseif strcmp(tmp{1},'reg')
                           self.result{k} = "";
+                      elseif strcmp(tmp{1},'U')
+                          self.result{k} = tmp{1};
+                          if length(tmp)==5
+                              start_qreg = 0;
+                              for no = 1: length(self.qregName)
+                                  if strcmp(tmp{5},self.qregName{no})
+                                      stop = str2double(self.noOfQreg{no});
+                                      break;
+                                  end
+                                  start_qreg = start_qreg + str2double(self.noOfQreg{no});
+                              end
+                              
+                              self.result{k} = "";
+                              for j = 1: stop
+                                  q = start_qreg+j;
+                                  if j~=stop
+                                      self.result{k} = self.result{k}+"circuit.u3("+q+","+tmp{2}+","+tmp{3}+","+tmp{4}+");"+newline;
+                                  else
+                                      self.result{k} = self.result{k}+"circuit.u3("+q+","+tmp{2}+","+tmp{3}+","+tmp{4}+");";
+                                  end
+                              end
+                              
+                          else
+                              qreg = 0;
+                              for no = 1: length(self.qregName)
+                                  if strcmp(tmp{5},self.qregName{no})
+                                      qreg = qreg + str2double(tmp{6}) + 1;
+                                      break;
+                                  end
+                                  qreg = qreg + str2double(self.noOfQreg{no});
+                              end
+                              self.result{k} = "circuit.u3("+qreg+","+tmp{2}+","+tmp{3}+","+tmp{4}+");";
+                          end
                       end
                  end
             end
