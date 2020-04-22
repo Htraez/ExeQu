@@ -333,7 +333,23 @@ classdef Transpiler
                               end
                               
                           else
-                              self.result{k} = strcat('circuit.cnot(',tmp{3}+1,',',tmp{5}+1,');');
+                              qreg1 = 0;
+                              for no = 1: length(self.qregName)
+                                  if strcmp(tmp{2},self.qregName{no})
+                                      qreg1 = qreg1 + str2double(tmp{3}) + 1;
+                                      break;
+                                  end
+                                  qreg1 = qreg1 + str2double(self.noOfQreg{no});
+                              end
+                              qreg2 = 0 ;
+                              for no = 1: length(self.qregName)
+                                  if strcmp(tmp{4},self.qregName{no})
+                                      qreg2 = qreg2 + str2double(tmp{5}) + 1;
+                                      break;
+                                  end
+                                  qreg2 = qreg2 + str2double(self.noOfQreg{no});
+                              end
+                              self.result{k} = "circuit.cnot("+qreg1+","+qreg2+");";
                           end
                       elseif strcmp(tmp{1},'measure')   
                           if(length(tmp)==3)
@@ -367,7 +383,23 @@ classdef Transpiler
                               end
                               
                           else
-                              self.result{k} = strcat('circuit.measure(',tmp{3}+1,',',tmp{5}+1,');');
+                              qreg = 0;
+                              for no = 1: length(self.qregName)
+                                  if strcmp(tmp{2},self.qregName{no})
+                                      qreg = qreg + str2double(tmp{3}) + 1;
+                                      break;
+                                  end
+                                  qreg = qreg + str2double(self.noOfQreg{no});
+                              end
+                              creg = 0 ;
+                              for no = 1: length(self.cregName)
+                                  if strcmp(tmp{4},self.cregName{no})
+                                      creg = creg + str2double(tmp{5}) + 1;
+                                      break;
+                                  end
+                                  creg = creg + str2double(self.noOfCreg{no});
+                              end
+                              self.result{k} = "circuit.measure("+qreg+","+creg+");";
                           end
                       elseif strcmp(tmp{1},'reg')
                           self.result{k} = "";
