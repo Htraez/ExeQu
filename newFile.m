@@ -2,6 +2,10 @@ import ExeQu.CircuitComposer.*;
 import ExeQu.Gates.*;
 circuit = Circuit(10,10);
 %include "qelib1.inc"
+
+%gate x a { u3 ( pi,0,pi )  a; }
+%creg c1[5];
+
 circuit.cnot(3,6);
 circuit.cnot(1,6);
 circuit.cnot(2,7);
