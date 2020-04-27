@@ -2,8 +2,10 @@ classdef Transpiler
     properties
         text;
         allCmd;
+        
         correctCmd;
         correctGate;
+        correctQubit;
         
         qregName = [];
         cregName = [];
@@ -54,7 +56,32 @@ classdef Transpiler
         end
         
         function self = checkQregSyntax(self,qu)
+            pass = 0;
+            for i = 1 :length(qu)
+                if contains(qu{i},{'[',']'})
+                    tmp  = strsplit(qu{i},{'[',']'});
+                    tmp(cellfun('isempty',tmp)) = [];
+                    for j = 1 : length(self.qregName)
+                        if strcmp(tmp{1},self.qregName{j}) && ( str2double(tmp{2}) <= str2double(self.noOfQreg{j}))
+                            pass = pass+1;
+                            break;
+                        end
+                    end
+                else
+                    for j = 1 : length(self.qregName)
+                        if strcmp(qu{i},self.qregName{j})
+                            pass = pass+1;
+                            break;
+                        end
+                    end
+                end
+            end
             
+            if pass == length(qu)
+                self.correctQubit = pass;
+            else
+                self.correctQubit = 0;
+            end
         end
         
         function self = checkGateSyntax(self,gate)
@@ -352,8 +379,13 @@ classdef Transpiler
                     if startsWith(cmd,self.gateName{i})
                         if self.gatePara{i} == 0 
                             tmp = strsplit(cmd,{' ',','});
-                            disp(tmp)
+                            qu = tmp(2:length(tmp));
+                            self = self.checkQregSyntax(qu);
+                            if self.correctQubit ~= 0 && self.gateArgs{i}==length(qu)
+                                self.correctCmd = tmp;
+                            end
                         else
+                            
                         end
                     end
                 end
@@ -374,6 +406,93 @@ classdef Transpiler
                 end
             end
         end
+        
+        function self = translateCX(self,tmp,k)
+            if(length(tmp)==3)
+                  start_qreg = 0;
+                  for no = 1: length(self.qregName)
+
+                      if strcmp(tmp{2},self.qregName{no})
+                          stop = str2double(self.noOfQreg{no});
+                          break;
+                      end
+                      start_qreg = start_qreg + str2double(self.noOfQreg{no});
+                  end
+
+                  start_qreg2 = 0;
+                  for no = 1: length(self.qregName)
+
+                      if strcmp(tmp{3},self.qregName{no})
+
+                          break;
+                      end
+                      start_qreg2 = start_qreg2 + str2double(self.noOfQreg{no});
+                  end
+                  
+                  for j = 1: stop
+                      q = start_qreg+j;
+                      q2 = start_qreg2+j;
+                      if j~=stop
+                          self.result{k} = self.result{k}+"circuit.cnot("+q+","+q2+");"+newline;
+                      else
+                          self.result{k} = self.result{k}+"circuit.cnot("+q+","+q2+");";
+                      end
+                  end
+
+             else
+                  qreg1 = 0;
+                  for no = 1: length(self.qregName)
+                      if strcmp(tmp{2},self.qregName{no})
+                          qreg1 = qreg1 + str2double(tmp{3}) + 1;
+                          break;
+                      end
+                      qreg1 = qreg1 + str2double(self.noOfQreg{no});
+                  end
+                  qreg2 = 0 ;
+                  for no = 1: length(self.qregName)
+                      if strcmp(tmp{4},self.qregName{no})
+                          qreg2 = qreg2 + str2double(tmp{5}) + 1;
+                          break;
+                      end
+                      qreg2 = qreg2 + str2double(self.noOfQreg{no});
+                  end
+                  self.result{k} = self.result{k}+"circuit.cnot("+qreg1+","+qreg2+");";
+             end
+        end
+        
+        function self = translateU(self,tmp,k)
+              if length(tmp)==5
+                  start_qreg = 0;
+                  for no = 1: length(self.qregName)
+                      if strcmp(tmp{5},self.qregName{no})
+                          stop = str2double(self.noOfQreg{no});
+                          break;
+                      end
+                      start_qreg = start_qreg + str2double(self.noOfQreg{no});
+                  end
+
+                  for j = 1: stop
+                      q = start_qreg+j;
+                      if j~=stop
+                          self.result{k} = self.result{k}+"circuit.u3("+q+","+tmp{2}+","+tmp{3}+","+tmp{4}+");"+newline;
+                      else
+                          self.result{k} = self.result{k}+"circuit.u3("+q+","+tmp{2}+","+tmp{3}+","+tmp{4}+");";
+                      end
+                  end
+
+              else
+                  qreg = 0;
+                  for no = 1: length(self.qregName)
+                      if strcmp(tmp{5},self.qregName{no})
+                          qreg = qreg + str2double(tmp{6}) + 1;
+                          break;
+                      end
+                      qreg = qreg + str2double(self.noOfQreg{no});
+                  end
+                  self.result{k} = self.result{k}+"circuit.u3("+qreg+","+tmp{2}+","+tmp{3}+","+tmp{4}+");";
+              end
+        end
+        
         
         function self = translate(self,codes)
             for a = 1:length(codes)
@@ -414,56 +533,8 @@ classdef Transpiler
                       elseif startsWith(tmp{1},'//') 
                           self.result{k} = strrep(tmp{1},'//','%');
                       elseif strcmp(tmp{1},'CX')
-                          if(length(tmp)==3)
-                              start_qreg = 0;
-                              for no = 1: length(self.qregName)
-                                 
-                                  if strcmp(tmp{2},self.qregName{no})
-                                      stop = str2double(self.noOfQreg{no});
-                                      break;
-                                  end
-                                  start_qreg = start_qreg + str2double(self.noOfQreg{no});
-                              end
-                              
-                              start_qreg2 = 0;
-                              for no = 1: length(self.qregName)
-                                  
-                                  if strcmp(tmp{3},self.qregName{no})
-                                      
-                                      break;
-                                  end
-                                  start_qreg2 = start_qreg2 + str2double(self.noOfQreg{no});
-                              end
-                              self.result{k} = "";
-                              for j = 1: stop
-                                  q = start_qreg+j;
-                                  q2 = start_qreg2+j;
-                                  if j~=stop
-                                      self.result{k} = self.result{k}+"circuit.cnot("+q+","+q2+");"+newline;
-                                  else
-                                      self.result{k} = self.result{k}+"circuit.cnot("+q+","+q2+");";
-                                  end
-                              end
-                              
-                          else
-                              qreg1 = 0;
-                              for no = 1: length(self.qregName)
-                                  if strcmp(tmp{2},self.qregName{no})
-                                      qreg1 = qreg1 + str2double(tmp{3}) + 1;
-                                      break;
-                                  end
-                                  qreg1 = qreg1 + str2double(self.noOfQreg{no});
-                              end
-                              qreg2 = 0 ;
-                              for no = 1: length(self.qregName)
-                                  if strcmp(tmp{4},self.qregName{no})
-                                      qreg2 = qreg2 + str2double(tmp{5}) + 1;
-                                      break;
-                                  end
-                                  qreg2 = qreg2 + str2double(self.noOfQreg{no});
-                              end
-                              self.result{k} = "circuit.cnot("+qreg1+","+qreg2+");";
-                          end
+                          self.result{k} = "";
+                          self = self.translateCX(tmp,k);
                       elseif strcmp(tmp{1},'measure')   
                           if(length(tmp)==3)
                               start_qreg = 0;
@@ -517,40 +588,56 @@ classdef Transpiler
                       elseif strcmp(tmp{1},'reg')
                           self.result{k} = "";
                       elseif strcmp(tmp{1},'U')
-                          self.result{k} = tmp{1};
-                          if length(tmp)==5
-                              start_qreg = 0;
-                              for no = 1: length(self.qregName)
-                                  if strcmp(tmp{5},self.qregName{no})
-                                      stop = str2double(self.noOfQreg{no});
-                                      break;
-                                  end
-                                  start_qreg = start_qreg + str2double(self.noOfQreg{no});
-                              end
-                              
-                              self.result{k} = "";
-                              for j = 1: stop
-                                  q = start_qreg+j;
-                                  if j~=stop
-                                      self.result{k} = self.result{k}+"circuit.u3("+q+","+tmp{2}+","+tmp{3}+","+tmp{4}+");"+newline;
-                                  else
-                                      self.result{k} = self.result{k}+"circuit.u3("+q+","+tmp{2}+","+tmp{3}+","+tmp{4}+");";
-                                  end
-                              end
-                              
-                          else
-                              qreg = 0;
-                              for no = 1: length(self.qregName)
-                                  if strcmp(tmp{5},self.qregName{no})
-                                      qreg = qreg + str2double(tmp{6}) + 1;
-                                      break;
-                                  end
-                                  qreg = qreg + str2double(self.noOfQreg{no});
-                              end
-                              self.result{k} = "circuit.u3("+qreg+","+tmp{2}+","+tmp{3}+","+tmp{4}+");";
-                          end
+                          self.result{k} = "";
+                          self = self.translateU(tmp,k);
                       elseif strcmp(tmp{1},'gate')
                           self.result{k} = [];
+                      else
+                          for i = 1 : length(self.gateName)
+                                if startsWith(tmp{1},self.gateName{i})
+                                    if self.gatePara{i} == 0 
+                                        quNo = 0;
+                                        gateCall = self.gateDetail{i};
+                                        for j = 2:length(tmp)
+                                            quNo = quNo+1;
+                                            for z = 1 : length(gateCall)
+                                                tmpGate = strsplit(gateCall{z},' ') ;
+                                                if strcmp(tmpGate{1},'CX')
+                                                    if strcmp(tmpGate{2},num2str(quNo))
+                                                        tmpGate{2}=tmp{j};
+                                                        gateCall{z} = tmpGate{1}+" "+tmpGate{2}+" "+tmpGate{3};
+                                                    end
+                                                    if strcmp(tmpGate{3},num2str(quNo))
+                                                        tmpGate{3}=tmp{j};
+                                                        gateCall{z} = tmpGate{1}+" "+tmpGate{2}+" "+tmpGate{3};
+                                                    end
+                                                elseif strcmp(tmpGate{1},'U')
+                                                    if strcmp(tmpGate{5},num2str(quNo))
+                                                        tmpGate{5}=tmp{j};
+                                                        gateCall{z} = tmpGate{1}+" "+tmpGate{2}+" "+tmpGate{3}+" "+tmpGate{4}+" "+tmpGate{5};
+                                                    end
+                                                end
+                                            end
+                                        end
+                                        
+                                        self.result{k}="";
+                                        for j = 1 : length(gateCall)
+                                            tmpGate = strsplit(gateCall{j},{' ','[',']'}) ;
+                                            if strcmp(tmpGate{1},'CX')
+                                                self = self.translateCX(tmpGate,k);
+                                            elseif strcmp(tmpGate{1},'U')
+                                                self = self.translateU(tmpGate,k);
+                                            end
+                                            if j~=length(gateCall)
+                                                self.result{k}=self.result{k}+newline;
+                                            end
+                                        end
+                                       
+                                    else
+
+                                    end
+                                end
+                          end
                       end
                  end
             end
