@@ -100,7 +100,38 @@ classdef Transpiler
                  self.correctGate = tmp;
                 end
             else
-                
+                tmp = strsplit(cmd,{' ',','});
+                if contains(cmd,{'(',')'})
+                    openBra  = 0;
+                    closeBra  = 0;
+                    for i = 1 : length(tmp)
+                        if strcmp(tmp{i},'(')
+                            openBra = i;
+                        elseif strcmp(tmp{1},')')
+                            closeBra = i;
+                            break;
+                        end
+                    end
+                    noOfPara = closeBra-openBra;
+                    tmp = strsplit(cmd,{' ',',','(',')'});
+                    for i = 1 : length(self.gateName)
+                        if strcmp(tmp{1},self.gateName{i})
+                            if self.gatePara{i}==noOfPara && self.gateArgs{i}==(length(tmp)-1-noOfPara)
+                                self.correctGate = tmp;
+                                break;
+                            end
+                        end
+                    end
+                else
+                    for i = 1 : length(self.gateName)
+                        if strcmp(tmp{1},self.gateName{i})
+                            if self.gateArgs{i}==(length(tmp)-1)
+                                self.correctGate = tmp;
+                                break;
+                            end
+                        end
+                    end
+                end
             end
         end
         
@@ -318,7 +349,7 @@ classdef Transpiler
                 tmp = strsplit(tmp,{'{',';'});
                 tmp(cellfun('isempty',tmp)) = [];
 
-                if contains(tmp{1},'(')
+                if contains(tmp{1},{'(',')'})
                     
                 else
                     tmp{1} = strtrim(tmp{1});
@@ -345,7 +376,7 @@ classdef Transpiler
                                 count = count+1;
                                 if strcmp(self.correctGate{1},'CX')
                                     for k = 2:3
-                                        for j = length(gateCreate)-2:length(gateCreate)
+                                        for j = 3:length(gateCreate)
                                             if strcmp(gateCreate{j},self.correctGate{k})
                                                 self.correctGate{k}=num2str(j-2);
                                             end
@@ -353,14 +384,44 @@ classdef Transpiler
                                     end
                                     gateTmp{count} = self.correctGate{1}+" "+self.correctGate{2}+" "+self.correctGate{3};
                                 elseif strcmp(self.correctGate{1},'U')
-                                    for j = length(gateCreate)-2:length(gateCreate)
+                                    for j = 3:length(gateCreate)
                                         if strcmp(gateCreate{j},self.correctGate{5})
                                             self.correctGate{5}=num2str(j-2);
                                         end
                                     end
                                     gateTmp{count} = self.correctGate{1}+" "+self.correctGate{2}+" "+self.correctGate{3}+" "+self.correctGate{4}+" "+self.correctGate{5};
                                 else
-
+                                    for j = 1 : length(self.gateName)
+                                        if startsWith(self.correctGate{1},self.gateName{j})
+                                            if self.gatePara{j} == 0 
+                                                tmpGateDetail = self.gateDetail{j};
+                                                for x = 1 : length(tmpGateDetail)
+                                                    tmpGate2 = strsplit(tmpGateDetail{x},' ');
+                                                    if strcmp(tmpGate2{1},'CX')
+                                                        for a = 2:3
+                                                            for b = 3:length(gateCreate)
+                                                                if strcmp(gateCreate{b},self.correctGate{a})
+                                                                    tmpGate2{a}=num2str(b-2);
+                                                                end
+                                                            end
+                                                        end
+                                                        gateTmp{count} = tmpGate2{1}+" "+tmpGate2{2}+" "+tmpGate2{3};
+                                                    elseif strcmp(tmpGate2{1},'U')
+                                                        for b = 3:length(gateCreate)
+                                                            for c = 2:length(self.correctGate)
+                                                                if strcmp(gateCreate{b},self.correctGate{c})
+                                                                    tmpGate2{5}=num2str(b-2);
+                                                                end
+                                                            end
+                                                        end
+                                                        gateTmp{count} = tmpGate2{1}+" "+ tmpGate2{2}+" "+ tmpGate2{3}+" "+ tmpGate2{4}+" "+ tmpGate2{5};
+                                                    end
+                                                end
+                                            else
+                                                
+                                            end
+                                        end
+                                    end
                                 end
                             else
                                 error = 1;

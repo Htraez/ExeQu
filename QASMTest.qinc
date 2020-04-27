@@ -1,13 +1,16 @@
 OPENQASM 2.0;
 include "qelib1.inc";
-gate abc a,b,c { CX a,b; CX b,c; CX c,a; U(pi/2,pi/2,pi/2) c;}
-//gate x a { u3(pi,0,pi) a; }
+gate abc a,b,c { CX a,b; U(pi/2,pi/2,pi/2) c;}
+gate x a,b { CX a,b; }
+gate xx a,b { U(pi/2,0,0) a ; x b,a; }
 qreg q[5];
 qreg q1[5];
 qreg q2[5];
 creg c[5];
 creg c1[5];
 //creg c2[5];
+x q[0],q[1];
+xx q[0],q[1];
 abc q[1],q[2],q[3];
 abc q,q1,q2;
 CX q[2],q1[0];
