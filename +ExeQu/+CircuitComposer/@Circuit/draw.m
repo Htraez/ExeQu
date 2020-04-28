@@ -26,12 +26,12 @@ function draw(self)
     maxLength=2.75*self.maxLength;
     maxHeigth=-2*self.quantumRegister.n_qubits-2.5;
     
-    vScroll = uicontrol('Style','Slider','Parent',1,...
-      'Units','normalized','Position',[0.95 0 0.05 1],...
-      'Value',0,'Callback',{@slider_callback1,gca, maxHeigth});
-    hScroll = uicontrol('Style','Slider','Parent',1,...
-      'Units','normalized','Position',[0 0.95 1 0.05],...
-      'Value',0,'Callback',{@slider_callback2,gca, maxLength});
+    % vScroll = uicontrol('Style','Slider','Parent',1,...
+    %  'Units','normalized','Position',[0.95 0 0.05 1],...
+    %  'Value',0,'Callback',{@slider_callback1,gca, maxHeigth});
+    % hScroll = uicontrol('Style','Slider','Parent',1,...
+    %  'Units','normalized','Position',[0 0.95 1 0.05],...
+    %  'Value',0,'Callback',{@slider_callback2,gca, maxLength});
     upInBtn = uicontrol('Style','pushbutton','Parent',1,...
       'Units','normalized','Position',[0.2 0 0.1 0.05], ...
       'String','Up','Callback',{@up_callback});
@@ -46,10 +46,10 @@ function draw(self)
       'String','Right','Callback',{@right_callback});
     zoomInBtn = uicontrol('Style','pushbutton','Parent',1,...
       'Units','normalized','Position',[0 0 0.1 0.05], ...
-      'String','Zoom In','Callback',{@zoomIn_callback,gca,vScroll,hScroll});
+      'String','Zoom In','Callback',{@zoomIn_callback,gca}); %,vScroll,hScroll});
     zoomOutBtn = uicontrol('Style','pushbutton','Parent',1,...
       'Units','normalized','Position',[0.1 0 0.1 0.05], ...
-      'String','Zoom Out','Callback',{@zoomOut_callback,gca,vScroll,hScroll});
+      'String','Zoom Out','Callback',{@zoomOut_callback,gca}); %,vScroll,hScroll});
     % (start width scrollbar,start height scrollbar,size width scrollbar,size height scrollbar)
     %axes('parent',hpanel,'outerposition',[.25 0 .5 1])
     
@@ -71,48 +71,48 @@ function draw(self)
     %InSet = get(gca, 'TightInset');
     %set(gca, 'Position', [InSet(1:2), 1-InSet(1)-InSet(3), 1-InSet(2)-InSet(4)]);
     %plot_circuit(5)
-    function slider_callback1(src, eventdata, arg1, maxHeigth)
-        val = get(src,'Value');
-        %pos = get(arg1,'Position')
-        %pos(2) = -val;
-        %set(arg1,'Position',pos)
-        %arg1
-        start=maxHeigth-(round(val*maxHeigth));
-        if maxHeigth+20 >= 0
-            if maxHeigth >= -Y_scaleInterval
-                set(arg1,'Ylim',[-Y_scaleInterval 0])
-            else
-                val2 = get(src,'Value');
-                start=maxHeigth-(round(val2*maxHeigth));
-                set(arg1,'Ylim',[start start+Y_scaleInterval])
-            end
-            
-            %set(arg1,'Ylim',[maxHeigth 0])
-        else
-            set(arg1,'Ylim',[start start+Y_scaleInterval])
-        end
-    end
-    function slider_callback2(src, eventdata, arg1, maxLength)
-        %old_xlim = get(gca,'Xlim')
-        %old_ylim = get(gca,'Ylim')
-        val = get(src,'Value');
-        %pos = get(arg1,'Position')
-        %pos(1) = -val
-        %set(arg1,'Xlim',old_xlim-val)
-        start=round(val*maxLength);
-        if round(val*maxLength)>=maxLength-X_scaleInterval                  %if start+x_scale>=maxLength
-            %set(arg1,'Xlim',[maxLength-X_scaleInterval maxLength])
-            if maxLength <= X_scaleInterval
-                set(arg1,'Xlim',[0 X_scaleInterval])
-            else            
-                val2 = get(src,'Value');
-                start=round(val2*maxLength);
-                set(arg1,'Xlim',[start start+X_scaleInterval])
-            end
-        else
-            set(arg1,'Xlim',[start start+X_scaleInterval])
-        end
-    end
+%    function slider_callback1(src, eventdata, arg1, maxHeigth)
+%        val = get(src,'Value');
+%        %pos = get(arg1,'Position')
+%        %pos(2) = -val;
+%        %set(arg1,'Position',pos)
+%        %arg1
+%        start=maxHeigth-(round(val*maxHeigth));
+%        if maxHeigth+20 >= 0
+%            if maxHeigth >= -Y_scaleInterval
+%                set(arg1,'Ylim',[-Y_scaleInterval 0])
+%            else
+%                val2 = get(src,'Value');
+%                start=maxHeigth-(round(val2*maxHeigth));
+%                set(arg1,'Ylim',[start start+Y_scaleInterval])
+%            end
+%            
+%            %set(arg1,'Ylim',[maxHeigth 0])
+%        else
+%            set(arg1,'Ylim',[start start+Y_scaleInterval])
+%        end
+%    end
+%    function slider_callback2(src, eventdata, arg1, maxLength)
+%        %old_xlim = get(gca,'Xlim')
+%        %old_ylim = get(gca,'Ylim')
+%        val = get(src,'Value');
+%        %pos = get(arg1,'Position')
+%        %pos(1) = -val
+%        %set(arg1,'Xlim',old_xlim-val)
+%        start=round(val*maxLength);
+%        if round(val*maxLength)>=maxLength-X_scaleInterval                  %if start+x_scale>=maxLength
+%            %set(arg1,'Xlim',[maxLength-X_scaleInterval maxLength])
+%            if maxLength <= X_scaleInterval
+%                set(arg1,'Xlim',[0 X_scaleInterval])
+%            else            
+%                val2 = get(src,'Value');
+%                start=round(val2*maxLength);
+%                set(arg1,'Xlim',[start start+X_scaleInterval])
+%            end
+%        else
+%            set(arg1,'Xlim',[start start+X_scaleInterval])
+%        end
+%    end
     function up_callback(src, event, target)
         start_yBottom = get(gca,'Ylim');
         start = start_yBottom(2);
