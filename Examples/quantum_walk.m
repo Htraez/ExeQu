@@ -60,7 +60,7 @@ function quantum_walk()
     shifting.cnot(6, 5);
     
     %% Contruct Full Circuit
-    for i = 1:13
+    for i = 1:17
         qc + coin;
         qc + shifting;
     end
