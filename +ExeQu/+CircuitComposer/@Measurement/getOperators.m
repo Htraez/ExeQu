@@ -1,3 +1,3 @@
 function operators = getOperators(self)
-    operators = self.measurementOperators;
+    operators = self.operatorMap;
 end

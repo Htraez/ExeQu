@@ -47,12 +47,14 @@ classdef ControlledUnitary < ExeQu.Gates.Unitary
             I = eye(2);
             
 %             Scope down
-            scope = min([ctrl target]) - 1;
-            s_ctrl = ctrl - scope;
-            s_target = target - scope;
+            scope = min([ctrl target]) - 1; % Check the least bit involved 
+            s_ctrl = ctrl - scope; % Scale down to start from 1
+            s_target = target - scope; % Scale down to start from 1
             
-            n_bit = max([s_ctrl s_target]);
-            operator = zeros(2^n_bit);
+            n_bit = max([s_ctrl s_target]); % Number of bit covered by this gate
+            operator = zeros(2^n_bit); 
+            % Create empty operator matrix 
+            % (this will hold the last result of operation matrix)
             
             temp = zeros(1, n_bit);
             temp(s_ctrl) = 1;

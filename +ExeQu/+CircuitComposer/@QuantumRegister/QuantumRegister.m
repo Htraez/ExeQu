@@ -7,13 +7,20 @@ classdef QuantumRegister < handle
         notation %initial state notation
     end
     methods (Access = public)
-        function obj = QuantumRegister(qreg_n, initState)
+        function obj = QuantumRegister(qreg_n, initState, varargin)
             import ExeQu.CircuitComposer.*
             
             % Initialize state in each index of QuantumRegister using 
             %   state initialize by qubit
             qubits = [];
             obj.notation = "|";
+            
+            if nargin > 2
+                verbose = varargin{1};
+            else
+                verbose = false;
+            end
+            
             for index = 1:qreg_n
                 if nargin < 2
                     state = '0';
@@ -41,13 +48,20 @@ classdef QuantumRegister < handle
                 
                 % After this loop obj.state should be sparse
             end
-            qreg_build_time = toc
+            qreg_build_time = toc;
+            
+            if verbose
+                disp('Time used to build qreg:');
+                disp(qreg_build_time);
+            end
+            
             obj.notation = obj.notation + ">";
         end
         
         % Other Functions 
         size = getSize(self);
         state = getState(self);
+        density = getDensity(self);
 %         setState(self, state);
 %         setLabel(self, label);
     end
