@@ -138,6 +138,7 @@ function draw(self)
         set(gca,'Xlim',[start start+X_scaleInterval])
     end
     function zoomIn_callback(src, event, target, ~, hscroll)
+        
         old_xlim = get(gca,'Xlim');
         old_ylim = get(gca,'Ylim');
 %       [old_xlim(1)/2 old_xlim(2)/2]
@@ -158,6 +159,7 @@ function draw(self)
     end
     
     function zoomOut_callback(src, event, target, vscroll, hscroll)
+        
         old_xlim = get(gca,'Xlim');
         old_ylim = get(gca,'Ylim');
         set(gca, 'Xlim', [old_xlim(1)*2 old_xlim(2)*2]);
