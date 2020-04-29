@@ -69,7 +69,7 @@ classdef Circuit < handle
 %       Execution:
 %           Begin the calculation of circuit and return the result of
 %           measurement in form of 'Result' struct
-        result = execute(self, n_shots);
+        result = execute(self, n_shots, varargin);
         
 %       Miscellaneous:
 %           Other useful functions

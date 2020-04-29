@@ -15,8 +15,8 @@ function quantum_teleportation()
     
     % Do z-measurement and Hadamard measurement
     qc.h(1)
-    qc.measure(1, 1)
-    qc.measure(2, 2) 
+%     qc.measure(1, 1)
+%     qc.measure(2, 2) 
     % The result then send to Bob so he can prepare proper gates 
     % to decipher Alice sample data correctly
     % In this case, according to type of bell-state both side use
