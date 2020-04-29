@@ -31,7 +31,7 @@ function out = getCount(c_reg, shots, varargin)
             x = samplingDistribution(proba);
             sample = [sample num2str(vals(x))];
         end
-        out(sample) = out(sample) + 1;
+        out(sample) = out(sample) + 1; % Add 1 count
     end
     
     if ~omit_summary

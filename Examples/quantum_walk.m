@@ -71,7 +71,7 @@ function quantum_walk()
     
     %% Execute
     tic
-    result = qc.execute(1024);
+    result = qc.execute(1000);
     execution_time = toc
     tic
     result.getCount();

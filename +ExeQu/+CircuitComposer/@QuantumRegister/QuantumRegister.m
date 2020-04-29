@@ -48,6 +48,7 @@ classdef QuantumRegister < handle
         % Other Functions 
         size = getSize(self);
         state = getState(self);
+        density = getDensity(self);
 %         setState(self, state);
 %         setLabel(self, label);
     end
