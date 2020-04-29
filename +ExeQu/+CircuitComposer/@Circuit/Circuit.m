@@ -28,6 +28,7 @@ classdef Circuit < handle
 %           and wrap them in 'operation' struct before adding
 %           them to the circuit's 'operationQueue'
         add(self, operation);
+        barrier(self, varargin);
         x(self, target);
         y(self, target);
         z(self, target);
