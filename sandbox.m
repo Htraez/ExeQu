@@ -1,43 +1,54 @@
 import ExeQu.Gates.*;
 import ExeQu.CircuitComposer.*;
 
-circuit = Circuit(5, 3);
-tic
+qubits = 8;
+cbits = 5;
+qc = Circuit(qubits, cbits);
+
+qc.x(1);
+qc.x(2);
+qc.x(3);
+qc.x(5);
+
+qc.x(8);
+
 for i = 1:1
-    circuit.h(1)
+    qc.h(8);
+    qc.cnot(8, 1);
+    qc.cnot(8, 2);
+    qc.cnot(8, 3);
+%     qc.cnot(8, 5);
+%     qc.cnot(8, 7);
+    
+%     qc.ccnot(1, 2, 4);
+%     qc.ccnot(3, 5, 6);
+%     qc.ccnot(4, 6, 7);
+%     qc.ccnot(3, 5, 6);
+%     qc.ccnot(1, 2, 4);
+%     
+%     qc.ccnot(1, 2, 4);
+%     qc.ccnot(3, 4, 5);
+%     qc.ccnot(1, 2, 4);
+%     
+%     qc.ccnot(1, 2, 3);
+%     qc.cnot(1, 2);
+%     qc.x(1);
+%     
+%     qc.cnot(8, 1);
+%     qc.cnot(8, 2);
+%     qc.cnot(8, 3);
+%     qc.cnot(8, 5);
+%     qc.cnot(8, 7);
 end
-h_time = toc
-circuit.u1(1,pi/2)
-circuit.u2(2,pi/2,pi/2)
-circuit.u3(3,pi/2,pi/2,pi/2)
-circuit.x(2)    
-circuit.cz(5, 3)
-circuit.unitary([0 1; 1 0], [2,4]);
-circuit.unitary([0 1; 1 0], [4,1]);
 
-U = Unitary([0 1; 1 0]);
-circuit.controlledU(U,[3,4], 5);
-circuit.controlledU(U,[3,4], 2);
+qc.measure(1, 1);
+qc.measure(2, 2);
+qc.measure(3, 3);
+qc.measure(5, 4);
+qc.measure(7, 5);
 
-tic
-circuit.measure(1, 1)
-add_measure_time1 = toc
-tic
-circuit.measure(2, 2)
-add_measure_time2 = toc
-circuit.measure(3, 3)
-%% circuit.cnot(2, 1)
-%circuit.ccnot(2, 5, 3)
-circuit.unitary([0 1; 1 0], 2);
+qc.draw();
 
-tic
-ops = circuit.peekOperations()
-celldisp(ops)
-result = circuit.execute(2000);
-execute_time = toc
+result = qc.execute(1000);
+result.plotHistogram();
 
-circuit.draw();
-circuit.getMaxLength()
-%result;
-result.getCount();
-%result.plotHistogram();
