@@ -5,7 +5,7 @@ function plotOperation(op)
     
     check = lower(op.label);
     margin_line_x=1;
-    disp(check)
+%     disp(check)
     
     if check=="measurement"
         temp = max(n_element(min(op.associatedQubit):length(n_element))+1);

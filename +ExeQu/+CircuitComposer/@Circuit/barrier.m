@@ -5,9 +5,12 @@ function barrier(self, varargin)
     if nargin >= 3
         from = varargin{1};
         to = varargin{2};
-    else
+    elseif nargin == 1
         from = 1;
         to = self.quantumRegister.getSize();
+    else
+        identifier = 'Barrier:ParameterError';
+        throw(MException(identifier,"Must specify both args or none"))
     end
     
     operation.label = 'barrier';
