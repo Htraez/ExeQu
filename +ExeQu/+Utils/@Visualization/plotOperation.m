@@ -5,7 +5,7 @@ function plotOperation(op)
     
     check = lower(op.label);
     margin_line_x=1;
-    %disp(check)
+%     disp(check)
     
     if check=="measurement"
         temp = max(n_element(min(op.associatedQubit):length(n_element))+1);
@@ -176,6 +176,9 @@ function plotOperation(op)
         check = basisToShow;
         text(start_x(1)+0.4,-(2*op.associatedQubit)-0.25,upper(check));
         hold off
+    elseif check=="barrier"
+        yline=[pos_y+1 pos_y-(2*L)-1];
+        line([pos_x(1) pos_x(1)],yline,'LineStyle','--');
     end
     if check=="u" || check=="u1" || check=="u2" || check=="u3"
         temp = max(n_element(min(op.associatedQubit):max(op.associatedQubit))+0.5);

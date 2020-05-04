@@ -28,6 +28,7 @@ classdef Circuit < handle
 %           and wrap them in 'operation' struct before adding
 %           them to the circuit's 'operationQueue'
         add(self, operation);
+        barrier(self, varargin);
         x(self, target);
         y(self, target);
         z(self, target);
@@ -69,7 +70,7 @@ classdef Circuit < handle
 %       Execution:
 %           Begin the calculation of circuit and return the result of
 %           measurement in form of 'Result' struct
-        result = execute(self, n_shots);
+        result = execute(self, n_shots, varargin);
         
 %       Miscellaneous:
 %           Other useful functions
