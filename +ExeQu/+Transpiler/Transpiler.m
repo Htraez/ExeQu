@@ -107,12 +107,12 @@ classdef Transpiler
                     for i = 1 : length(tmp)
                         if strcmp(tmp{i},'(')
                             openBra = i;
-                        elseif strcmp(tmp{1},')')
+                        elseif strcmp(tmp{i},')')
                             closeBra = i;
                             break;
                         end
                     end
-                    noOfPara = closeBra-openBra;
+                    noOfPara = closeBra-openBra-1;
                     tmp = strsplit(cmd,{' ',',','(',')'});
                     for i = 1 : length(self.gateName)
                         if strcmp(tmp{1},self.gateName{i})
@@ -133,6 +133,20 @@ classdef Transpiler
                     end
                 end
             end
+        end
+        
+        function self = getParaTotal(self,cmd)
+            openBra  = 0;
+            closeBra  = 0;
+            for i = 1 : length(cmd)
+                if strcmp(cmd{i},'(')
+                    openBra = i;
+                elseif strcmp(cmd{i},')')
+                    closeBra = i;
+                    break;
+                end
+            end
+            self.gatePara{length(self.gatePara)+1} = closeBra-openBra-1;
         end
         
         function self = checkQASMSyntax(self,cmd)
@@ -349,9 +363,144 @@ classdef Transpiler
                 tmp = strsplit(tmp,{'{',';'});
                 tmp(cellfun('isempty',tmp)) = [];
 
-                if contains(tmp{1},{'(',')'})
-                    
-                else
+                if contains(tmp{1},{'(',')'}) %new gate with parameter
+                    tmp{1} = strtrim(tmp{1});
+                    gateCreate = strsplit(tmp{1},{' ',','});
+                    dup = 0;
+                    if ~isempty(self.gateName)
+                        for i = 1 : length(self.gateName)
+                            if strcmp(gateCreate{2},self.gateName{1})
+                                dup = 1;
+                            end
+                        end
+                    end
+                    error = 0;
+                    if dup == 0
+                        self.gateName{length(self.gateName)+1} = gateCreate{2};
+                        self = self.getParaTotal(gateCreate);
+                        self.gateArgs{length(self.gateArgs)+1} = length(gateCreate)-4-self.gatePara{length(self.gatePara)};
+                        gateTmp=cell(1,length(tmp)-1);
+                        index = length(self.gateDetail)+1;
+                        count = 0;
+                        for i = 2:length(tmp)
+                            self = self.checkGateSyntax(tmp{i});
+                            if ~isempty(self.correctGate)
+                                count = count+1;
+                                if strcmp(self.correctGate{1},'CX')
+                                    for k = 2:3
+                                        for j = self.gatePara{length(self.gatePara)}+5:length(gateCreate)
+                                            if strcmp(gateCreate{j},self.correctGate{k})
+                                                self.correctGate{k}=num2str(j-(self.gatePara{length(self.gatePara)}+4));
+                                            end
+                                        end
+                                    end
+                                    gateTmp{count} = self.correctGate{1}+" "+self.correctGate{2}+" "+self.correctGate{3};
+                                elseif strcmp(self.correctGate{1},'U')
+                                    for j = self.gatePara{length(self.gatePara)}+5:length(gateCreate)
+                                        if strcmp(gateCreate{j},self.correctGate{5})
+                                            self.correctGate{5}=num2str(j-(self.gatePara{length(self.gatePara)}+4));
+                                        end
+                                    end
+                                    for j = 4:length(gateCreate)-self.gateArgs{length(self.gateArgs)}
+                                        if strcmp(gateCreate{j},self.correctGate{2})
+                                            if j-3==1
+                                                self.correctGate{2}='a';
+                                            elseif j-3==2
+                                                self.correctGate{2}='b';
+                                            elseif j-3==3
+                                                self.correctGate{2}='c';
+                                            end
+                                            
+                                        end
+                                        if strcmp(gateCreate{j},self.correctGate{3})
+                                            if j-3==1
+                                                self.correctGate{3}='a';
+                                            elseif j-3==2
+                                                self.correctGate{3}='b';
+                                            elseif j-3==3
+                                                self.correctGate{3}='c';
+                                            end
+                                        end
+                                        if strcmp(gateCreate{j},self.correctGate{4})
+                                            if j-3==1
+                                                self.correctGate{4}='a';
+                                            elseif j-3==2
+                                                self.correctGate{4}='b';
+                                            elseif j-3==3
+                                                self.correctGate{4}='c';
+                                            end
+                                        end
+                                    end
+                                    gateTmp{count} = self.correctGate{1}+" "+self.correctGate{2}+" "+self.correctGate{3}+" "+self.correctGate{4}+" "+self.correctGate{5};
+                                else % call another gate
+                                    for j = 1 : length(self.gateName)
+                                        if startsWith(self.correctGate{1},self.gateName{j})
+                                            if self.gatePara{j} == 0 %ref gate no para
+                                                tmpGateDetail = self.gateDetail{j};
+                                                for x = 1 : length(tmpGateDetail)
+                                                    tmpGate2 = strsplit(tmpGateDetail{x},' ');
+                                                    if strcmp(tmpGate2{1},'CX')
+                                                        for a = 2:3
+                                                            for b = 5+self.gatePara{length(self.gateName)}:length(gateCreate)
+                                                                if strcmp(gateCreate{b},self.correctGate{a})
+                                                                    tmpGate2{a}=num2str(b-(self.gatePara{length(self.gateName)}+4));
+                                                                end
+                                                            end
+                                                        end
+                                                        gateTmp{count} = tmpGate2{1}+" "+tmpGate2{2}+" "+tmpGate2{3};
+                                                    elseif strcmp(tmpGate2{1},'U')
+                                                        for b = 5+self.gatePara{length(self.gateName)}:length(gateCreate)
+                                                            for c = 2:length(self.correctGate)
+                                                                if strcmp(gateCreate{b},self.correctGate{c})
+                                                                    tmpGate2{5}=num2str(b-(self.gatePara{length(self.gateName)}+4));
+                                                                end
+                                                            end
+                                                        end
+                                                        gateTmp{count} = tmpGate2{1}+" "+ tmpGate2{2}+" "+ tmpGate2{3}+" "+ tmpGate2{4}+" "+ tmpGate2{5};
+                                                    end
+                                                end
+                                            else %ref gate have para
+                                                tmpGateDetail = self.gateDetail{j};
+                                                for x = 1 : length(tmpGateDetail)
+                                                    tmpGate2 = strsplit(tmpGateDetail{x},' ');
+                                                    if strcmp(tmpGate2{1},'CX')
+                                                        for a = 2:3
+                                                            for b = 3:length(gateCreate)
+                                                                if strcmp(gateCreate{b},self.correctGate{a})
+                                                                    tmpGate2{a}=num2str(b-2);
+                                                                end
+                                                            end
+                                                        end
+                                                        gateTmp{count} = tmpGate2{1}+" "+tmpGate2{2}+" "+tmpGate2{3};
+                                                    elseif strcmp(tmpGate2{1},'U')
+                                                        for b = 3:length(gateCreate)
+                                                            for c = 2+self.gatePara{j}:length(self.correctGate)
+                                                                if strcmp(gateCreate{b},self.correctGate{c})
+                                                                    tmpGate2{5}=num2str(b-2);
+                                                                end
+                                                            end
+                                                        end
+                                                        for b = 2:1+self.gatePara{j}
+                                                            tmpGate2{b}=self.correctGate{b};
+                                                        end
+                                                        gateTmp{count} = tmpGate2{1}+" "+ tmpGate2{2}+" "+ tmpGate2{3}+" "+ tmpGate2{4}+" "+ tmpGate2{5};
+                                                    end
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                            else
+                                error = 1;
+                                break;
+                            end
+                        end
+                        if error == 0
+                            self.correctCmd{1} = "gate"; 
+                            self.gateDetail{index} = gateTmp;
+                        end
+                    end
+                else %new gate no parameter
                     tmp{1} = strtrim(tmp{1});
                     gateCreate = strsplit(tmp{1},{' ',','});
                     dup = 0;
@@ -390,35 +539,99 @@ classdef Transpiler
                                         end
                                     end
                                     gateTmp{count} = self.correctGate{1}+" "+self.correctGate{2}+" "+self.correctGate{3}+" "+self.correctGate{4}+" "+self.correctGate{5};
-                                else
+                                else % new gate no parameter call created gate
                                     for j = 1 : length(self.gateName)
                                         if startsWith(self.correctGate{1},self.gateName{j})
-                                            if self.gatePara{j} == 0 
+                                            if self.gatePara{j} == 0 %that ref gate no parameter
                                                 tmpGateDetail = self.gateDetail{j};
                                                 for x = 1 : length(tmpGateDetail)
+                                                    count = count+1;
                                                     tmpGate2 = strsplit(tmpGateDetail{x},' ');
                                                     if strcmp(tmpGate2{1},'CX')
+                                                        qubitNoforSwap = 0;
+                                                        for a = 2:length(self.correctGate)
+                                                            qubitNoforSwap = qubitNoforSwap+1;
+                                                            for b = 2:3
+                                                                if strcmp(num2str(qubitNoforSwap),tmpGate2{b})
+                                                                    tmpGate2{b}=self.correctGate{a};
+                                                                end
+                                                            end
+                                                        end
                                                         for a = 2:3
                                                             for b = 3:length(gateCreate)
-                                                                if strcmp(gateCreate{b},self.correctGate{a})
+                                                                if strcmp(gateCreate{b},tmpGate2{a})
+                                                                    tmpGate2{a}=num2str(b-2);
+                                                                end
+                                                            end
+                                                        end
+                                                        gateTmp{count} = tmpGate2{1}+" "+tmpGate2{2}+" "+tmpGate2{3};
+                    
+                                                    elseif strcmp(tmpGate2{1},'U')
+                                                        qubitNoforSwap=0;
+                                                        for a = 2:length(self.correctGate)
+                                                            qubitNoforSwap = qubitNoforSwap+1;
+                                                            if strcmp(num2str(qubitNoforSwap),tmpGate2{5})
+                                                                tmpGate2{5}=self.correctGate{a};
+                                                            end
+                                                        end
+                                                        for b = 3:length(gateCreate)
+                                                            if strcmp(gateCreate{b},tmpGate2{5})
+                                                                tmpGate2{5}=num2str(b-2);
+                                                            end
+                                                        end
+                                                        gateTmp{count} = tmpGate2{1}+" "+ tmpGate2{2}+" "+ tmpGate2{3}+" "+ tmpGate2{4}+" "+ tmpGate2{5};
+                                                    end
+                                                end
+                                            else %that ref gate have parameter
+                                                tmpGateDetail = self.gateDetail{j};
+                                                correctGateParaNo = self.gatePara{j};
+                                                for x = 1 : length(tmpGateDetail)
+                                                    count = count+1;
+                                                    tmpGate2 = strsplit(tmpGateDetail{x},' ');
+                                                    if strcmp(tmpGate2{1},'CX')
+                                                        qubitNoforSwap = 0;    
+                                                        for c = 2+correctGateParaNo:length(self.correctGate)
+                                                            qubitNoforSwap = qubitNoforSwap + 1;
+                                                            for b = 2 : 3
+                                                                if strcmp(num2str(qubitNoforSwap),tmpGate2{b})
+                                                                    tmpGate2{b}=self.correctGate{c};
+                                                                end
+                                                            end
+                                                        end
+                                                        
+                                                        for a = 2:3
+                                                            for b = 3:length(gateCreate)
+                                                                if strcmp(gateCreate{b},tmpGate2{a})
                                                                     tmpGate2{a}=num2str(b-2);
                                                                 end
                                                             end
                                                         end
                                                         gateTmp{count} = tmpGate2{1}+" "+tmpGate2{2}+" "+tmpGate2{3};
                                                     elseif strcmp(tmpGate2{1},'U')
-                                                        for b = 3:length(gateCreate)
-                                                            for c = 2:length(self.correctGate)
-                                                                if strcmp(gateCreate{b},self.correctGate{c})
-                                                                    tmpGate2{5}=num2str(b-2);
+                                                        qubitNoforSwap = 0;    
+                                                        for c = 2+correctGateParaNo:length(self.correctGate)
+                                                            qubitNoforSwap = qubitNoforSwap + 1;
+                                                            if strcmp(num2str(qubitNoforSwap),tmpGate2{5})
+                                                                tmpGate2{5}=self.correctGate{c};
+                                                            end
+                                                        end
+                                                        paraNoforSwap = 0;
+                                                        for c = 2 : 2+correctGateParaNo-1
+                                                            paraNoforSwap = paraNoforSwap + 1;
+                                                            for b  = 2:4
+                                                                if strcmp(char(paraNoforSwap+96),tmpGate2{b})
+                                                                    tmpGate2{b}=self.correctGate{c};
                                                                 end
+                                                            end
+                                                        end
+                                                        for b = 3:length(gateCreate)
+                                                            if strcmp(gateCreate{b},tmpGate2{5})
+                                                                tmpGate2{5}=num2str(b-2);
                                                             end
                                                         end
                                                         gateTmp{count} = tmpGate2{1}+" "+ tmpGate2{2}+" "+ tmpGate2{3}+" "+ tmpGate2{4}+" "+ tmpGate2{5};
                                                     end
                                                 end
-                                            else
-                                                
                                             end
                                         end
                                     end
@@ -430,6 +643,7 @@ classdef Transpiler
                         end
                         if error == 0
                             self.correctCmd{1} = "gate"; 
+                            gateTmp(cellfun('isempty',gateTmp)) = [];
                             self.gateDetail{index} = gateTmp;
                         end
                     end
@@ -446,7 +660,12 @@ classdef Transpiler
                                 self.correctCmd = tmp;
                             end
                         else
-                            
+                            tmp = strsplit(cmd,{' ',',','(',')'});
+                            qu = tmp(2+self.gatePara{i}:length(tmp));
+                            self = self.checkQregSyntax(qu);
+                            if self.correctQubit ~= 0 && self.gateArgs{i}==length(qu)
+                                self.correctCmd = tmp;
+                            end
                         end
                     end
                 end
@@ -461,6 +680,7 @@ classdef Transpiler
         
         function writeFile(~,textToWirte, outFileName)
             fileID = fopen(outFileName,'w');
+            textToWirte(cellfun('isempty',textToWirte)) = [];
             for k=1:length(textToWirte)
                 if ~strcmp(textToWirte{k},"")
                    fprintf(fileID,'%s\n',textToWirte{k});
@@ -695,7 +915,63 @@ classdef Transpiler
                                         end
                                        
                                     else
-
+                                        quNo = 0;
+                                        paraNo = 0;
+                                        gateCall = self.gateDetail{i};
+                                        for j = 2 : 1+self.gatePara{i}
+                                            paraNo = paraNo+1;
+                                            for z = 1 : length(gateCall)
+                                                tmpGate = strsplit(gateCall{z},' ') ;
+                                                if strcmp(tmpGate{1},'U')
+                                                    if strcmp(tmpGate{2},char(paraNo+96))
+                                                        tmpGate{2}=tmp{j};
+                                                        gateCall{z} = tmpGate{1}+" "+tmpGate{2}+" "+tmpGate{3}+" "+tmpGate{4}+" "+tmpGate{5};
+                                                    end
+                                                    if strcmp(tmpGate{3},char(paraNo+96))
+                                                        tmpGate{3}=tmp{j};
+                                                        gateCall{z} = tmpGate{1}+" "+tmpGate{2}+" "+tmpGate{3}+" "+tmpGate{4}+" "+tmpGate{5};
+                                                    end
+                                                    if strcmp(tmpGate{4},char(paraNo+96))
+                                                        tmpGate{4}=tmp{j};
+                                                        gateCall{z} = tmpGate{1}+" "+tmpGate{2}+" "+tmpGate{3}+" "+tmpGate{4}+" "+tmpGate{5};
+                                                    end
+                                                end
+                                            end
+                                        end
+                                        for j = 2+self.gatePara{i}:length(tmp)
+                                            quNo = quNo+1;
+                                            for z = 1 : length(gateCall)
+                                                tmpGate = strsplit(gateCall{z},' ') ;
+                                                if strcmp(tmpGate{1},'CX')
+                                                    if strcmp(tmpGate{2},num2str(quNo))
+                                                        tmpGate{2}=tmp{j};
+                                                        gateCall{z} = tmpGate{1}+" "+tmpGate{2}+" "+tmpGate{3};
+                                                    end
+                                                    if strcmp(tmpGate{3},num2str(quNo))
+                                                        tmpGate{3}=tmp{j};
+                                                        gateCall{z} = tmpGate{1}+" "+tmpGate{2}+" "+tmpGate{3};
+                                                    end
+                                                elseif strcmp(tmpGate{1},'U')
+                                                    if strcmp(tmpGate{5},num2str(quNo))
+                                                        tmpGate{5}=tmp{j};
+                                                        gateCall{z} = tmpGate{1}+" "+tmpGate{2}+" "+tmpGate{3}+" "+tmpGate{4}+" "+tmpGate{5};
+                                                    end
+                                                end
+                                            end
+                                        end
+                                        
+                                        self.result{k}="";
+                                        for j = 1 : length(gateCall)
+                                            tmpGate = strsplit(gateCall{j},{' ','[',']'}) ;
+                                            if strcmp(tmpGate{1},'CX')
+                                                self = self.translateCX(tmpGate,k);
+                                            elseif strcmp(tmpGate{1},'U')
+                                                self = self.translateU(tmpGate,k);
+                                            end
+                                            if j~=length(gateCall)
+                                                self.result{k}=self.result{k}+newline;
+                                            end
+                                        end
                                     end
                                 end
                           end
