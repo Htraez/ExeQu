@@ -1,13 +1,9 @@
 OPENQASM 2.0;
-include "qelib1.inc";
+include "importCode.inc";
 //gate abc a,b,c { CX a,b; U(pi/2,pi/2,pi/2) c;}
-gate x c,d { CX d,c; U(pi/2,pi/2,pi/2) d;}
-gate yy(theta,phi) a,b {U(theta,phi,0) a; CX b,a;}
-gate ryy(theta,phi,zeta,test) a,b { U(theta,phi,0) a; x b,a; yy(zeta,test) a,b;}
 //gate xx a,b { U(pi/2,0,0) a ; x b,a ; yy(pi/6,pi/4) b,a;}
 qreg q[5];
 qreg q1[5];
-qreg q2[5];
 creg c[5];
 creg c1[5];
 ryy(pi/6,pi/4,pi/3,pi/5) q[1],q[0];

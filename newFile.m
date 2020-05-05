@@ -1,7 +1,6 @@
 import ExeQu.CircuitComposer.*;
 import ExeQu.Gates.*;
-circuit = Circuit(15,10);
-%include "qelib1.inc"
+circuit = Circuit(10,10);
 %gate abc a,b,c { CX a,b; U ( pi/2,pi/2,pi/2 )  c;}
 %gate xx a,b { U ( pi/2,0,0 )  a ; x b,a ; yy ( pi/6,pi/4 )  b,a;}
 circuit.u3(2,pi/6,pi/4,0);

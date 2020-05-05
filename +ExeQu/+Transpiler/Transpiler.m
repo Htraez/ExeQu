@@ -3,6 +3,10 @@ classdef Transpiler
         text;
         allCmd;
         
+        newAllCmd = [];
+        
+        tmpCmd = [];
+        
         correctCmd;
         correctGate;
         correctQubit;
@@ -19,6 +23,7 @@ classdef Transpiler
         gateDetail = [];
 
         result = [];
+        errorCmd = 0;
         
     end
     
@@ -26,7 +31,15 @@ classdef Transpiler
         function self = convert(self,inFileName, outFileName)
             self = self.readFile(inFileName);
             self = self.seperateCommand(self.text);
+            if self.errorCmd == 1
+                disp("command syntax error");
+                return;
+            end
             self = self.translate(self.allCmd);
+            if self.errorCmd == 1
+                disp("command syntax error");
+                return;
+            end
             self.writeFile(self.result,outFileName);
         end
     end
@@ -47,9 +60,21 @@ classdef Transpiler
         
         function self = seperateCommand(self,text)
             self.allCmd = strsplit(text,'\n');
+            self.allCmd = strtrim(self.allCmd);
             for i= 1 : length(self.allCmd)
                 if ~startsWith(self.allCmd{i},'//') && ~startsWith(self.allCmd{i},'gate')
-                    self.allCmd{i} = regexprep(self.allCmd{i},';','');
+                    if endsWith(self.allCmd{i},';')
+                        self.allCmd{i} = regexprep(self.allCmd{i},';','');
+                    else
+                        self.errorCmd = 1;
+                        disp("error on command "+self.allCmd{i});
+                    end
+                end
+                if startsWith(self.allCmd{i},'gate')
+                    if ~endsWith(self.allCmd{i},'}') || ~contains(self.allCmd{i},'{')
+                        self.errorCmd = 1;
+                        disp("error on command "+self.allCmd{i});
+                    end
                 end
             end
             self.allCmd = strtrim(self.allCmd);
@@ -803,11 +828,69 @@ classdef Transpiler
               end
         end
         
+        function self = translateInclude(self,cmd)
+            self.tmpCmd = [];
+            tmp2 = strsplit(cmd,'"');
+            fileID = fopen(tmp2{2},'r');
+            formatSpec = '%c';
+            tmp3 = fscanf(fileID, formatSpec);
+            self.tmpCmd = strsplit(tmp3,'\n');
+            self.tmpCmd = strtrim(self.tmpCmd);
+            for j= 1 : length(self.tmpCmd)
+                if ~startsWith(self.tmpCmd{j},'//') && ~startsWith(self.tmpCmd{j},'gate')
+                    if endsWith(self.tmpCmd{j},';')
+                        self.tmpCmd{j} = regexprep(self.tmpCmd{j},';','');
+                    else
+                        self.errorCmd = 1;
+                        disp("error on command "+self.tmpCmd{j});
+                        return;
+                    end
+                end
+                if startsWith(self.tmpCmd{j},'gate')
+                    if ~endsWith(self.tmpCmd{j},'}') || ~contains(self.tmpCmd{j},'{')
+                        self.errorCmd = 1;
+                        disp("error on command "+self.tmpCmd{j});
+                        return;
+                    end
+                end
+            end
+            self.tmpCmd = strtrim(self.tmpCmd);
+        end
         
         function self = translate(self,codes)
+            haveInclude = 1;
+            while haveInclude == 1
+                haveInclude = 0;
+                for i = 1 : length(codes)
+                    if startsWith(codes{i},'include ')
+                        haveInclude = 1;
+                        self = self.checkQASMSyntax(codes{i});
+                        if ~isempty(self.correctCmd)
+                            self = self.translateInclude(codes{i});
+                            if ~isempty(self.tmpCmd)
+                                if isempty(self.newAllCmd)
+                                    self.newAllCmd = [codes(1:i-1) self.tmpCmd codes(i+1:end)];
+                                else
+                                    for a = 1 : length(self.newAllCmd)
+                                        if strcmp(self.newAllCmd{a},codes{i})
+                                            self.newAllCmd = [self.newAllCmd(1:a-1) self.tmpCmd  self.newAllCmd(a+1:end) ];
+                                            break;
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+                codes = self.newAllCmd;
+            end
+            
+            disp(codes');
+            
             for a = 1:length(codes)
                 if startsWith(codes{a},'qreg') || startsWith(codes{a},'creg') 
                     self = self.checkQASMSyntax(codes{a});
+                    
                 end
             end
             for k=1:length(codes)
@@ -817,9 +900,23 @@ classdef Transpiler
                     self.correctCmd = [];
                     self.correctCmd{1} = "reg";
                 end
+                if k == 1
+                    if ~isempty(self.correctCmd) && strcmp(self.correctCmd{1},'OPENQASM')
+                        
+                    else
+                        disp("OPENQASM 2.0 must be on first line of code");
+                        self.errorCmd = 1;
+                        return;
+                    end
+                end
                  if ~isempty(self.correctCmd)
                      tmp = self.correctCmd;
                       if strcmp(tmp{1},'OPENQASM')
+                          if k ~= 1 
+                              disp("OPENQASM 2.0 must be on first line of code and no duplicate");
+                              self.errorCmd = 1;
+                              return;
+                          end
                           self.result{k} = "import ExeQu.CircuitComposer.*;"+newline+"import ExeQu.Gates.*;";
                           
                           if ~isempty(self.qregName)
