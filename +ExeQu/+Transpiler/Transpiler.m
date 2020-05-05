@@ -867,6 +867,9 @@ classdef Transpiler
                         self = self.checkQASMSyntax(codes{i});
                         if ~isempty(self.correctCmd)
                             self = self.translateInclude(codes{i});
+                            if self.errorCmd == 1
+                                return;
+                            end
                             if ~isempty(self.tmpCmd)
                                 if isempty(self.newAllCmd)
                                     self.newAllCmd = [codes(1:i-1) self.tmpCmd codes(i+1:end)];
@@ -885,7 +888,7 @@ classdef Transpiler
                 codes = self.newAllCmd;
             end
             
-            disp(codes');
+            
             
             for a = 1:length(codes)
                 if startsWith(codes{a},'qreg') || startsWith(codes{a},'creg') 
