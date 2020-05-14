@@ -88,7 +88,7 @@ classdef Transpiler
                     tmp  = strsplit(qu{i},{'[',']'});
                     tmp(cellfun('isempty',tmp)) = [];
                     for j = 1 : length(self.qregName)
-                        if strcmp(tmp{1},self.qregName{j}) && ( str2double(tmp{2}) <= str2double(self.noOfQreg{j}))
+                        if strcmp(tmp{1},self.qregName{j}) && ( str2double(tmp{2}) < str2double(self.noOfQreg{j}))
                             pass = pass+1;
                             break;
                         end
@@ -704,6 +704,44 @@ classdef Transpiler
                     end
                     
                 end
+            elseif startsWith(cmd,'barrier ')
+                if ~contains(cmd,',')
+                    tmp = strsplit(cmd,' ');
+                    tmp = strtrim(tmp);
+                    tmp(cellfun('isempty',tmp)) = [];
+                    if length(tmp)==2
+                        for qregIndex = 1:length(self.qregName)
+                            if strcmp(tmp{2},self.qregName{qregIndex})
+                                self.correctCmd = tmp;
+                                return;
+                            end
+                        end
+                    end
+                else
+                    tmp = strsplit(cmd,{' ',','});
+                    tmp = strtrim(tmp);
+                    tmp(cellfun('isempty',tmp)) = [];
+                    pass=0;
+                    for i = 2 : length(tmp)
+                        if ~contains(tmp{i},{'[',']'})
+                            break;
+                        end
+                        qu  = strsplit(tmp{i},{'[',']'});
+                        qu(cellfun('isempty',qu)) = [];
+                        for j = 1 : length(self.qregName)
+                            if strcmp(qu{1},self.qregName{j}) && ( str2double(qu{2}) < str2double(self.noOfQreg{j}))
+                                pass = pass+1;
+                                break;
+                            end
+                        end
+                    end
+                    if pass ==length(tmp)-1
+                        tmp = strsplit(cmd,{' ',',','[',']'});
+                        tmp = strtrim(tmp);
+                        tmp(cellfun('isempty',tmp)) = [];
+                        self.correctCmd = tmp;
+                    end
+                end
             else
                 for i = 1 : length(self.gateName)
                     if startsWith(cmd,self.gateName{i})
@@ -1004,6 +1042,37 @@ classdef Transpiler
                           self = self.translateU(tmp,k);
                       elseif strcmp(tmp{1},'gate')
                           self.result{k} = [];
+                      elseif strcmp(tmp{1},'barrier')
+                          if length(tmp)==2
+                              qStart = 1;
+                              for qIndex = 1 : length(self.qregName)
+                                  if strcmp(tmp{2},self.qregName{qIndex})
+                                      qEnd = qStart+str2double(self.noOfQreg{qIndex})-1;
+                                      self.result{k} = "circuit.barrier("+qStart+","+qEnd+");";
+                                      break;
+                                  end
+                                  qStart = qStart+str2double(self.noOfQreg{qIndex});
+                              end
+                          else
+                              it = 2;
+                              self.result{k} = "";
+                              while it < length(tmp)
+                                  qStart = 1;
+                                  for qIndex = 1 : length(self.qregName)
+                                      if strcmp(tmp{it},self.qregName{qIndex})
+                                          qStart = qStart+str2double(tmp{it+1});
+                                          self.result{k} =self.result{k}+"circuit.barrier("+qStart+","+qStart+");";
+                                          break;
+                                      end
+                                      qStart = qStart+str2double(self.noOfQreg{qIndex});
+                                  end
+                                  it = it+2;
+                                  if it < length(tmp)
+                                      self.result{k} =self.result{k}+newline;
+                                  end
+                              end
+                          end
+                          
                       else
                           for i = 1 : length(self.gateName)
                                 if startsWith(tmp{1},self.gateName{i})
@@ -1109,7 +1178,6 @@ classdef Transpiler
                       end
                  end
             end
-            
             if self.circuitCreated == 1
                 self.result{k+1}="%auto generate when circuit was created"+newline+"circuit.draw();"+newline+"result = circuit.execute(1024);"+newline+"result.plotHistogram();";
             end
