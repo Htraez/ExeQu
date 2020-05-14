@@ -1,5 +1,5 @@
-classdef Transpiler
-    properties
+classdef Transpiler < matlab.unittest.TestCase
+    properties 
         text;
         allCmd;
         
@@ -25,12 +25,100 @@ classdef Transpiler
         circuitCreated = 0;
         result = [];
         errorCmd = 0;
+        error = 0;
+        
+    end
+    
+    methods (Test)
+        function testReadValidFile(this)
+            actSolution = this.readFile("QASMTest.qasm");
+            expSolution = 0;
+            this.verifyEqual(actSolution.error,expSolution);
+        end
+        
+        function testReadInValidFile(this)
+            actSolution = this.readFile("QASMTest3.qasm");
+            expSolution = 1;
+            this.verifyEqual(actSolution.error,expSolution);
+        end
+        
+        function testSeperateCmd(this)
+            actSolution = this.seperateCommand("OPEN QASM 2.0;"+newline+"qreg q[5];"+newline+"gate u3(phi,theta,lamda) a {U(phi,theta,lamda) a;}"+newline+"//comment");
+            expSolution = ["OPEN QASM 2.0", "qreg q[5]" ,"gate u3(phi,theta,lamda) a {U(phi,theta,lamda) a;}" ,"//comment"];
+            this.verifyEqual(actSolution.allCmd,expSolution);
+        end
+        
+        function testSeperateCmdWithError(this)
+            actSolution = this.seperateCommand("OPEN QASM 2.0"+newline+"qreg q[5];"+newline+"gate u3(phi,theta,lamda) a {U(phi,theta,lamda) a;"+newline+"//comment");
+            expSolution = 1;
+            this.verifyEqual(actSolution.errorCmd,expSolution);
+        end
+        
+        function testTranslateOPENQASM(this)
+            tmp = {'OPENQASM 2.0'};
+            actSolution = this.translate(tmp);
+            expSolution = {"import ExeQu.CircuitComposer.*;"+newline+"import ExeQu.Gates.*;"};
+            this.verifyEqual(actSolution.result,expSolution);
+        end
+        
+        function testTranslateIncludeValidFile(this)
+            tmp = 'include "gate.inc"';
+            actSolution = this.translateInclude(tmp);
+            expSolution = 0;
+            this.verifyEqual(actSolution.errorCmd,expSolution);
+        end
+        
+        function testTranslateIncludeInValidFile(this)
+            tmp = 'include "gate.in"';
+            actSolution = this.translateInclude(tmp);
+            expSolution = 1;
+            this.verifyEqual(actSolution.errorCmd,expSolution);
+        end
+        
+        function testTranslateQregCreg(this)
+            tmp = {'OPENQASM 2.0' ,'qreg q[3]','creg c[3]'};
+            actSolution = this.translate(tmp);
+            expSolution = {"import ExeQu.CircuitComposer.*;"+newline+"import ExeQu.Gates.*;"+newline+"circuit = Circuit(3,3);", "%auto generate when circuit was created"+newline+"circuit.draw();"+newline+"result = circuit.execute(1024);"+newline+"result.plotHistogram();"};
+            this.verifyEqual(actSolution.result,expSolution);
+        end
+        
+        function testTranslateQregCregWithSyntaxError(this)
+            tmp = {'OPENQASM 2.0' ,'qreg q','creg c[3]'};
+            actSolution = this.translate(tmp);
+            expSolution = 1;
+            this.verifyEqual(actSolution.errorCmd,expSolution);
+        end
+        
+        function testTranslateComment(this)
+            tmp = {'OPENQASM 2.0' ,'//comment line'};
+            actSolution = this.translate(tmp);
+            expSolution = {"import ExeQu.CircuitComposer.*;"+newline+"import ExeQu.Gates.*;" , '%comment line'};
+            this.verifyEqual(actSolution.result,expSolution);
+        end
+        
+        function testTranslateAllOtherCmd(this)
+            actSolution = this.convert('QASMTest.qasm', 'outTestFile.m');
+            expSolution = 0;
+            this.verifyEqual(actSolution.errorCmd,expSolution);
+        end
+        
+        function testWriteFile(this)
+            textToWrite = [{"import ExeQu.CircuitComposer.*;"+newline+"import ExeQu.Gates.*;"},{"circuit = Circuit(5,5);"}];
+            this.writeFile(textToWrite,"testWriteFile.m");
+            actSolution = this.readFile("testWriteFile.m");
+            expSolution = ['import ExeQu.CircuitComposer.*;' newline 'import ExeQu.Gates.*;' newline 'circuit = Circuit(5,5);' newline];
+            this.verifyEqual(actSolution.text,expSolution);
+        end
         
     end
     
     methods
         function self = convert(self,inFileName, outFileName)
             self = self.readFile(inFileName);
+            if self.error == 1
+                disp("file not found");
+                return;
+            end
             self = self.seperateCommand(self.text);
             if self.errorCmd == 1
                 disp("command syntax error");
@@ -38,7 +126,7 @@ classdef Transpiler
             end
             self = self.translate(self.allCmd);
             if self.errorCmd == 1
-                disp("command syntax error");
+                disp("command error");
                 return;
             end
             self.writeFile(self.result,outFileName);
@@ -46,18 +134,16 @@ classdef Transpiler
     end
     
     methods(Access=private)
+        
         function self = readFile(self,inFileName)
             fileID = fopen(inFileName,'r');
+            if fileID == -1
+                self.error = 1;
+                return;
+            end
             formatSpec = '%c';
             self.text = fscanf(fileID, formatSpec);
         end
-        
-%         function self = seperateCommand(self,text)
-%             text = strrep(text,'{',';begin;');
-%             text = strrep(text,'}',';end;');
-%             self.allCmd = strsplit(text,{';','\n'});
-%             self.allCmd = strtrim(self.allCmd);
-%         end
         
         function self = seperateCommand(self,text)
             self.allCmd = strsplit(text,'\n');
@@ -194,11 +280,20 @@ classdef Transpiler
             elseif startsWith(cmd,'qreg ')
                 tmp = strsplit(cmd,' ');
                 tmp = strtrim(tmp);
+                if ~contains(tmp{2},{'[',']'})
+                    self.errorCmd = 1;
+                    return;
+                end
                 if strcmp(tmp{1},'qreg')
                     qreg = strrep(tmp{2},'[',' [ ');
                     qreg = strrep(qreg,']',' ] ');
                     qreg = strsplit(qreg,' ');
                     qreg = strtrim(qreg);
+                    qreg(cellfun('isempty',qreg)) = [];
+                    if length(qreg) ~=4
+                        self.errorCmd = 1;
+                        return;
+                    end
                     if strcmp(qreg{2},'[') && strcmp(qreg{4},']')
                         pattern = {'1','2','3','4','5','6','7','8','9','0'};
                         if ( ~isnan(str2double(qreg{3}))) && ( ~startsWith(qreg{1},pattern) )
@@ -216,11 +311,20 @@ classdef Transpiler
             elseif startsWith(cmd,'creg ')
                 tmp = strsplit(cmd,' ');
                 tmp = strtrim(tmp);
+                if ~contains(tmp{2},{'[',']'})
+                    self.errorCmd = 1;
+                    return;
+                end
                 if strcmp(tmp{1},'creg')
                     creg = strrep(tmp{2},'[',' [ ');
                     creg = strrep(creg,']',' ] ');
                     creg = strsplit(creg,' ');
                     creg = strtrim(creg);
+                    creg(cellfun('isempty',creg)) = [];
+                    if length(creg) ~=4
+                        self.errorCmd = 1;
+                        return;
+                    end
                     if strcmp(creg{2},'[') && strcmp(creg{4},']')
                         pattern = {'1','2','3','4','5','6','7','8','9','0'};
                         if ( ~isnan(str2double(creg{3}))) && ( ~startsWith(creg{1},pattern) )
@@ -766,6 +870,7 @@ classdef Transpiler
             
             if isempty(self.correctCmd)
                 disp('Bad line of code skip...')
+                self.errorCmd = 1;
                 disp(cmd)
             end
             
@@ -871,6 +976,11 @@ classdef Transpiler
             self.tmpCmd = [];
             tmp2 = strsplit(cmd,'"');
             fileID = fopen(tmp2{2},'r');
+            if fileID == -1
+                self.errorCmd = 1;
+                disp("error on command "+cmd);
+                return;
+            end
             formatSpec = '%c';
             tmp3 = fscanf(fileID, formatSpec);
             self.tmpCmd = strsplit(tmp3,'\n');
@@ -924,7 +1034,9 @@ classdef Transpiler
                         end
                     end
                 end
-                codes = self.newAllCmd;
+                if ~isempty(self.newAllCmd)
+                    codes = self.newAllCmd;
+                end
             end
             
             
@@ -977,9 +1089,6 @@ classdef Transpiler
                               end
                               self.circuitCreated = 1;
                           end
-                          
-                      elseif strcmp(tmp{1},'include')
-                          self.result{k} = strcat('%',tmp{1}," ",tmp{2});
                       elseif startsWith(tmp{1},'//') 
                           self.result{k} = strrep(tmp{1},'//','%');
                       elseif strcmp(tmp{1},'CX')
@@ -1036,7 +1145,7 @@ classdef Transpiler
                               self.result{k} = "circuit.measure("+qreg+","+creg+");";
                           end
                       elseif strcmp(tmp{1},'reg')
-                          self.result{k} = "";
+                          self.result{k} = [];
                       elseif strcmp(tmp{1},'U')
                           self.result{k} = "";
                           self = self.translateU(tmp,k);
@@ -1181,6 +1290,7 @@ classdef Transpiler
             if self.circuitCreated == 1
                 self.result{k+1}="%auto generate when circuit was created"+newline+"circuit.draw();"+newline+"result = circuit.execute(1024);"+newline+"result.plotHistogram();";
             end
+            self.result(cellfun('isempty',self.result)) = [];
         end
         
     end
