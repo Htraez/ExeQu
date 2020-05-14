@@ -171,6 +171,19 @@ classdef Transpiler < matlab.unittest.TestCase
             pass = 0;
             for i = 1 :length(qu)
                 if contains(qu{i},{'[',']'})
+                    qreg = strrep(qu{i},'[',' [ ');
+                    qreg = strrep(qreg,']',' ] ');
+                    qreg = strsplit(qreg,' ');
+                    qreg = strtrim(qreg);
+                    qreg(cellfun('isempty',qreg)) = [];
+                    if length(qreg) ~=4 
+                        self.errorCmd = 1;
+                        return;
+                    end
+                    if ~(strcmp(qreg{2},'[') && strcmp(qreg{4},']'))
+                        self.errorCmd = 1;
+                        return;
+                    end
                     tmp  = strsplit(qu{i},{'[',']'});
                     tmp(cellfun('isempty',tmp)) = [];
                     for j = 1 : length(self.qregName)
@@ -853,6 +866,9 @@ classdef Transpiler < matlab.unittest.TestCase
                             tmp = strsplit(cmd,{' ',','});
                             qu = tmp(2:length(tmp));
                             self = self.checkQregSyntax(qu);
+                            if self.errorCmd == 1
+                                return;
+                            end
                             if self.correctQubit ~= 0 && self.gateArgs{i}==length(qu)
                                 self.correctCmd = tmp;
                             end
