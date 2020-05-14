@@ -22,6 +22,7 @@ classdef Transpiler
         gatePara = [];
         gateDetail = [];
 
+        circuitCreated = 0;
         result = [];
         errorCmd = 0;
         
@@ -936,6 +937,7 @@ classdef Transpiler
                                   end
                                   self.result{k} = self.result{k}+newline+"circuit = Circuit("+qreg+","+creg+");";
                               end
+                              self.circuitCreated = 1;
                           end
                           
                       elseif strcmp(tmp{1},'include')
@@ -1106,6 +1108,10 @@ classdef Transpiler
                           end
                       end
                  end
+            end
+            
+            if self.circuitCreated == 1
+                self.result{k+1}="%auto generate when circuit was created"+newline+"circuit.draw();"+newline+"result = circuit.execute(1024);"+newline+"result.plotHistogram();";
             end
         end
         
