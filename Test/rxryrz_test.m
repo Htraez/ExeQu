@@ -120,7 +120,7 @@ act = Gates.RZ(1, 1, theta3).toMatrice();
 exp = exp_rz(theta3);
 assert(isequal(act, exp))
 
-%% Gate: RY in 2bit Circuit
+%% Gate: RZ in 2bit Circuit
 act = Gates.RZ(2, 1, theta1).toMatrice();
 exp = tensor(exp_rz(theta1), I);
 assert(isequal(act, exp))
@@ -131,7 +131,7 @@ act = Gates.RZ(2, 1, theta3).toMatrice();
 exp = tensor(exp_rz(theta3), I);
 assert(isequal(act, exp))
 
-%% Gate: RY in 2bit Circuit (Omit 1st bit)
+%% Gate: RZ in 2bit Circuit (Omit 1st bit)
 act = Gates.RZ(2, 2, theta1).toMatrice();
 exp = tensor(I, exp_rz(theta1));
 assert(isequal(act, exp))
