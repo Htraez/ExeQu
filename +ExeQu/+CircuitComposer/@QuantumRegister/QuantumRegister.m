@@ -8,6 +8,10 @@ classdef QuantumRegister < handle
     end
     methods (Access = public)
         function obj = QuantumRegister(qreg_n, initState, varargin)
+            % Parameter Options
+            % obj = QuantumRegister(qreg_n, initState) <= default: verbose = false
+            % obj = QuantumRegister(qreg_n, initState, verbose) <= set verbose manually
+            
             import ExeQu.CircuitComposer.*
             
             % Initialize state in each index of QuantumRegister using 
