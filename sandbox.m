@@ -1,16 +1,13 @@
 import ExeQu.CircuitComposer.*;
 
-qc = Circuit(4, 3);
-qc.h(3);
-qc.barrier();
-qc.cnot(3,1);
-qc.cnot(3,2);
 
-qc.measure(1, 1);
-qc.measure(2, 2);
+elapsed_time = 0;
+visualize_time = 0;
+for i = 1:5
+    [e_t, v_t] = grover();
+    elapsed_time = elapsed_time + e_t;
+    visualize_time = visualize_time + v_t;
+end
 
-qc.draw();
-% celldisp(qc.peekOperations())
-result = qc.execute(1000);
-result.getCount();
-result.plotHistogram();
+elapsed_time/5
+visualize_time/5

@@ -1,6 +1,7 @@
-function deutsch_balance()
+function [elapsed_time, visualize_time] = deutsch_balance()
     import ExeQu.CircuitComposer.*;
     
+    tic
     %% Test I: with Uf of XOR function on 2 bit
     %   f(0,0) => 0
     %   f(0,1) => 1
@@ -31,13 +32,14 @@ function deutsch_balance()
     %   Expect qubit 1 and 2 to be |11> as this is a balanced function
     qc.measure(1, 1);
     qc.measure(2, 2);
-    
+
     %% Execute all operation to see result
-    tic
     result = qc.execute(1024);
-    execution_time = toc
+    elapsed_time = toc;
     tic
     result.getCount();
-    sampling_time = toc
     result.plotHistogram();
+    visualize_time = toc;
+    
+    qc.draw();
 end

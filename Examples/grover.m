@@ -1,4 +1,6 @@
-function grover()
+function [elapsed_time, visualize_time] = grover()
+    tic
+    
     import ExeQu.CircuitComposer.*;
     qc = Circuit(2, 2);
     
@@ -8,10 +10,10 @@ function grover()
     qc.h(2);
     
     qc.unitary([
-    [1, 0, 0, 0,],
-    [0, 1, 0, 0,],
-    [0, 0, -1, 0,],
-    [0, 0, 0, 1,]], [1 2])
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, -1, 0],
+    [0, 0, 0, 1]], [1 2])
 
     qc.h(1);
     qc.h(2);
@@ -31,12 +33,12 @@ function grover()
     qc.measure(1, 1)
     qc.measure(2, 2)
     
-    qc.draw();
+    
     tic
     result = qc.execute(1024);
-    execution_time = toc
+    elapsed_time = toc;
     tic
-    result.getCount();
-    sampling_time = toc
+    qc.draw();
     result.plotHistogram();
+    visualize_time = toc;
 end

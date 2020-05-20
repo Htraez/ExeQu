@@ -1,6 +1,3 @@
 function dense = getDensity(self)
-    persistent bra
-
-    bra = self.getBra();
-    dense = self.state * bra;
+    dense = self.getKet() * self.getBra();
 end

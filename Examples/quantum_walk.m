@@ -1,5 +1,7 @@
-function quantum_walk()
+function [execute_time, visualize_time] = quantum_walk()
     import ExeQu.CircuitComposer.*;
+    
+    tic
     qubits = 8;
     cbits = 5;
     qc = Circuit(qubits, cbits);
@@ -18,7 +20,7 @@ function quantum_walk()
     
     %% Initialize Coin Flip
     %   We have 1 qubit (6th) to be flipping coin
-%     qc.x(6) % Start with |1>
+    qc.x(6) % Start with |1>
     qc.identity(6); % Start with |0>
     
     %% Start Coin Filpping
@@ -66,15 +68,14 @@ function quantum_walk()
     end
     qc + measure;
     
-    %% See the Circuit
-    qc.draw();
+%     %% See the Circuit
+%     qc.draw();
     
     %% Execute
-    tic
     result = qc.execute(1000);
-    execution_time = toc
+    execute_time = toc;
     tic
-    result.getCount();
-    sampling_time = toc
+    qc.draw();
     result.plotHistogram();
+    visualize_time = toc;
 end
