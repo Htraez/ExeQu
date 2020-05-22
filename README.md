@@ -11,6 +11,9 @@ ExeQu is currently under development. You can clone ExeQu using [remote url](htt
 git clone https://github.com/Htraez/ExeQu.git
 ```
 
+#### [OPTION 2.] Installing Toolbox Using MLTBX Installer
+The easiest way to install ExeQu to your MATLAB path. Download the lastest release of ExeQu [here](https://github.com/Htraez/ExeQu/releases)
+
 ## Usage
 
 ```matlab
