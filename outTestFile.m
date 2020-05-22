@@ -1,9 +1,11 @@
 import ExeQu.CircuitComposer.*;
 import ExeQu.Gates.*;
 circuit = Circuit(5,5);
-circuit.u3(5,pi,0,pi);
-circuit.cnot(3,4);
-circuit.u3(5,pi,pi/2,pi/2);
+circuit.u3(1,pi,0,pi);
+circuit.cnot(2,3);
+circuit.u3(4,pi,pi/2,pi/2);
+circuit.cnot(4,3);
+circuit.u3(5,pi/2,pi/2,pi/2);
 circuit.barrier(1,5);
 %comment
 circuit.measure(1,1);
