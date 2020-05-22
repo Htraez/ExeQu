@@ -37,9 +37,7 @@ function [elapsed_time, visualize_time] = deutsch_balance()
     result = qc.execute(1024);
     elapsed_time = toc;
     tic
-    result.getCount();
     result.plotHistogram();
-    visualize_time = toc;
-    
     qc.draw();
+    visualize_time = toc;
 end

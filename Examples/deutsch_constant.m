@@ -1,4 +1,4 @@
-function deutsch_constant()
+function [elapsed_time, visualize_time] = deutsch_constant()
     import ExeQu.CircuitComposer.*;
      %% Test II: with Uf of constant function
     %   f(0,0) => 1
@@ -35,12 +35,14 @@ function deutsch_constant()
     qc.measure(1, 1);
     qc.measure(2, 2);
     
+    qc.draw();
+    
     %% Execute all operation to see result
     tic
     result = qc.execute(1024);
-    execution_time = toc
+    elapsed_time = toc;
     tic
-    result.getCount();
-    sampling_time = toc
+    qc.draw();
     result.plotHistogram();
+    visualize_time = toc;
 end

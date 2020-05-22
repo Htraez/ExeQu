@@ -1,13 +1,23 @@
 import ExeQu.CircuitComposer.*;
 
+import ExeQu.CircuitComposer.*;
+qc = Circuit(2, 2);
 
-elapsed_time = 0;
-visualize_time = 0;
-for i = 1:5
-    [e_t, v_t] = grover();
-    elapsed_time = elapsed_time + e_t;
-    visualize_time = visualize_time + v_t;
-end
+% Find |10> in 2 Qubits system
 
-elapsed_time/5
-visualize_time/5
+qc.h(1);
+qc.h(2);
+
+qc.unitary([
+[1, 0, 0, 0],
+[0, 1, 0, 0],
+[0, 0, -1, 0],
+[0, 0, 0, 1]], [1 2])
+
+qc.measure(1, 1)
+qc.measure(2, 2)
+
+result = qc.execute(1024);
+
+result.plotHistogram();
+
