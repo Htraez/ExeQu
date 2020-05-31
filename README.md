@@ -22,7 +22,7 @@ https://github.com/Htraez/ExeQu/releases
 
 ExeQu is designed to be easy-to-use. The main workflow of ExeQu is consists of creation of Quantum Circuit, execution of created circuit, and Quantum Circuit visualization.
 
-![Asset 2@2x](Assets/Images/Asset 2@2x.png)
+![Asset 2@2x](/Assets/Images/Asset 2@2x.png)
 
 ## Usage
 
