@@ -22,7 +22,7 @@ https://github.com/Htraez/ExeQu/releases
 
 ExeQu is designed to be easy-to-use. The main workflow of ExeQu is consists of creation of Quantum Circuit, execution of created circuit, and Quantum Circuit visualization.
 
-![Asset 2@2x](https://github.com/Htraez/ExeQu/blob/master/Assets/Images/Asset%202%402x.png)
+![Asset 2@2x](https://github.com/Htraez/ExeQu/blob/master/Assets/Images/Asset2_2x.png)
 
 ## Usage
 
@@ -254,9 +254,6 @@ See also the list of [contributors](https://github.com/Htraez/ExeQu/graphs/contr
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
-
-[x]:  https://github.com/Htraez/ExeQu/blob/master/Assets/Images/Asset 2%402x.png Pauli X
-
 [x]: https://s3.us-south.cloud-object-storage.appdomain.cloud/strapi/c51de67e35e3428b85cb383834263479x.png "Pauli X"
 [y]: https://s3.us-south.cloud-object-storage.appdomain.cloud/strapi/1fe22994647245299d2c257958d14562y.png "Pauli Y"
 [z]: https://s3.us-south.cloud-object-storage.appdomain.cloud/strapi/3c02d82e71984f0884ee1b5e798674edz.png "Pauli Z"
