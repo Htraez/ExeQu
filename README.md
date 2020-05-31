@@ -171,19 +171,19 @@ CircuitComposer is the main `package` that user will be using everytime to initi
     * Parameters:
       * Target: `int` An index of qubit this `U3`-gate is operating on. (Starting from 1)
       * Theta: `float` An angle of rotation `theta` *θ* in radians
-      * Phi: `float` An angle of rotation `phi` *𝜙* in radians
-      * Lambda: `float` An angle of rotation `lambda` *𝜆* in radians
+      * Phi: `float` An angle of rotation `phi` ** in radians
+      * Lambda: `float` An angle of rotation `lambda` ** in radians
   * u2(target, phi, lambda): `Function`
     * Add `Generic single-qubit rotation` gate: `U2` into the `Circuit`. U2 gate is a `U3`-gate with theta = pi/2
     * Parameters:
       * Target: `int` An index of qubit this `U3`-gate is operating on. (Starting from 1)
-      * Phi: `float` An angle of rotation `phi` *𝜙* in radians
-      * Lambda: `float` An angle of rotation `lambda` *𝜆* in radians
+      * Phi: `float` An angle of rotation `phi` ** in radians
+      * Lambda: `float` An angle of rotation `lambda` ** in radians
   * u1(target, lambda): `Function`
     * Add `Generic single-qubit rotation` gate: `U1` into the `Circuit`. U1 gate is a `U3`-gate with theta = phi = 0
     * Parameters:
       * Target: `int` An index of qubit this `U3`-gate is operating on. (Starting from 1)
-      * Lambda: `float` An angle of rotation `lambda` *𝜆* in radians
+      * Lambda: `float` An angle of rotation `lambda` ** in radians
   * operation = unitary(operator, ctrls, target): `Function`
     * Add custom unitary operation into `Circuit`.
     * Parameters:
