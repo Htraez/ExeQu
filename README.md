@@ -22,7 +22,7 @@ https://github.com/Htraez/ExeQu/releases
 
 ExeQu is designed to be easy-to-use. The main workflow of ExeQu is consists of creation of Quantum Circuit, execution of created circuit, and Quantum Circuit visualization.
 
-![alt text][flow] 
+![alt text][flow]
 
 ## Usage
 
@@ -53,7 +53,7 @@ At this point, to start the execution process, simply call `execute()` passing a
 
 Finally, in the visualization process, you can use `result` struct returned from `execute()` to call `plotHistogram()` to show the result of the circuit in form of probability histogram of possible quantum state(s)
 
-## Avialable Quantum Gates
+## Available Quantum Gates
 
 A quantum gate could be added to a circuit using methods defined in the `Circuit`. Right now there several of them available as shown. For more detail on each parameters, refer to classes and functions breakdown in `Components` section.
 
@@ -627,7 +627,7 @@ See also the list of [contributors](https://github.com/Htraez/ExeQu/graphs/contr
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
 
-[flow]: ./Assets/Images/Asset2_2x.png "Workflow"
+[flow]: ./Assets/Images/workflow_1.png "Workflow"
 
 [x]: ./Assets/Images/x_gate.png "Pauli X"
 
