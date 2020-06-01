@@ -22,7 +22,7 @@ https://github.com/Htraez/ExeQu/releases
 
 ExeQu is designed to be easy-to-use. The main workflow of ExeQu is consists of creation of Quantum Circuit, execution of created circuit, and Quantum Circuit visualization.
 
-![Asset 2@2x](https://github.com/Htraez/ExeQu/blob/master/Assets/Images/Asset2_2x.png)
+![alt text][flow] 
 
 ## Usage
 
@@ -327,6 +327,8 @@ CircuitComposer is the main `package` that user will be using everytime to initi
     * Return Value: 
       * Basis: `char` Current measurement basis of this instance of Measurement.
 
+-----
+
 ### Gates
 
 Gates is another `package` defined in `ExeQu`. The package itself doesn't have to be imported to the MATLAB script in basic use-cases unless user wishes to initiate an instance of quantum gates manually. Main purpose of this package is to define classes of quantum gates that will be used by `CircuitComposer`. All gate classes has it definition defined here.
@@ -474,6 +476,8 @@ Gates is another `package` defined in `ExeQu`. The package itself doesn't have t
 * When working with Circuit, there's no need to import or calling constructors of these classes. Simply call functions defined in Circuit instance. The gate instances will be initialized and add to the operation queue automatically.
 * Also note that, some parameter are labeled `Optional` because parameters like `RegisterLength` or `Target` is not needed when initilizing these gates instance for working with `Qubit` through `apply()` function of `Qubit` instead of `Circuit`
 
+----
+
 ### Utils
 
 Utils or Utilities is another `package` in ExeQu that defined some useful functions for Mathemetic calculation, Visualization and more.
@@ -520,6 +524,7 @@ See also the list of [contributors](https://github.com/Htraez/ExeQu/graphs/contr
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
 
+[flow]: ./Assets/Images/Asset2_2x.png "Workflow"
 
 [x]: ./Assets/Images/x_gate.png "Pauli X"
 
@@ -559,58 +564,10 @@ See also the list of [contributors](https://github.com/Htraez/ExeQu/graphs/contr
 
 [ccx]: ./Assets/Images/ccx_gate.png "Toffoli"
 
-[mct]: ./Assets/Images/mct_gate.png "Multiple COntrol Toffoli"
+[mct]: ./Assets/Images/mct_gate.png "Multiple Control Toffoli"
 
 [h]: ./Assets/Images/h_gate.png "Hadamard"
 
 [u]: ./Assets/Images/u_gate.png "Unitary Gate"
 
 [cu]: ./Assets/Images/cu_gate.png "Controlled-U"
-
-
-
-
-
-[y]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/y_gate.png "Pauli Y"
-
-[z]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/z_gate.png "Pauli Z"
-
-[rx]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/rx_gate.png "RX"
-
-[ry]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/ry_gate.png "RY"
-
-[rz]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/rz_gate.png "RZ"
-
-[s]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/s_gate.png "S"
-
-[sdag]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/sdag_gate.png "S Dagger"
-
-[t]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/t_gate.png "T"
-
-[tdag]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/tdag_gate.png "T Dagger"
-
-[cy]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/cy_gate.png "CY"
-
-[cz]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/cz_gate.png "CZ"
-
-[Cr]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/cr_gate.png "Cr"
-
-[i]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/identity_gate.png "Identity"
-
-[u3]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/u3_gate.png "U3"
-
-[u2]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/u2_gate.png "U2"
-
-[u1]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/u1_gate.png "U1"
-
-[cx]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/cx_gate.png "Controlled-not"
-
-[ccx]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/ccx_gate.png "Toffoli"
-
-[mct]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/mct_gate.png "Multiple COntrol Toffoli"
-
-[h]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/h_gate.png "Hadamard"
-
-[u]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/u_gate.png "Unitary Gate"
-
-[cu]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/cu_gate.png "Controlled-U"
