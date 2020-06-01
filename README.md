@@ -519,20 +519,39 @@ See also the list of [contributors](https://github.com/Htraez/ExeQu/graphs/contr
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
+
+
+
 [x]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/x_gate.png "Pauli X"
+
 [y]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/y_gate.png "Pauli Y"
+
 [z]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/z_gate.png "Pauli Z"
+
 [rx]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/rx_gate.png "RX"
+
 [ry]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/ry_gate.png "RY"
+
 [rz]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/rz_gate.png "RZ"
-[s]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/rx_gate.png "S"
-[sdag]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/ry_gate.png "S Dagger"
-[t]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/rz_gate.png "T"
-[tdag]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/rx_gate.png "T Dagger"
+
+[s]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/s_gate.png "S"
+
+[sdag]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/sdag_gate.png "S Dagger"
+
+[t]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/t_gate.png "T"
+
+[tdag]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/tdag_gate.png "T Dagger"
+
 [cy]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/cy_gate.png "CY"
+
 [cz]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/cz_gate.png "CZ"
+
 [Cr]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/cr_gate.png "Cr"
+
 [i]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/identity_gate.png "Identity"
+
 [cx]: https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/CNOT_gate.svg/150px-CNOT_gate.svg.png "Controlled-not"
+
 [ccx]: https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Toffoli_gate.svg/1200px-Toffoli_gate.svg.png "Toffoli"
+
 [h]: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Hadamard_gate.svg/150px-Hadamard_gate.svg.png "Hadamard"
