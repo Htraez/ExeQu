@@ -63,31 +63,31 @@ Suppose a circuit instantiated using this code
 circuit = Circuit(`number_of_qubit`, `number_of_cbit`);
 ```
 
-|      Gates       |             Name             |                            Syntax                            |
-| :--------------: | :--------------------------: | :----------------------------------------------------------: |
-|  ![alt text][x]  |         Pauli-x Gate         |                  circuit.x(`target_qubit`)                   |
-|  ![alt text][y]  |         Pauli-y Gate         |                  circuit.y(`target_qubit`)                   |
-|  ![alt text][z]  |         Pauli-z Gate         |                  circuit.z(`target_qubit`)                   |
-|  ![alt text][z]  |         Unitary Gate         |  circuit.unitary(`operator`, `ctrl_qubits`, `target_qubit`)  |
-|  ![alt text][z]  |           U3 Gate            |     circuit.u3(`target_qubit`, `theta`, `phi`, `lambda`)     |
-|  ![alt text][z]  |           U2 Gate            |         circuit.u2(`target_qubit`, `phi`, `lambda`)          |
-|  ![alt text][z]  |           U1 Gate            |             circuit.u1(`target_qubit`, `lambda`)             |
-|  ![alt text][z]  |            S Gate            |                  circuit.s(`target_qubit`)                   |
-|  ![alt text][z]  |        S Dagger Gate         |                 circuit.sdag(`target_qubit`)                 |
-|  ![alt text][z]  |            T Gate            |                  circuit.t(`target_qubit`)                   |
-|  ![alt text][z]  |        T Dagger Gate         |                 circuit.tdag(`target_qubit`)                 |
-|  ![alt text][z]  |           Rx Gate            |             circuit.rx(`target_qubit`, `theta`)              |
-|  ![alt text][z]  |           Ry Gate            |             circuit.ry(`target_qubit`, `theta`)              |
-|  ![alt text][z]  |           Rz Gate            |             circuit.rz(`target_qubit`, `theta`)              |
-|  ![alt text][z]  |           Cz Gate            |          circuit.cz(`ctrl_qubits`, `target_qubit`)           |
-|  ![alt text][z]  |           Cy Gate            |          circuit.cy(`ctrl_qubits`, `target_qubit`)           |
-|  ![alt text][z]  |           Cr Gate            |      circuit.cr(`ctrl_qubits`, `target_qubit`, `theta`)      |
-|  ![alt text][i]  |        Identity Gate         |               circuit.identity(`target_qubit`)               |
-|  ![alt text][h]  |        Hadamard Gate         |                  circuit.h(`target_qubit`)                   |
-| ![alt text][cx]  |          CNOT Gate           |         circuit.cnot(`control_qubit`,`target_qubit`)         |
-| ![alt text][ccx] |         Toffoli Gate         | circuit.ccnot(`control_qubit1`,`control_qubit2`,`target_qubit`) |
-|  ![alt text][z]  | Mutiple Control Toffoli Gate |          circuit.mct(`ctrl_qubits`, `target_qubit`)          |
-|  ![alt text][h]  |      Controlled-U Gate       | circuit.controlledU(`U_operator`, `ctrl_qubits`, `target_qubit`) |
+|        Gates         |             Name             |                            Syntax                            |
+| :------------------: | :--------------------------: | :----------------------------------------------------------: |
+|    ![alt text][x]    |         Pauli-x Gate         |                  circuit.x(`target_qubit`)                   |
+|    ![alt text][y]    |         Pauli-y Gate         |                  circuit.y(`target_qubit`)                   |
+|    ![alt text][z]    |         Pauli-z Gate         |                  circuit.z(`target_qubit`)                   |
+| ![alt text][unitary] |         Unitary Gate         |  circuit.unitary(`operator`, `ctrl_qubits`, `target_qubit`)  |
+|   ![alt text][u3]    |           U3 Gate            |     circuit.u3(`target_qubit`, `theta`, `phi`, `lambda`)     |
+|   ![alt text][u2]    |           U2 Gate            |         circuit.u2(`target_qubit`, `phi`, `lambda`)          |
+|   ![alt text][u1]    |           U1 Gate            |             circuit.u1(`target_qubit`, `lambda`)             |
+|    ![alt text][s]    |            S Gate            |                  circuit.s(`target_qubit`)                   |
+|  ![alt text][sdag]   |        S Dagger Gate         |                 circuit.sdag(`target_qubit`)                 |
+|    ![alt text][t]    |            T Gate            |                  circuit.t(`target_qubit`)                   |
+|  ![alt text][tdag]   |        T Dagger Gate         |                 circuit.tdag(`target_qubit`)                 |
+|   ![alt text][rx]    |           Rx Gate            |             circuit.rx(`target_qubit`, `theta`)              |
+|   ![alt text][ry]    |           Ry Gate            |             circuit.ry(`target_qubit`, `theta`)              |
+|   ![alt text][rz]    |           Rz Gate            |             circuit.rz(`target_qubit`, `theta`)              |
+|   ![alt text][cz]    |           Cz Gate            |          circuit.cz(`ctrl_qubits`, `target_qubit`)           |
+|   ![alt text][cy]    |           Cy Gate            |          circuit.cy(`ctrl_qubits`, `target_qubit`)           |
+|   ![alt text][cr]    |           Cr Gate            |      circuit.cr(`ctrl_qubits`, `target_qubit`, `theta`)      |
+|    ![alt text][i]    |        Identity Gate         |               circuit.identity(`target_qubit`)               |
+|    ![alt text][h]    |        Hadamard Gate         |                  circuit.h(`target_qubit`)                   |
+|   ![alt text][cx]    |          CNOT Gate           |         circuit.cnot(`control_qubit`,`target_qubit`)         |
+|   ![alt text][ccx]   |         Toffoli Gate         | circuit.ccnot(`control_qubit1`,`control_qubit2`,`target_qubit`) |
+|    ![alt text][z]    | Mutiple Control Toffoli Gate |          circuit.mct(`ctrl_qubits`, `target_qubit`)          |
+|    ![alt text][h]    |      Controlled-U Gate       | circuit.controlledU(`U_operator`, `ctrl_qubits`, `target_qubit`) |
 
 ## Measurement
 
@@ -519,10 +519,20 @@ See also the list of [contributors](https://github.com/Htraez/ExeQu/graphs/contr
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
-[x]: https://s3.us-south.cloud-object-storage.appdomain.cloud/strapi/c51de67e35e3428b85cb383834263479x.png "Pauli X"
-[y]: https://s3.us-south.cloud-object-storage.appdomain.cloud/strapi/1fe22994647245299d2c257958d14562y.png "Pauli Y"
-[z]: https://s3.us-south.cloud-object-storage.appdomain.cloud/strapi/3c02d82e71984f0884ee1b5e798674edz.png "Pauli Z"
-[i]: https://s3.us-south.cloud-object-storage.appdomain.cloud/strapi/f3e724b5de7342a4b7b355d6a5973b83id.png "Identity"
+[x]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/x_gate.png "Pauli X"
+[y]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/y_gate.png "Pauli Y"
+[z]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/z_gate.png "Pauli Z"
+[rx]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/rx_gate.png "RX"
+[ry]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/ry_gate.png "RY"
+[rz]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/rz_gate.png "RZ"
+[s]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/rx_gate.png "S"
+[sdag]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/ry_gate.png "S Dagger"
+[t]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/rz_gate.png "T"
+[tdag]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/rx_gate.png "T Dagger"
+[cy]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/cy_gate.png "CY"
+[cz]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/cz_gate.png "CZ"
+[Cr]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/cr_gate.png "Cr"
+[i]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/identity_gate.png "Identity"
 [cx]: https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/CNOT_gate.svg/150px-CNOT_gate.svg.png "Controlled-not"
 [ccx]: https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Toffoli_gate.svg/1200px-Toffoli_gate.svg.png "Toffoli"
 [h]: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Hadamard_gate.svg/150px-Hadamard_gate.svg.png "Hadamard"
