@@ -523,7 +523,53 @@ See also the list of [contributors](https://github.com/Htraez/ExeQu/graphs/contr
 
 [x]: ./Assets/Images/x_gate.png "Pauli X"
 
-[x]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/x_gate.png "Pauli X"
+[y]: ./Assets/Images/y_gate.png "Pauli Y"
+
+[z]: ./Assets/Images/z_gate.png "Pauli Z"
+
+[rx]: ./Assets/Images/rx_gate.png "RX"
+
+[ry]: ./Assets/Images/ry_gate.png "RY"
+
+[rz]: ./Assets/Images/rz_gate.png "RZ"
+
+[s]: ./Assets/Images/s_gate.png "S"
+
+[sdag]: ./Assets/Images/sdag_gate.png "S Dagger"
+
+[t]: ./Assets/Images/t_gate.png "T"
+
+[tdag]: ./Assets/Images/tdag_gate.png "T Dagger"
+
+[cy]: ./Assets/Images/cy_gate.png "CY"
+
+[cz]: ./Assets/Images/cz_gate.png "CZ"
+
+[Cr]: ./Assets/Images/cr_gate.png "Cr"
+
+[i]: ./Assets/Images/identity_gate.png "Identity"
+
+[u3]: ./Assets/Images/u3_gate.png "U3"
+
+[u2]: ./Assets/Images/u2_gate.png "U2"
+
+[u1]: ./Assets/Images/u1_gate.png "U1"
+
+[cx]: ./Assets/Images/cx_gate.png "Controlled-not"
+
+[ccx]: ./Assets/Images/ccx_gate.png "Toffoli"
+
+[mct]: ./Assets/Images/mct_gate.png "Multiple COntrol Toffoli"
+
+[h]: ./Assets/Images/h_gate.png "Hadamard"
+
+[u]: ./Assets/Images/u_gate.png "Unitary Gate"
+
+[cu]: ./Assets/Images/cu_gate.png "Controlled-U"
+
+
+
+
 
 [y]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/y_gate.png "Pauli Y"
 
