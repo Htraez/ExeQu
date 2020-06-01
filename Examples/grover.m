@@ -1,8 +1,8 @@
-function [elapsed_time, visualize_time] = grover()
+function [elapsed_time, visualize_time] = grover(q, c)
     tic
     
     import ExeQu.CircuitComposer.*;
-    qc = Circuit(2, 2);
+    qc = Circuit(q, c);
     
     % Find |10> in 2 Qubits system
     

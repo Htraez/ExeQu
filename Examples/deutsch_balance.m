@@ -1,7 +1,6 @@
-function [elapsed_time, visualize_time] = deutsch_balance()
+function [elapsed_time, visualize_time] = deutsch_balance(q, c)
     import ExeQu.CircuitComposer.*;
     
-    tic
     %% Test I: with Uf of XOR function on 2 bit
     %   f(0,0) => 0
     %   f(0,1) => 1
@@ -10,7 +9,7 @@ function [elapsed_time, visualize_time] = deutsch_balance()
     %   which indicate that it is a balanced function
     
     %% Build Circuit
-    qc = Circuit(3, 2);
+    qc = Circuit(q, c);
     
     % Prepare Ancillia Bit
     qc.x(3);
@@ -34,10 +33,11 @@ function [elapsed_time, visualize_time] = deutsch_balance()
     qc.measure(2, 2);
 
     %% Execute all operation to see result
+    tic
     result = qc.execute(1024);
     elapsed_time = toc;
     tic
-    result.plotHistogram();
     qc.draw();
+    result.plotHistogram();
     visualize_time = toc;
 end

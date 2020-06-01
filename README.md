@@ -649,9 +649,9 @@ See also the list of [contributors](https://github.com/Htraez/ExeQu/graphs/contr
 
 [tdag]: ./Assets/Images/tdag_gate.png "T Dagger"
 
-[cy]: ./Assets/Images/cy_gate.png "CY"
+[cy]: ./Assets/Images/cy1_gate.png "CY"
 
-[cz]: ./Assets/Images/cz_gate.png "CZ"
+[cz]: ./Assets/Images/cz1_gate.png "CZ"
 
 [Cr]: ./Assets/Images/cr_gate.png "Cr"
 

@@ -1,4 +1,4 @@
-function [elapsed_time, visualize_time] = deutsch_constant()
+function [elapsed_time, visualize_time] = deutsch_constant(q, c)
     import ExeQu.CircuitComposer.*;
      %% Test II: with Uf of constant function
     %   f(0,0) => 1
@@ -8,7 +8,7 @@ function [elapsed_time, visualize_time] = deutsch_constant()
     %   which indicate that it is a constant function
     
     %% Build Circuit
-    qc = Circuit(3, 2);
+    qc = Circuit(q, c);
     
     % Prepare Ancillia Bit
     qc.x(3);
@@ -34,8 +34,6 @@ function [elapsed_time, visualize_time] = deutsch_constant()
     %   Expect qubit 1 and 2 to be |00> as this is a constant function
     qc.measure(1, 1);
     qc.measure(2, 2);
-    
-    qc.draw();
     
     %% Execute all operation to see result
     tic

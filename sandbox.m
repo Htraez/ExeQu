@@ -1,23 +1,11 @@
 import ExeQu.CircuitComposer.*;
 
-import ExeQu.CircuitComposer.*;
-qc = Circuit(2, 2);
+qc = Circuit(3, 1);
 
-% Find |10> in 2 Qubits system
+qc.x(1);
+qc.y(1);
+qc.z(1);
 
-qc.h(1);
-qc.h(2);
+qc.unitary(eye(4), [2 3]);
 
-qc.unitary([
-[1, 0, 0, 0],
-[0, 1, 0, 0],
-[0, 0, -1, 0],
-[0, 0, 0, 1]], [1 2])
-
-qc.measure(1, 1)
-qc.measure(2, 2)
-
-result = qc.execute(1024);
-
-result.plotHistogram();
-
+qc.draw();
