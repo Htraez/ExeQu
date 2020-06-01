@@ -102,15 +102,23 @@ Also 3 different axis of measurement can be specified: `x`, `y`, `z`. If no basi
 
 ## Components
 
-To understand the toolbox capability in detail, it's sensible to understand some key components of the toolbox and functions available in packages and classes defined in `ExeQu`
+To understand the toolbox capability in detail, it is sensible to understand some key components of the toolbox and functions available in packages classes and functions defined in `ExeQu`.
+
+###### List of Packages:
+
+* [CircuitComposer](https://github.com/Htraez/ExeQu#circuitcomposer)
+* [Gates](https://github.com/Htraez/ExeQu#gates)
+* [Utils](https://github.com/Htraez/ExeQu#utils)
+* [Transpiler](https://github.com/Htraez/ExeQu#transpiler)
 
 ### CircuitComposer
 
 CircuitComposer is the main `package` that user will be using everytime to initiate a Quantum Circuit. It is also an important `package` that need to be imported into the MATLAB script in order to use `ExeQu`. The package itself consists of 4 main classes: `Circuit`, `Qubit`, `QuantumRegister`, `Measurement`
 
-+CircuitComposer: `Package`
+###### +CircuitComposer: `Package`
 
-* @Circuit: `Class`
+* ###### @Circuit: `Class`
+  
   * Circuit(qreg_length, creg_length): `Constructor`
     * `Constructor` of class `Circuit`. Call this constructor to create an instance of circuit. 
     * Parameters:
@@ -253,7 +261,8 @@ CircuitComposer is the main `package` that user will be using everytime to initi
     * Display all operations both Gate Operation and Measurement Operation inside operation queue of `Circuit`
   * getMaxLength(): `Function`
     * Get maximum number of gate operating on a qubit in the `Circuit`
-* @Qubit : `Class`
+* ###### @Qubit : `Class`
+  
   * Qubit(initState): `Constructor`
     * `Constructor` of class Qubit. Call this constructor to create an instance of Qubit. **Note: When create new instance of Circuit, the instance of this class is created automatically. 
     * Parameters:
@@ -280,7 +289,8 @@ CircuitComposer is the main `package` that user will be using everytime to initi
       * Operator: `struct` Unitary operation initialized as an instance of classes from Gates package or an instance of Measurement class
     * Return Value:
       * Result: `Matrice` Result of unitary operation or measurement operation on this Qubit.
-* @QuantumRegister: `Class`
+* ###### @QuantumRegister: `Class`
+  
   * QuantumRegister(qreg_n, initState): `Constructor`
     * `Constructor` of class QuantumRegister. Call this constructor to create an instance of Quantum Register. **Note: When create new instance of Circuit, the instance of this class is created automatically. 
     * Parameters:
@@ -298,7 +308,8 @@ CircuitComposer is the main `package` that user will be using everytime to initi
     * Getter function. Get density matrix of current quantum state of this `Quantum Register` 
     * Return Value:
       * Density: `Matrice` Matrix of complex number describing current quantum state of this register in form of density matrix.
-* @Measurement: `Class`
+* ###### @Measurement: `Class`
+  
   * obj = Measurement(registerLength, basis, actOn, storeOn): `Constructor`
     * `Constructor` of class Measurement. Call this constructor to create an instance of Quantum Measurement. **Note: When add new measurement to a Circuit, new instance of this class will be initiated and add to the operation queue of the circuit automatically. 
     * Parameters:
@@ -333,9 +344,10 @@ CircuitComposer is the main `package` that user will be using everytime to initi
 
 Gates is another `package` defined in `ExeQu`. The package itself doesn't have to be imported to the MATLAB script in basic use-cases unless user wishes to initiate an instance of quantum gates manually. Main purpose of this package is to define classes of quantum gates that will be used by `CircuitComposer`. All gate classes has it definition defined here.
 
-+Gates: `Package`
+###### +Gates: `Package`
 
-* @Unitary: `Class` `Super Class` 
+* ###### @Unitary: `Class` `Super Class` 
+  
   * Super class of all gates. Every gate is an inheritance of Unitary operation.
   * Unitary(U, registerLength, actOn, label): `Constructor`
     * `Constructor` of class Unitary. This class define basic properties of every gate classes such as Label, UnitaryMatrix, Dimension etc.
@@ -354,7 +366,8 @@ Gates is another `package` defined in `ExeQu`. The package itself doesn't have t
       * Label: `String` Label of this instance of Unitary.
   * mt = mtimes(varargin): `Function`
     * `MATLAB` operator overloading for operator '*'. This overloading define instructions to be perform in case this instance of Unitary are multiplied with an instance of Qubit or Quantum Register.
-* @ControlledU: `Class` `Subclass of Unitary`
+* ###### @ControlledU: `Class` `Subclass of Unitary`
+  
   * Subclass of `Unitary`. This class define properties of Controlled-U gate.
   * ControlledU(U, registerLength, ctrl, target): `Constructor`
     * Parameters:
@@ -374,7 +387,8 @@ Gates is another `package` defined in `ExeQu`. The package itself doesn't have t
     * Getter function. Get index of target qubits
     * Return Value:
       * Target: `int` Index of target qubits.
-* @U3: `Class` `Subclass of Unitary`
+* ###### @U3: `Class` `Subclass of Unitary`
+  
   * Subclass of `Unitary`. This class define properties of U3 gate.
   * obj = U3(registerLength, target, theta, phi, lambda): `Constructor`
     * Parameters:
@@ -383,25 +397,29 @@ Gates is another `package` defined in `ExeQu`. The package itself doesn't have t
       * Theta: `float` Rotation angle around X-axis in radians 
       * Phi: `float` Rotation angle around Y-axis in radians 
       * Lambda: `float` Rotation angle around Z-axis in radians 
-* @PauliX: `Class` `Subclass of Unitary`
+* ###### @PauliX: `Class` `Subclass of Unitary`
+  
   * Subclass of `Unitary`. This class define properties of Pauli-X gate.
   * obj = PauliX(registerLength, target): `Constructor`
     * Parameters:
       * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
       * `Optional` target: `int` An integer specifying index of target qubit.
-* @PauliY: `Class` `Subclass of Unitary`
+* ###### @PauliY: `Class` `Subclass of Unitary`
+  
   * Subclass of `Unitary`. This class define properties of Pauli-Y gate.
   * obj = PauliX(registerLength, target): `Constructor`
     * Parameters:
       * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
       * `Optional` target: `int` An integer specifying index of target qubit.
-* @PauliZ: `Class` `Subclass of Unitary`
+* ###### @PauliZ: `Class` `Subclass of Unitary`
+  
   * Subclass of `Unitary`. This class define properties of Pauli-Z gate.
   * obj = PauliX(registerLength, target): `Constructor`
     * Parameters:
       * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
       * `Optional` target: `int` An integer specifying index of target qubit.
-* @RX: `Class ` `Subclass of Unitary`
+* ###### @RX: `Class ` `Subclass of Unitary`
+  
   * Subclass of `Unitary`. This class define properties of Rx gate.
   * obj = PauliX(registerLength, target, theta): `Constructor`
     * Parameters:
@@ -412,7 +430,8 @@ Gates is another `package` defined in `ExeQu`. The package itself doesn't have t
     * Getter function. Get value of rotation angle set for this gate.
     * Return Value:
       * Theta: `float` Rotation angle in radians
-* @RY: `Class` `Subclass of Unitary`
+* ###### @RY: `Class` `Subclass of Unitary`
+  
   * Subclass of `Unitary`. This class define properties of Ry gate.
   * obj = PauliX(registerLength, target, theta): `Constructor`
     * Parameters:
@@ -423,7 +442,8 @@ Gates is another `package` defined in `ExeQu`. The package itself doesn't have t
     * Getter function. Get value of rotation angle set for this gate.
     * Return Value:
       * Theta: `float` Rotation angle in radians
-* @RZ: `Class` `Subclass of Unitary`
+* ###### @RZ: `Class` `Subclass of Unitary`
+  
   * Subclass of `Unitary`. This class define properties of Rz gate.
   * obj = PauliX(registerLength, target, theta): `Constructor`
     * Parameters:
@@ -434,37 +454,43 @@ Gates is another `package` defined in `ExeQu`. The package itself doesn't have t
     * Getter function. Get value of rotation angle set for this gate.
     * Return Value:
       * Theta: `float` Rotation angle in radians
-* @S: `Class ` `Subclass of Unitary`
+* ###### @S: `Class ` `Subclass of Unitary`
+  
   * Subclass of `Unitary`. This class define properties of S gate.
   * obj = S(registerLength, target): `Constructor`
     * Parameters:
       * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
       * `Optional` target: `int` An integer specifying index of target qubit.
-* @Sdag: `Class` `Subclass of Unitary`
+* ###### @Sdag: `Class` `Subclass of Unitary`
+  
   * Subclass of `Unitary`. This class define properties of Sdag gate (Conjugate transpose of S gate).
   * obj = Sdag(registerLength, target): `Constructor`
     * Parameters:
       * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
       * `Optional` target: `int` An integer specifying index of target qubit.
-* @T: `Class` `Subclass of Unitary`
+* ###### @T: `Class` `Subclass of Unitary`
+  
   * Subclass of `Unitary`. This class define properties of T gate.
   * obj = T(registerLength, target): `Constructor`
     * Parameters:
       * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
       * `Optional` target: `int` An integer specifying index of target qubit.
-* @Tdag: `Class` `Subclass of Unitary`
+* ###### @Tdag: `Class` `Subclass of Unitary`
+  
   * Subclass of `Unitary`. This class define properties of Tdag gate  (Conjugate transpose of T gate).
   * obj = Tdag(registerLength, target): `Constructor`
     * Parameters:
       * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
       * `Optional` target: `int` An integer specifying index of target qubit.
-* @Hadamard: `Class ` `Subclass of Unitary`
+* ###### @Hadamard: `Class ` `Subclass of Unitary`
+  
   * Subclass of `Unitary`. This class define properties of Hadamard gate.
   * obj = Hadamard(registerLength, target): `Constructor`
     * Parameters:
       * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
       * `Optional` target: `int` An integer specifying index of target qubit.
-* @Identity: `Class` `Subclass of Unitary`
+* ###### @Identity: `Class` `Subclass of Unitary`
+  
   * Subclass of `Unitary`. This class define properties of I gate.
   * obj = Identity(registerLength, target): `Constructor`
     * Parameters:
@@ -482,9 +508,10 @@ Gates is another `package` defined in `ExeQu`. The package itself doesn't have t
 
 Utils or Utilities is another `package` in ExeQu that defined some useful functions for Mathemetic calculation, Visualization and more.
 
-+Utils: `package`
+###### +Utils: `package`
 
-* +Maths: `package`
+* ###### +Maths: `package`
+  
   * result = tensor(varargin)
     * Calculate tensor product of multiple matrices.
     * Parameters:
@@ -497,7 +524,8 @@ Utils or Utilities is another `package` in ExeQu that defined some useful functi
       * U: `Matrice` A matrix to be validated.
     * Return Value:
       * Bool: `Boolean` A validation result whether `U` is an unitary matrix or not.
-* @Visualization: `class`
+* ###### @Visualization: `class`
+  
   * plotOperation(op)
     * Plot operation from operation queue into Circuit Diagram. **Note: This function is called by `Draw()` function in `Circuit`
     * Parameters:
