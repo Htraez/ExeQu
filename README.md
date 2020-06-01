@@ -521,6 +521,7 @@ See also the list of [contributors](https://github.com/Htraez/ExeQu/graphs/contr
 [MIT](https://choosealicense.com/licenses/mit/)
 
 
+[x]: ./Assets/Images/x_gate.png "Pauli X"
 
 [x]: https://github.com/Htraez/ExeQu/blob/master/Assets/Images/x_gate.png "Pauli X"
 
