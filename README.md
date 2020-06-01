@@ -53,6 +53,53 @@ At this point, to start the execution process, simply call `execute()` passing a
 
 Finally, in the visualization process, you can use `result` struct returned from `execute()` to call `plotHistogram()` to show the result of the circuit in form of probability histogram of possible quantum state(s)
 
+## Avialable Quantum Gates
+
+A quantum gate could be added to a circuit using methods defined in the `Circuit`. Right now there several of them available as shown. For more detail on each parameters, refer to classes and functions breakdown in `Components` section.
+
+Suppose a circuit instantiated using this code 
+
+```matlab
+circuit = Circuit(`number_of_qubit`, `number_of_cbit`);
+```
+
+|      Gates       |             Name             |                            Syntax                            |
+| :--------------: | :--------------------------: | :----------------------------------------------------------: |
+|  ![alt text][x]  |         Pauli-x Gate         |                  circuit.x(`target_qubit`)                   |
+|  ![alt text][y]  |         Pauli-y Gate         |                  circuit.y(`target_qubit`)                   |
+|  ![alt text][z]  |         Pauli-z Gate         |                  circuit.z(`target_qubit`)                   |
+|  ![alt text][z]  |         Unitary Gate         |  circuit.unitary(`operator`, `ctrl_qubits`, `target_qubit`)  |
+|  ![alt text][z]  |           U3 Gate            |     circuit.u3(`target_qubit`, `theta`, `phi`, `lambda`)     |
+|  ![alt text][z]  |           U2 Gate            |         circuit.u2(`target_qubit`, `phi`, `lambda`)          |
+|  ![alt text][z]  |           U1 Gate            |             circuit.u1(`target_qubit`, `lambda`)             |
+|  ![alt text][z]  |            S Gate            |                  circuit.s(`target_qubit`)                   |
+|  ![alt text][z]  |        S Dagger Gate         |                 circuit.sdag(`target_qubit`)                 |
+|  ![alt text][z]  |            T Gate            |                  circuit.t(`target_qubit`)                   |
+|  ![alt text][z]  |        T Dagger Gate         |                 circuit.tdag(`target_qubit`)                 |
+|  ![alt text][z]  |           Rx Gate            |             circuit.rx(`target_qubit`, `theta`)              |
+|  ![alt text][z]  |           Ry Gate            |             circuit.ry(`target_qubit`, `theta`)              |
+|  ![alt text][z]  |           Rz Gate            |             circuit.rz(`target_qubit`, `theta`)              |
+|  ![alt text][z]  |           Cz Gate            |          circuit.cz(`ctrl_qubits`, `target_qubit`)           |
+|  ![alt text][z]  |           Cy Gate            |          circuit.cy(`ctrl_qubits`, `target_qubit`)           |
+|  ![alt text][z]  |           Cr Gate            |      circuit.cr(`ctrl_qubits`, `target_qubit`, `theta`)      |
+|  ![alt text][i]  |        Identity Gate         |               circuit.identity(`target_qubit`)               |
+|  ![alt text][h]  |        Hadamard Gate         |                  circuit.h(`target_qubit`)                   |
+| ![alt text][cx]  |          CNOT Gate           |         circuit.cnot(`control_qubit`,`target_qubit`)         |
+| ![alt text][ccx] |         Toffoli Gate         | circuit.ccnot(`control_qubit1`,`control_qubit2`,`target_qubit`) |
+|  ![alt text][z]  | Mutiple Control Toffoli Gate |          circuit.mct(`ctrl_qubits`, `target_qubit`)          |
+|  ![alt text][h]  |      Controlled-U Gate       | circuit.controlledU(`U_operator`, `ctrl_qubits`, `target_qubit`) |
+
+## Measurement
+
+A measurement unit can be added to a `Circuit` at a certain point using command
+
+```matlab
+circuit.measure(`target_qubit`, `destination_classical_bit`, `basis (optional)`)
+```
+
+User need to specify which qubit to be measured and also a classical bit that will hold the measurement result.
+Also 3 different axis of measurement can be specified: `x`, `y`, `z`. If no basis specified the `z` axis will be use by default which mean the measurement operator would be |0><0| and |1><1|
+
 ## Components
 
 To understand the toolbox capability in detail, it's sensible to understand some key components of the toolbox and functions available in packages and classes defined in `ExeQu`
@@ -206,38 +253,256 @@ CircuitComposer is the main `package` that user will be using everytime to initi
     * Display all operations both Gate Operation and Measurement Operation inside operation queue of `Circuit`
   * getMaxLength(): `Function`
     * Get maximum number of gate operating on a qubit in the `Circuit`
-* @Qubit
-* @QuantumRegister
-* @Measurement
+* @Qubit : `Class`
+  * Qubit(initState): `Constructor`
+    * `Constructor` of class Qubit. Call this constructor to create an instance of Qubit. **Note: When create new instance of Circuit, the instance of this class is created automatically. 
+    * Parameters:
+      * initState: `char` Initial quantum state for this qubit. Can be '0', '1', '+', '-', 'R' or 'L'
+  * state = getState(): `Function`
+    * Getter function. Get current quantum state of this `Qubit`
+    * Return Value:
+      * State: `Matrice` Matrix of complex number describing current quantum state of this Qubit
+  * ket = getKet(): `Function`
+    * Getter function. Get current quantum state of this `Qubit` in form of Ket
+    * Return Value:
+      * Ket: `Matrice` Matrix of complex number describing current quantum state of this Qubit
+  * bra = getBra(): `Function`
+    * Getter function. Get current quantum state of this `Qubit` in form of Bra
+    * Return Value:
+      * Bra: `Matrice` Matrix of complex number describing current quantum state of this Qubit
+  * dense = getDensity(): `Function`
+    * Getter function. Get density matrix of current quantum state of this `Qubit` 
+    * Return Value:
+      * Density: `Matrice` Matrix of complex number describing current quantum state of this Qubit in form of density matrix
+  * result = apply(operator): `Function`
+    * Apply unitary operation or measurement operation on this qubit.
+    * Parameters:
+      * Operator: `struct` Unitary operation initialized as an instance of classes from Gates package or an instance of Measurement class
+    * Return Value:
+      * Result: `Matrice` Result of unitary operation or measurement operation on this Qubit.
+* @QuantumRegister: `Class`
+  * QuantumRegister(qreg_n, initState): `Constructor`
+    * `Constructor` of class QuantumRegister. Call this constructor to create an instance of Quantum Register. **Note: When create new instance of Circuit, the instance of this class is created automatically. 
+    * Parameters:
+      * qreg_n: `int` Number of qubit in this Quantum Register.
+      * initState: `char[]` Initial quantum state for this register in form of String. (e.g. '0000' or '0110+').
+  * size = getSize(): `Function`
+    * Getter function. Get number of qubit in this quantum register.
+    * Return Value:
+      * Size: `int` Number of qubit in this quantum register.
+  * state = getState(): `Function`
+    * Getter function. Get current state of this register.
+    * Return Value:
+      * State: `Matrice` Matrix of complex number describing current quantum state of this register.
+  * density = getDensity(): `Function`
+    * Getter function. Get density matrix of current quantum state of this `Quantum Register` 
+    * Return Value:
+      * Density: `Matrice` Matrix of complex number describing current quantum state of this register in form of density matrix.
+* @Measurement: `Class`
+  * obj = Measurement(registerLength, basis, actOn, storeOn): `Constructor`
+    * `Constructor` of class Measurement. Call this constructor to create an instance of Quantum Measurement. **Note: When add new measurement to a Circuit, new instance of this class will be initiated and add to the operation queue of the circuit automatically. 
+    * Parameters:
+      * registerLength: `int` Number of qubit in target Quantum Register.
+      * basis: `char` Basis of measurement. Can be 'X', 'Y' or 'Z'.
+      * actOn: `int` Index of Qubit in target Quantum Register to be measured.
+      * storeOn: `int` Index of classical bit in target Quantum Register to store the measurement result.
+  * obj = Measurement(basis): `Constructor`
+    * `Constructor` of class Measurement. Another variant of Measurement's constructor. This will create an instance of Measurement to be used with a Qubit instead of Quantum Register.
+    * Parameters:
+      * basis: `char` Basis of measurement. Can be 'X', 'Y' or 'Z'.
+  * operators = getOperators(): `Function`
+    * Getter function. Get list of measurement operator of this instance of Measurement
+    * Return Value:
+      * Operators: `Map` List of measurement operator for specified basis in form of containers.Map.
+  * origin = getOrigin(): `Function`
+    * Getter function. Get index of target Qubit to be measured.
+    * Return Value:
+      * origin: `int` Index of target Qubit to be measured.
+  * dest = getDestination(): `Function`
+    * Getter function. Get index of target classical bit to hold result of this measurement.
+    * Return Value: 
+      * Dest: `int` Index of target classical bit to hold result of this measurement.
+  * basis = getBasis(): `Function`
+    * Getter function. Get current measurement basis of this instance of Measurement.
+    * Return Value: 
+      * Basis: `char` Current measurement basis of this instance of Measurement.
 
-## Quantum Gates
+### Gates
 
-A quantum gate could be added to a circuit using methods defined in the `Circuit`. Right now there several of them available as shown below.
+Gates is another `package` defined in `ExeQu`. The package itself doesn't have to be imported to the MATLAB script in basic use-cases unless user wishes to initiate an instance of quantum gates manually. Main purpose of this package is to define classes of quantum gates that will be used by `CircuitComposer`. All gate classes has it definition defined here.
 
-Suppose a circuit instantiated using this code 
++Gates: `Package`
 
-```matlab
-circuit = Circuit(`number_of_qubit`, `number_of_cbit`);
-```
+* @Unitary: `Class` `Super Class` 
+  * Super class of all gates. Every gate is an inheritance of Unitary operation.
+  * Unitary(U, registerLength, actOn, label): `Constructor`
+    * `Constructor` of class Unitary. This class define basic properties of every gate classes such as Label, UnitaryMatrix, Dimension etc.
+    * Parameters:
+      * U: `Matrice` Unitary matrix representation of gate.
+      * RegisterLength: `int` Number of qubit in target quantum register that this Unitary will operate on.
+      * actOn: `int` Index of qubit in target quantum register
+      * Label: `int` Index of classical bit in target quantum register
+  * matrix = toMatrice(): `Function`
+    * Getter function. Get matrice representation of this instance of Unitary.
+    * Return Value:
+      * Matrix: `matrice` Matrice representation of this instance of Unitary.
+  * label = getLabel(): `Function`
+    * Getter function. Get label of this instance of Unitary.
+    * Return Value:
+      * Label: `String` Label of this instance of Unitary.
+  * mt = mtimes(varargin): `Function`
+    * `MATLAB` operator overloading for operator '*'. This overloading define instructions to be perform in case this instance of Unitary are multiplied with an instance of Qubit or Quantum Register.
+* @ControlledU: `Class` `Subclass of Unitary`
+  * Subclass of `Unitary`. This class define properties of Controlled-U gate.
+  * ControlledU(U, registerLength, ctrl, target): `Constructor`
+    * Parameters:
+      * U: `Instance of Unitary` Another Instance of Unitary as U operator.
+      * registerLength: : `int` Number of qubit in target quantum register that this Unitary will operate on.
+      * Ctrl: `int[]` Array of integer specifying indexes of control qubit(s) for this ControlledU gate.
+      * Target: `int` An integer specifying index of target qubit.
+  * uType = getUType(): `Function`
+    * Getter function. Get type of U operator (Label).
+    * Return Value:
+      * uType: `String` Get type of U operator (Label).
+  * ctrl = getControl(): `Function`
+    * Getter function. Get list of control qubits
+    * Return Value:
+      * ctrl: `int[]` List of control qubits.
+  * target = getTarget(): `Function`
+    * Getter function. Get index of target qubits
+    * Return Value:
+      * Target: `int` Index of target qubits.
+* @U3: `Class` `Subclass of Unitary`
+  * Subclass of `Unitary`. This class define properties of U3 gate.
+  * obj = U3(registerLength, target, theta, phi, lambda): `Constructor`
+    * Parameters:
+      * `Optional` RegisterLength: `int` Number of qubit in target quantum register that this gate will operate on.
+      * `Optional` target: `int` An integer specifying index of target qubit.
+      * Theta: `float` Rotation angle around X-axis in radians 
+      * Phi: `float` Rotation angle around Y-axis in radians 
+      * Lambda: `float` Rotation angle around Z-axis in radians 
+* @PauliX: `Class` `Subclass of Unitary`
+  * Subclass of `Unitary`. This class define properties of Pauli-X gate.
+  * obj = PauliX(registerLength, target): `Constructor`
+    * Parameters:
+      * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
+      * `Optional` target: `int` An integer specifying index of target qubit.
+* @PauliY: `Class` `Subclass of Unitary`
+  * Subclass of `Unitary`. This class define properties of Pauli-Y gate.
+  * obj = PauliX(registerLength, target): `Constructor`
+    * Parameters:
+      * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
+      * `Optional` target: `int` An integer specifying index of target qubit.
+* @PauliZ: `Class` `Subclass of Unitary`
+  * Subclass of `Unitary`. This class define properties of Pauli-Z gate.
+  * obj = PauliX(registerLength, target): `Constructor`
+    * Parameters:
+      * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
+      * `Optional` target: `int` An integer specifying index of target qubit.
+* @RX: `Class ` `Subclass of Unitary`
+  * Subclass of `Unitary`. This class define properties of Rx gate.
+  * obj = PauliX(registerLength, target, theta): `Constructor`
+    * Parameters:
+      * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
+      * `Optional` target: `int` An integer specifying index of target qubit.
+      * theta: `float` Rotation angle in radians
+  * theta = getTheta(): `Function`
+    * Getter function. Get value of rotation angle set for this gate.
+    * Return Value:
+      * Theta: `float` Rotation angle in radians
+* @RY: `Class` `Subclass of Unitary`
+  * Subclass of `Unitary`. This class define properties of Ry gate.
+  * obj = PauliX(registerLength, target, theta): `Constructor`
+    * Parameters:
+      * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
+      * `Optional` target: `int` An integer specifying index of target qubit.
+      * theta: `float` Rotation angle in radians
+  * theta = getTheta(): `Function`
+    * Getter function. Get value of rotation angle set for this gate.
+    * Return Value:
+      * Theta: `float` Rotation angle in radians
+* @RZ: `Class` `Subclass of Unitary`
+  * Subclass of `Unitary`. This class define properties of Rz gate.
+  * obj = PauliX(registerLength, target, theta): `Constructor`
+    * Parameters:
+      * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
+      * `Optional` target: `int` An integer specifying index of target qubit.
+      * theta: `float` Rotation angle in radians
+  * theta = getTheta(): `Function`
+    * Getter function. Get value of rotation angle set for this gate.
+    * Return Value:
+      * Theta: `float` Rotation angle in radians
+* @S: `Class ` `Subclass of Unitary`
+  * Subclass of `Unitary`. This class define properties of S gate.
+  * obj = S(registerLength, target): `Constructor`
+    * Parameters:
+      * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
+      * `Optional` target: `int` An integer specifying index of target qubit.
+* @Sdag: `Class` `Subclass of Unitary`
+  * Subclass of `Unitary`. This class define properties of Sdag gate (Conjugate transpose of S gate).
+  * obj = Sdag(registerLength, target): `Constructor`
+    * Parameters:
+      * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
+      * `Optional` target: `int` An integer specifying index of target qubit.
+* @T: `Class` `Subclass of Unitary`
+  * Subclass of `Unitary`. This class define properties of T gate.
+  * obj = T(registerLength, target): `Constructor`
+    * Parameters:
+      * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
+      * `Optional` target: `int` An integer specifying index of target qubit.
+* @Tdag: `Class` `Subclass of Unitary`
+  * Subclass of `Unitary`. This class define properties of Tdag gate  (Conjugate transpose of T gate).
+  * obj = Tdag(registerLength, target): `Constructor`
+    * Parameters:
+      * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
+      * `Optional` target: `int` An integer specifying index of target qubit.
+* @Hadamard: `Class ` `Subclass of Unitary`
+  * Subclass of `Unitary`. This class define properties of Hadamard gate.
+  * obj = Hadamard(registerLength, target): `Constructor`
+    * Parameters:
+      * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
+      * `Optional` target: `int` An integer specifying index of target qubit.
+* @Identity: `Class` `Subclass of Unitary`
+  * Subclass of `Unitary`. This class define properties of I gate.
+  * obj = Identity(registerLength, target): `Constructor`
+    * Parameters:
+      * `Optional` registerLength: `int` Number of qubit in target quantum register that this gate will operate on.
+      * `Optional` target: `int` An integer specifying index of target qubit.
 
-| Gates           | Name          | Syntax                       |
-| :-------------: |:-------------:| :---------------------------:|
-| ![alt text][x]  | Pauli-x Gate  | circuit.x(`target_qubit`)    |
-| ![alt text][y]  | Pauli-y Gate  | circuit.y(`target_qubit`)    |
-| ![alt text][z]  | Pauli-z Gate  | circuit.z(`target_qubit`)    |
-| ![alt text][i]  | Identity Gate | circuit.i(`target_qubit`)    |
-| ![alt text][h]  | Hadamard Gate | circuit.h(`target_qubit`)    |
-| ![alt text][cx] | CNOT Gate     | circuit.cnot(`control_qubit`,`target_qubit`) |
-| ![alt text][ccx] | Toffoli Gate     | circuit.ccnot(`control_qubit1`,`control_qubit2`,`target_qubit`) |
+**Note: 
 
-## Measurement
+* When working with Circuit, there's no need to import or calling constructors of these classes. Simply call functions defined in Circuit instance. The gate instances will be initialized and add to the operation queue automatically.
+* Also note that, some parameter are labeled `Optional` because parameters like `RegisterLength` or `Target` is not needed when initilizing these gates instance for working with `Qubit` through `apply()` function of `Qubit` instead of `Circuit`
 
-A measurement unit can be added to a `Circuit` at a certain point using command
-```matlab
-circuit.measure(`target_qubit`, `destination_classical_bit`, `basis (optional)`)
-```
-User need to specify which qubit to be measured and also a classical bit that will hold the measurement result.
-Also 3 different axis of measurement can be specified: `x`, `y`, `z`. If no basis specified the `z` axis will be use by default which mean the measurement operator would be |0><0| and |1><1|
+### Utils
+
+Utils or Utilities is another `package` in ExeQu that defined some useful functions for Mathemetic calculation, Visualization and more.
+
++Utils: `package`
+
+* +Maths: `package`
+  * result = tensor(varargin)
+    * Calculate tensor product of multiple matrices.
+    * Parameters:
+      * Varargin: `Variable length of parameters` Matrices to be tensor together. (ex. tensor(matrixA, matrixB, matrixC);)
+    * Return Value:
+      * Result: `Matrice` Tensor product of matrices.
+  * bool = isUnitary(U)
+    * Validate if `U` is a valid unitary matrix.
+    * Parameters:
+      * U: `Matrice` A matrix to be validated.
+    * Return Value:
+      * Bool: `Boolean` A validation result whether `U` is an unitary matrix or not.
+* @Visualization: `class`
+  * plotOperation(op)
+    * Plot operation from operation queue into Circuit Diagram. **Note: This function is called by `Draw()` function in `Circuit`
+    * Parameters:
+      * Op: `Operation Struct` An operation from a Circuit's operation queue.
+  * plotCircuit(qreg,maxLength)
+    * Plot empty circuit diagram without any quantum gate. **Note: This function is called by `Draw()` function in `Circuit`
+    * Parameters:
+      * Qreg: `int` Number of qubit in target circuit's quantum register.
+      * maxLength: `int` Maximum number of quantum gate applied on a single qubit. (This can be retrieved via `getMaxLength()` function in `Circuit`)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
