@@ -109,7 +109,7 @@ To understand toolbox's capability in detail, it is sensible to firstly understa
 * [CircuitComposer](https://github.com/Htraez/ExeQu#circuitcomposer)
 * [Gates](https://github.com/Htraez/ExeQu#gates)
 * [Utils](https://github.com/Htraez/ExeQu#utils)
-* [Transpiler](https://github.com/Htraez/ExeQu#qasmtranspiler)
+* [Transpiler](https://github.com/Htraez/ExeQu#qasm-transpiler)
 
 ### CircuitComposer
 
