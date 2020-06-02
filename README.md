@@ -575,6 +575,56 @@ Gates is another `package` defined in `ExeQu`. The package itself doesn't have t
 
 ----
 
+### QASM Transpiler
+
+ExeQu QASM Transpiler is a `package` responsible for conversion of openQASM 2.0 script to MATLAB script. Users could transcompile their openQASM 2.0 script in `.qasm` format to ExeQu script written in `.m` format using `Transpiler` class defined in this `package`
+
+###### Supported Instructions
+|       Instructions       |             Supported?             |
+| :---------------: | :--------------------------: |
+|  OPENQASM 2.0;  |         Yes         |
+|  qreg name[size];  |         Yes         |
+|  creg name[size];  |         Yes         |
+|  include “filename”;  |         Yes         |
+|  gate name(params) qargs  |         Yes         |
+|  // comment text  |         Yes         |
+|  U(theta, phi, lambda) qubit&#124;qreg;  |         Yes         |
+|  CX qubit&#124;qreg, qubit&#124;qreg;  |         Yes         |
+|  measure qubit&#124;qreg -> bit&#124;creg;  |         Yes         |
+|  gatename(params) qargs;  |         Yes         |
+|  barrier qargs;  |         Yes         |
+|  if(creg==int) qop;  |         No         |
+|  opaque name(params) qargs;  |         No         |
+|  reset qubit&#124;qreg;  |         No         |
+
+###### Usage
+
+To start trancompiling, import the package to MATLAB script and instantiate new `Transpiler` instance. Then, use the instance to call `convert()` and pass 2 parameters: `inFileName` and `outFileName` which is the path of `.qasm` file to be transpile and the path of `.m` file to hold output.
+
+```matlab
+import ExeQu.Trsnapiler.*;
+
+%Create Transpiler Instance
+converter = Transpiler();
+
+%Transcompile openQASM to MATLAB
+converter = converter.convert('qasmCode.qasm', 'outCode.m');
+```
+
+###### +Transpiler: `package`
+
+* ###### @Transpiler: `class`
+
+  * ###### self = convert(inFileName, outFileName): `function`
+
+    * Parameters:
+      * inFileName: `String` Path of `.qasm` file to be transpile.
+      * outFileName: `String` Path of `.m` file to hold output.
+    * Return Value:
+      * Self: `Transpiler` This instance of Transpiler.
+
+---
+
 ### Utils
 
 Utils or Utilities is another `package` in ExeQu that defined some useful functions for Mathemetic calculation, Visualization and more.
@@ -583,14 +633,14 @@ Utils or Utilities is another `package` in ExeQu that defined some useful functi
 
 * ###### +Maths: `package`
   
-  * ###### result = tensor(varargin)
+  * ###### result = tensor(varargin): `function`
     
     * Calculate tensor product of multiple matrices.
     * Parameters:
       * Varargin: `Variable length of parameters` Matrices to be tensor together. (ex. tensor(matrixA, matrixB, matrixC);)
     * Return Value:
       * Result: `Matrice` Tensor product of matrices.
-  * ###### bool = isUnitary(U)
+  * ###### bool = isUnitary(U): `function`
     
     * Validate if `U` is a valid unitary matrix.
     * Parameters:
@@ -599,12 +649,12 @@ Utils or Utilities is another `package` in ExeQu that defined some useful functi
       * Bool: `Boolean` A validation result whether `U` is an unitary matrix or not.
 * ###### @Visualization: `class`
   
-  * ###### plotOperation(op)
+  * ###### plotOperation(op): `function`
     
     * Plot operation from operation queue into Circuit Diagram. **Note: This function is called by `Draw()` function in `Circuit`
     * Parameters:
       * Op: `Operation Struct` An operation from a Circuit's operation queue.
-  * ###### plotCircuit(qreg,maxLength)
+  * ###### plotCircuit(qreg,maxLength): `function`
     
     * Plot empty circuit diagram without any quantum gate. **Note: This function is called by `Draw()` function in `Circuit`
     * Parameters:
