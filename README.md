@@ -20,7 +20,7 @@ https://github.com/Htraez/ExeQu/releases
 
 ## Workflow
 
-ExeQu is designed to be easy-to-use. The main workflow of ExeQu is consists of creation of Quantum Circuit, execution of created circuit, and Quantum Circuit visualization.
+ExeQu is designed to be easy-to-use. The main workflow of ExeQu is consists of creation of Quantum Circuit, execution of the circuit, and circuit visualization.
 
 ![alt text][flow]
 
@@ -45,49 +45,49 @@ circuit.draw(); %Draw circuit structure
 result = circuit.execute(1024); %Simulate circuit (1024 shots)
 result.plotHistogram(); %Visualize result
 ```
-As the code suggests. The very first step of using ExeQu is importing the toolbox into the coding environment. The process of simulating this circuit is started by creating empty circuit using `Circuit` constructor passing 2 parameter first is the number of qubit, second is the number of classical bit which will hold the measurement result afterward.
+As the code suggests, the very first step of using ExeQu is to import the toolbox into MATLAB coding environment. The process of simulating this circuit is started by creating empty circuit using `Circuit` constructor. To do so, pass 2 parameters. First, the number of qubit. Second, the number of classical bit which will hold the measurement result afterward.
 
-After having empty circuit you can add gates and measurement into the circuit using functions defined in the `Circuit` object itself. Then, by calling `draw()` function, you will see the circuit diagram displaying components in the circuit you composed. 
+After having an empty circuit, you could add gates and measurement into the circuit using functions defined in the `Circuit` object itself. Then, by calling `draw()` function, you will see the circuit diagram displaying all components in the circuit you have just composed. 
 
-At this point, to start the execution process, simply call `execute()` passing a `shots` parameter to specify the number of shots to sampling the result after the calculation process finished. 
+At this point, to start the execution process, simply call `execute()` passing a `shots` parameter to specify the number of shots that the result will be sampled after the calculation process finished. 
 
-Finally, in the visualization process, you can use `result` struct returned from `execute()` to call `plotHistogram()` to show the result of the circuit in form of probability histogram of possible quantum state(s)
+Finally, in visualization process, you could use `result` struct which returned from `execute()` to call `plotHistogram()` to show the result of the circuit in form of probability histogram of possible quantum state(s)
 
 ## Available Quantum Gates
 
-A quantum gate could be added to a circuit using methods defined in the `Circuit`. Right now there several of them available as shown. For more detail on each parameters, refer to classes and functions breakdown in `Components` section.
+A quantum gate could be added to a circuit using methods defined in the `Circuit`. Right now, there are several of them available as shown. For more detail on each parameters, please refer to classes and functions breakdown in `Components` section.
 
-Suppose a circuit instantiated using this code 
+Suppose a circuit instantiated using this code.
 
 ```matlab
 circuit = Circuit(`number_of_qubit`, `number_of_cbit`);
 ```
 
-|       Gates       |             Name             |                            Syntax                            |
-| :---------------: | :--------------------------: | :----------------------------------------------------------: |
-|  ![alt text][x]   |         Pauli-x Gate         |                  circuit.x(`target_qubit`)                   |
-|  ![alt text][y]   |         Pauli-y Gate         |                  circuit.y(`target_qubit`)                   |
-|  ![alt text][z]   |         Pauli-z Gate         |                  circuit.z(`target_qubit`)                   |
-|  ![alt text][u]   |         Unitary Gate         |  circuit.unitary(`operator`, `ctrl_qubits`, `target_qubit`)  |
-|  ![alt text][u3]  |           U3 Gate            |     circuit.u3(`target_qubit`, `theta`, `phi`, `lambda`)     |
-|  ![alt text][u2]  |           U2 Gate            |         circuit.u2(`target_qubit`, `phi`, `lambda`)          |
-|  ![alt text][u1]  |           U1 Gate            |             circuit.u1(`target_qubit`, `lambda`)             |
-|  ![alt text][s]   |            S Gate            |                  circuit.s(`target_qubit`)                   |
-| ![alt text][sdag] |        S Dagger Gate         |                 circuit.sdag(`target_qubit`)                 |
-|  ![alt text][t]   |            T Gate            |                  circuit.t(`target_qubit`)                   |
-| ![alt text][tdag] |        T Dagger Gate         |                 circuit.tdag(`target_qubit`)                 |
-|  ![alt text][rx]  |           Rx Gate            |             circuit.rx(`target_qubit`, `theta`)              |
-|  ![alt text][ry]  |           Ry Gate            |             circuit.ry(`target_qubit`, `theta`)              |
-|  ![alt text][rz]  |           Rz Gate            |             circuit.rz(`target_qubit`, `theta`)              |
-|  ![alt text][cz]  |           Cz Gate            |          circuit.cz(`ctrl_qubits`, `target_qubit`)           |
-|  ![alt text][cy]  |           Cy Gate            |          circuit.cy(`ctrl_qubits`, `target_qubit`)           |
-|  ![alt text][cr]  |           Cr Gate            |      circuit.cr(`ctrl_qubits`, `target_qubit`, `theta`)      |
-|  ![alt text][i]   |        Identity Gate         |               circuit.identity(`target_qubit`)               |
-|  ![alt text][h]   |        Hadamard Gate         |                  circuit.h(`target_qubit`)                   |
-|  ![alt text][cx]  |          CNOT Gate           |         circuit.cnot(`control_qubit`,`target_qubit`)         |
-| ![alt text][ccx]  |         Toffoli Gate         | circuit.ccnot(`control_qubit1`,`control_qubit2`,`target_qubit`) |
-| ![alt text][mct]  | Mutiple Control Toffoli Gate |          circuit.mct(`ctrl_qubits`, `target_qubit`)          |
-|  ![alt text][cu]  |      Controlled-U Gate       | circuit.controlledU(`U_operator`, `ctrl_qubits`, `target_qubit`) |
+|       Gates       |                             Name                             |                            Syntax                            |
+| :---------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+|  ![alt text][x]   | [Pauli-x Gate](https://github.com/Htraez/ExeQu#xtarget-function) |                  circuit.x(`target_qubit`)                   |
+|  ![alt text][y]   | [Pauli-y Gate](https://github.com/Htraez/ExeQu#ytarget-function) |                  circuit.y(`target_qubit`)                   |
+|  ![alt text][z]   | [Pauli-z Gate](https://github.com/Htraez/ExeQu#ztarget-function) |                  circuit.z(`target_qubit`)                   |
+|  ![alt text][u]   | [Unitary Gate](https://github.com/Htraez/ExeQu#operation--unitaryoperator-ctrls-target-function) |  circuit.unitary(`operator`, `ctrl_qubits`, `target_qubit`)  |
+|  ![alt text][u3]  | [U3 Gate](https://github.com/Htraez/ExeQu#u3target-theta-phi-lambda-function) |     circuit.u3(`target_qubit`, `theta`, `phi`, `lambda`)     |
+|  ![alt text][u2]  | [U2 Gate](https://github.com/Htraez/ExeQu#u2target-phi-lambda-function) |         circuit.u2(`target_qubit`, `phi`, `lambda`)          |
+|  ![alt text][u1]  | [U1 Gate](https://github.com/Htraez/ExeQu#u1target-lambda-function) |             circuit.u1(`target_qubit`, `lambda`)             |
+|  ![alt text][s]   |  [S Gate](https://github.com/Htraez/ExeQu#starget-function)  |                  circuit.s(`target_qubit`)                   |
+| ![alt text][sdag] | [S Dagger Gate](https://github.com/Htraez/ExeQu#sdagtarget-function) |                 circuit.sdag(`target_qubit`)                 |
+|  ![alt text][t]   |  [T Gate](https://github.com/Htraez/ExeQu#ttarget-function)  |                  circuit.t(`target_qubit`)                   |
+| ![alt text][tdag] | [T Dagger Gate](https://github.com/Htraez/ExeQu#tdagtarget-function) |                 circuit.tdag(`target_qubit`)                 |
+|  ![alt text][rx]  | [Rx Gate](https://github.com/Htraez/ExeQu#rxtarget-theta-function) |             circuit.rx(`target_qubit`, `theta`)              |
+|  ![alt text][ry]  | [Ry Gate](https://github.com/Htraez/ExeQu#rytarget-theta-function) |             circuit.ry(`target_qubit`, `theta`)              |
+|  ![alt text][rz]  | [Rz Gate](https://github.com/Htraez/ExeQu#rztarget-theta-function) |             circuit.rz(`target_qubit`, `theta`)              |
+|  ![alt text][cz]  | [Cz Gate](https://github.com/Htraez/ExeQu#czctrl-target-function) |          circuit.cz(`ctrl_qubits`, `target_qubit`)           |
+|  ![alt text][cy]  | [Cy Gate](https://github.com/Htraez/ExeQu#cyctrl-target-function) |          circuit.cy(`ctrl_qubits`, `target_qubit`)           |
+|  ![alt text][cr]  | [Cr Gate](https://github.com/Htraez/ExeQu#crctrl-target-theta-function) |      circuit.cr(`ctrl_qubits`, `target_qubit`, `theta`)      |
+|  ![alt text][i]   | [Identity Gate](https://github.com/Htraez/ExeQu#identitytarget-function) |               circuit.identity(`target_qubit`)               |
+|  ![alt text][h]   | [Hadamard Gate](https://github.com/Htraez/ExeQu#htarget-function) |                  circuit.h(`target_qubit`)                   |
+|  ![alt text][cx]  | [CNOT Gate](https://github.com/Htraez/ExeQu#cnotctrl-target-function) |         circuit.cnot(`control_qubit`,`target_qubit`)         |
+| ![alt text][ccx]  | [Toffoli Gate](https://github.com/Htraez/ExeQu#ccnotself-ctrl1-ctrl2-target-function) | circuit.ccnot(`control_qubit1`,`control_qubit2`,`target_qubit`) |
+| ![alt text][mct]  | [Mutiple Control Toffoli Gate](https://github.com/Htraez/ExeQu#mctctrls-target-function) |          circuit.mct(`ctrl_qubits`, `target_qubit`)          |
+|  ![alt text][cu]  | [Controlled-U Gate](https://github.com/Htraez/ExeQu#controlleduu-ctrls-target-function) | circuit.controlledU(`U_operator`, `ctrl_qubits`, `target_qubit`) |
 
 ## Measurement
 
@@ -102,18 +102,18 @@ Also 3 different axis of measurement can be specified: `x`, `y`, `z`. If no basi
 
 ## Components
 
-To understand the toolbox capability in detail, it is sensible to understand some key components of the toolbox and functions available in packages classes and functions defined in `ExeQu`.
+To understand toolbox's capability in detail, it is sensible to firstly understand some key components of the toolbox. There are several functions available in packages and classes defined in `ExeQu` as shown below.
 
 ###### List of Packages:
 
 * [CircuitComposer](https://github.com/Htraez/ExeQu#circuitcomposer)
 * [Gates](https://github.com/Htraez/ExeQu#gates)
 * [Utils](https://github.com/Htraez/ExeQu#utils)
-* [Transpiler](https://github.com/Htraez/ExeQu#transpiler)
+* [Transpiler](https://github.com/Htraez/ExeQu#qasmtranspiler)
 
 ### CircuitComposer
 
-CircuitComposer is the main `package` that user will be using everytime to initiate a Quantum Circuit. It is also an important `package` that need to be imported into the MATLAB script in order to use `ExeQu`. The package itself consists of 4 main classes: `Circuit`, `Qubit`, `QuantumRegister`, `Measurement`
+CircuitComposer is the main `package` that user will be using everytime to instantiate a Quantum Circuit. It is also an important `package` that need to be imported into a MATLAB script in order to use `ExeQu`. The package itself consists of 4 main classes: `Circuit`, `Qubit`, `QuantumRegister`, and `Measurement`
 
 ###### +CircuitComposer: `Package`
 
@@ -570,8 +570,8 @@ Gates is another `package` defined in `ExeQu`. The package itself doesn't have t
 
 **Note: 
 
-* When working with Circuit, there's no need to import or calling constructors of these classes. Simply call functions defined in Circuit instance. The gate instances will be initialized and add to the operation queue automatically.
-* Also note that, some parameter are labeled `Optional` because parameters like `RegisterLength` or `Target` is not needed when initilizing these gates instance for working with `Qubit` through `apply()` function of `Qubit` instead of `Circuit`
+* When working with Circuit, there is no need to import or calling constructors of these classes. Simply call functions like `x()`, `cnot()` or `h()` defined in a Circuit instance. Calling those functions, a quantum gate instances will be instantiated and added to the operation queue automatically.
+* Also note that, some parameters are labeled `Optional` because parameters like `RegisterLength` or `Target` is not needed when creating these gates instance for working with `Qubit` through `apply()` function instead of `Circuit`
 
 ----
 
