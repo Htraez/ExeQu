@@ -21,6 +21,9 @@ https://github.com/Htraez/ExeQu/releases
 ## Workflow
 
 ExeQu is designed to be easy-to-use. The main workflow of ExeQu is consists of creation of Quantum Circuit, execution of the circuit, and circuit visualization.
+
+
+
 <img src="./Assets/Images/workflow_1.png" style="height:200px; margin-left:50%; transform: translate(-50%)" />
 
 ## Usage
