@@ -1,4 +1,4 @@
-# Project ExeQu
+# ExeQu v1.0.0 Documentation
 ### Quantum Gates and Circuit Simulator in MATLAB
 
 ExeQu is a `MATLAB` toolbox designed to provide quantum programming enthusiats a tool for creating quantum circuit as well as simulating it result.
@@ -21,8 +21,7 @@ https://github.com/Htraez/ExeQu/releases
 ## Workflow
 
 ExeQu is designed to be easy-to-use. The main workflow of ExeQu is consists of creation of Quantum Circuit, execution of the circuit, and circuit visualization.
-
-![alt text][flow]
+<img src="./Assets/Images/workflow_1.png" style="height:200px; margin-left:50%; transform: translate(-50%)" />
 
 ## Usage
 
@@ -52,6 +51,8 @@ After having an empty circuit, you could add gates and measurement into the circ
 At this point, to start the execution process, simply call `execute()` passing a `shots` parameter to specify the number of shots that the result will be sampled after the calculation process finished. 
 
 Finally, in visualization process, you could use `result` struct which returned from `execute()` to call `plotHistogram()` to show the result of the circuit in form of probability histogram of possible quantum state(s)
+
+
 
 ## Available Quantum Gates
 
@@ -89,6 +90,7 @@ circuit = Circuit(`number_of_qubit`, `number_of_cbit`);
 | ![alt text][mct]  | [Mutiple Control Toffoli Gate](https://github.com/Htraez/ExeQu#mctctrls-target-function) |          circuit.mct(`ctrl_qubits`, `target_qubit`)          |
 |  ![alt text][cu]  | [Controlled-U Gate](https://github.com/Htraez/ExeQu#controlleduu-ctrls-target-function) | circuit.controlledU(`U_operator`, `ctrl_qubits`, `target_qubit`) |
 
+<div style="page-break-after: always;"></div>
 ## Measurement
 
 A measurement unit can be added to a `Circuit` at a certain point using command
@@ -384,7 +386,7 @@ CircuitComposer is the main `package` that user will be using everytime to insta
     * Getter function. Get current measurement basis of this instance of Measurement.
     * Return Value: 
       * Basis: `char` Current measurement basis of this instance of Measurement.
-
+<div style="page-break-after: always;"></div>
 -----
 
 ### Gates
@@ -572,7 +574,7 @@ Gates is another `package` defined in `ExeQu`. The package itself doesn't have t
 
 * When working with Circuit, there is no need to import or calling constructors of these classes. Simply call functions like `x()`, `cnot()` or `h()` defined in a Circuit instance. Calling those functions, a quantum gate instances will be instantiated and added to the operation queue automatically.
 * Also note that, some parameters are labeled `Optional` because parameters like `RegisterLength` or `Target` is not needed when creating these gates instance for working with `Qubit` through `apply()` function instead of `Circuit`
-
+<div style="page-break-after: always;"></div>
 ----
 
 ### QASM Transpiler
@@ -622,7 +624,7 @@ converter = converter.convert('qasmCode.qasm', 'outCode.m');
       * outFileName: `String` Path of `.m` file to hold output.
     * Return Value:
       * Self: `Transpiler` This instance of Transpiler.
-
+<div style="page-break-after: always;"></div>
 ---
 
 ### Utils
@@ -660,7 +662,7 @@ Utils or Utilities is another `package` in ExeQu that defined some useful functi
     * Parameters:
       * Qreg: `int` Number of qubit in target circuit's quantum register.
       * maxLength: `int` Maximum number of quantum gate applied on a single qubit. (This can be retrieved via `getMaxLength()` function in `Circuit`)
-
+<div style="page-break-after: always;"></div>
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
