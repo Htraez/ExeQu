@@ -94,6 +94,7 @@ circuit = Circuit(`number_of_qubit`, `number_of_cbit`);
 |  ![alt text][cu]  | [Controlled-U Gate](https://github.com/Htraez/ExeQu#controlleduu-ctrls-target-function) | circuit.controlledU(`U_operator`, `ctrl_qubits`, `target_qubit`) |
 
 <div style="page-break-after: always;"></div>
+
 ## Measurement
 
 A measurement unit can be added to a `Circuit` at a certain point using command
